@@ -1,4 +1,5 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import profileReducer from "src/views/MakeRequest/redux";
 
 export const resetStore = () => {
   return {
@@ -13,7 +14,7 @@ const rootReducer = (state, action) => {
   return appReducer(state, action);
 };
 
-const appReducer = combineReducers({});
+const appReducer = combineReducers({ schoolProfile: profileReducer });
 
 export default configureStore({
   reducer: rootReducer,

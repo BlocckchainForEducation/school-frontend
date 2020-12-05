@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function AvatarBar() {
   const cls = useStyles();
-  const studentName = useSelector((state) => state.schoolProfile.name);
+  const schoolName = useSelector((state) => state.schoolProfile.universityName);
   const avatarSrc = useSelector((state) => state.schoolProfile.imgSrc);
   const description = useSelector((state) => state.schoolProfile.description);
   const { enqueueSnackbar } = useSnackbar();
@@ -37,7 +37,7 @@ export default function AvatarBar() {
   async function hdChangeAvatar(e) {
     const formData = new FormData();
     formData.append("avatar", e.target.files[0]);
-    const res = await fetch(`${process.env.REACT_APP_SERVER_URL}/student/change-avatar`, {
+    const res = await fetch(`${process.env.REACT_APP_SERVER_URL}/change-avatar`, {
       method: "POST",
       headers: { Authorization: getToken() },
       body: formData,
@@ -65,7 +65,7 @@ export default function AvatarBar() {
             Cán bộ Phòng Đào Tạo
           </Typography>
           <Typography variant="h3" gutterBottom className={cls.name}>
-            {studentName || "Nguyen Van A"}
+            {schoolName || "Cán bộ Trường ĐH ABC"}
           </Typography>
           <Typography variant="body2" className={cls.description}>
             {description ||

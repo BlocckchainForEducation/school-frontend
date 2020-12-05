@@ -4,7 +4,7 @@ import { makeStyles } from "@material-ui/core";
 import NavBar from "./NavBar";
 import TopBar from "./TopBar";
 import { getToken } from "../../utils/mng-token";
-import { setProfile } from "../../views/StudentProfile/redux";
+import { setProfile } from "../../views/MakeRequest/redux";
 import { useDispatch, useSelector } from "react-redux";
 import Loading from "../../shared/Loading";
 import PerfectScrollbar from "react-perfect-scrollbar";
@@ -45,19 +45,21 @@ const DashboardLayout = () => {
   const dp = useDispatch();
 
   useEffect(() => {
-    fetchStudentProfile();
+    fetchProfile();
   }, []);
 
-  async function fetchStudentProfile() {
+  async function fetchProfile() {
     try {
-      const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/student/profile`, {
-        headers: { Authorization: getToken() },
-      });
-      if (!response.ok) {
-        alert(JSON.stringify(await response.json()));
-      } else {
-        dp(setProfile(await response.json()));
-      }
+      // TODO: uncomment when backend ready
+      dp(setProfile({}));
+      //   const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/profile`, {
+      //     headers: { Authorization: getToken() },
+      //   });
+      //   if (!response.ok) {
+      //     alert(JSON.stringify(await response.json()));
+      //   } else {
+      //     dp(setProfile(await response.json()));
+      //   }
     } catch (err) {
       console.log(err);
       alert(err);
