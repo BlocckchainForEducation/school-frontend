@@ -1,20 +1,28 @@
+import { makeStyles } from "@material-ui/core";
 import React from "react";
-import UploadFileInputWithTitle from "../../../../shared/UploadFileInput";
+import DragnDropZone from "../../shared/DragnDropZone";
+import View from "../../shared/View";
 import BureauDataExample from "./BureauDataExample";
 import BureauUploadHistory from "./BureauUploadHistory";
 
+const useStyles = makeStyles((theme) => ({
+  root: {
+    "& > *": {
+      marginBottom: theme.spacing(2),
+    },
+  },
+}));
+
 export default function CreateBureauAccount() {
+  const cls = useStyles();
+
   return (
-    <div>
-      <div className="mb-3">
+    <View title="Tạo tài khoản giáo vụ ">
+      <div className={cls.root}>
         <BureauDataExample></BureauDataExample>
-      </div>
-      <div className="mb-3">
-        <UploadFileInputWithTitle title="Upload file excel Giáo vụ"></UploadFileInputWithTitle>
-      </div>
-      <div className="mb-3">
+        <DragnDropZone></DragnDropZone>
         <BureauUploadHistory></BureauUploadHistory>
       </div>
-    </div>
+    </View>
   );
 }
