@@ -50,16 +50,14 @@ const DashboardLayout = () => {
 
   async function fetchProfile() {
     try {
-      // TODO: uncomment when backend ready
-      dp(setProfile({}));
-      //   const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/profile`, {
-      //     headers: { Authorization: getToken() },
-      //   });
-      //   if (!response.ok) {
-      //     alert(JSON.stringify(await response.json()));
-      //   } else {
-      //     dp(setProfile(await response.json()));
-      //   }
+      const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/profile`, {
+        headers: { Authorization: getToken() },
+      });
+      if (!response.ok) {
+        alert(JSON.stringify(await response.json()));
+      } else {
+        dp(setProfile(await response.json()));
+      }
     } catch (err) {
       console.log(err);
       alert(err);
