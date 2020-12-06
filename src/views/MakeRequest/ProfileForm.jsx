@@ -7,7 +7,14 @@ import { getToken } from "src/utils/mng-token";
 import { setProfile } from "./redux";
 
 const useStyles = makeStyles((theme) => ({
-  root: {},
+  root: {
+    "& .MuiFormLabel-root.Mui-disabled": {
+      color: theme.palette.primary.main,
+    },
+    "& .MuiInputBase-input.Mui-disabled": {
+      color: "black",
+    },
+  },
   head: {
     width: "95%",
     margin: "auto",
@@ -32,18 +39,12 @@ export default function ProfileForm() {
   const cls = useStyles();
   const profile = useSelector((state) => state.schoolProfile);
   const [state, setState] = useState(profile);
-  const [lastUpdatedState, setCheckPointState] = useState(state);
-  const { enqueueSnackbar } = useSnackbar();
   const dp = useDispatch();
+  const { enqueueSnackbar } = useSnackbar();
+  const disable = Boolean(profile.state === "voting" || profile.state === "accepted" || profile.state === "declined");
 
   async function hdSubmit(e) {
     try {
-      e.preventDefault();
-      if (lastUpdatedState === state) {
-        enqueueSnackbar("Nothing changed", { variant: "info", anchorOrigin: { vertical: "bottom", horizontal: "center" } });
-        return;
-      }
-
       let response = await fetch(`${process.env.REACT_APP_SERVER_URL}/make-request`, {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: getToken() },
@@ -51,13 +52,20 @@ export default function ProfileForm() {
         body: JSON.stringify({ ...state, fetching: undefined, imgSrc: undefined }),
       });
 
+      const result = await response.json();
       if (!response.ok) {
-        const error = await response.json();
-        enqueueSnackbar("Something went wrong: " + JSON.stringify(error), { variant: "error", anchorOrigin: { vertical: "top", horizontal: "center" } });
+        enqueueSnackbar("Kiểm tra lại thông tin: " + JSON.stringify(result), { variant: "error", anchorOrigin: { vertical: "top", horizontal: "center" } });
       } else {
-        setCheckPointState(state);
-        dp(setProfile(state));
-        enqueueSnackbar("Đăng kí tham gia thành công!", { variant: "success", anchorOrigin: { vertical: "bottom", horizontal: "center" } });
+        if (!result.ok) {
+          enqueueSnackbar("Tạo tx thất bại, thử lại sau!", { variant: "error", anchorOrigin: { vertical: "bottom", horizontal: "center" } });
+          dp(setProfile({ ...state, imgSrc: profile.imgSrc, state: "fail" }));
+        } else {
+          enqueueSnackbar("Đămg kí tham gia thành công, đang chờ bỏ phiếu!", {
+            variant: "success",
+            anchorOrigin: { vertical: "bottom", horizontal: "center" },
+          });
+          dp(setProfile({ ...state, imgSrc: profile.imgSrc, state: "voting" }));
+        }
       }
     } catch (error) {
       alert(error);
@@ -81,6 +89,7 @@ export default function ProfileForm() {
                   label="Tên Trường"
                   value={state?.universityName}
                   onChange={(e) => setState({ ...state, universityName: e.target.value })}
+                  disabled={disable}
                 ></TextField>
               </Grid>
               <Grid item xs={12} md={6}>
@@ -90,6 +99,7 @@ export default function ProfileForm() {
                   label="Tên Tiếng Anh"
                   value={state?.nameInEnglish}
                   onChange={(e) => setState({ ...state, nameInEnglish: e.target.value })}
+                  disabled={disable}
                 ></TextField>
               </Grid>
             </Grid>
@@ -100,6 +110,7 @@ export default function ProfileForm() {
               label="Địa chỉ"
               value={state?.address}
               onChange={(e) => setState({ ...state, address: e.target.value })}
+              disabled={disable}
             ></TextField>
             <Grid container spacing={2}>
               <Grid item xs={12} md={6}>
@@ -109,6 +120,7 @@ export default function ProfileForm() {
                   label="Email"
                   value={state?.email}
                   onChange={(e) => setState({ ...state, email: e.target.value })}
+                  disabled={disable}
                 ></TextField>
               </Grid>
               <Grid item xs={12} md={6}>
@@ -118,6 +130,7 @@ export default function ProfileForm() {
                   label="Số điện thoại"
                   value={state?.phone}
                   onChange={(e) => setState({ ...state, phone: e.target.value })}
+                  disabled={disable}
                 ></TextField>
               </Grid>
             </Grid>
@@ -127,21 +140,25 @@ export default function ProfileForm() {
               label="Khóa công khai"
               value={state?.pubkey}
               onChange={(e) => setState({ ...state, pubkey: e.target.value })}
+              disabled={disable}
             ></TextField>
             <TextField
               InputLabelProps={{ shrink: true }}
               fullWidth
               label="Mô tả khác"
               multiline
-              rows={3}
+              rows={4}
               value={state?.description}
               onChange={(e) => setState({ ...state, description: e.target.value })}
+              disabled={disable}
             ></TextField>
-            <Box textAlign="right">
-              <Button color="primary" variant="contained" onClick={hdSubmit}>
-                Đăng kí tham gia
-              </Button>
-            </Box>
+            {!disable && (
+              <Box textAlign="right">
+                <Button color="primary" variant="contained" onClick={hdSubmit}>
+                  Đăng kí tham gia
+                </Button>
+              </Box>
+            )}
           </Box>
         </Paper>
       </Box>
