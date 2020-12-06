@@ -86,7 +86,7 @@ const NavBar = ({ onMobileClose, openMobile }) => {
   const content = (
     <Box height="100%" display="flex" flexDirection="column">
       <Box alignItems="center" display="flex" flexDirection="column" p={2}>
-        <Avatar className={classes.avatar} component={RouterLink} src={user.imgSrc} to="/nh/thong-tin-ca-nhan" />
+        <Avatar className={classes.avatar} component={RouterLink} src={user.imgSrc} to="/cb-pdt/dang-ki-tham-gia" />
         <Typography className={classes.name} color="textPrimary" variant="h5">
           {user.universityName || "Trường ĐH ABC"}
         </Typography>
