@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 export default function VotingState(props) {
   const cls = useStyles();
-  const vottingState = useSelector((state) => state.profileSlice.state);
+  const votingState = useSelector((state) => state.profileSlice.state);
   const votes = useSelector((state) => state.profileSlice.votes);
 
   return (
@@ -29,9 +29,9 @@ export default function VotingState(props) {
       <Box className={cls.root}>
         <Paper className={cls.head}>
           <Typography variant="h3">
-            {vottingState === "voting" && "Đang bỏ phiếu"}
-            {vottingState === "accepted" && "Đã tham gia"}
-            {vottingState === "declined" && "Đã bị từ chối"}
+            {votingState === "voting" && "Đang bỏ phiếu"}
+            {votingState === "accepted" && "Đã tham gia"}
+            {votingState === "declined" && "Đã bị từ chối"}
           </Typography>
         </Paper>
         <Paper className={cls.body}>
@@ -40,7 +40,7 @@ export default function VotingState(props) {
               <TableBody>
                 {votes &&
                   votes.map((vote, index) => (
-                    <TableRow>
+                    <TableRow key={index}>
                       <TableCell>
                         <Avatar></Avatar>
                       </TableCell>

@@ -30,7 +30,7 @@ export default function VoteHeader({ request }) {
   }
 
   async function sendVote(decision, publicKeyOfRequest, privateKey) {
-    const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/voting/vote`, {
+    const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/vote`, {
       headers: { "Content-Type": "application/json", Authorization: getToken() },
       method: "POST",
       body: JSON.stringify({ decision, publicKeyOfRequest, privateKey }),

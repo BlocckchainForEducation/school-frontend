@@ -19,7 +19,7 @@ export default function RequestList(props) {
   }, []);
 
   async function fetchNewVoteRequests() {
-    const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/voting/vote-requests?state=new`, {
+    const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/vote-requests?state=new`, {
       headers: { Authorization: getToken() },
     });
     if (!response.ok) {
