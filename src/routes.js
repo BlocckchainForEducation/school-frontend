@@ -7,6 +7,7 @@ import SignInView from "src/views/SignIn";
 import SignUpView from "src/views/SignUp";
 import MakeRequest from "src/views/MakeRequest";
 import { getToken } from "./utils/mng-token";
+import Voting from "./views/Voting";
 
 const routes = [
   {
@@ -14,7 +15,7 @@ const routes = [
     element: <DashboardLayout />,
     children: [
       { path: "dang-ki-tham-gia", element: <MakeRequest /> },
-      // { path: "bo-phieu", element: <MakeRequest /> },
+      { path: "bo-phieu", element: <Voting /> },
       // { path: "tao-tk-giao-vu", element: <ShareCertificate /> },
       // { path: "tao-tk-giao-vien", element: <ShareCertificate /> },
       // { path: "tao-tk-sinh-vien", element: <ShareCertificate /> },
