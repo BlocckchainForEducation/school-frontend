@@ -1,31 +1,21 @@
-import React, { useEffect } from "react";
-import { Link as RouterLink, useLocation } from "react-router-dom";
+import { Avatar, Box, Divider, Drawer, Hidden, List, makeStyles, Typography } from "@material-ui/core";
 import PropTypes from "prop-types";
-import { Avatar, Box, Divider, Drawer, Hidden, List, Typography, makeStyles } from "@material-ui/core";
-import {
-  AlertCircle as AlertCircleIcon,
-  BarChart as BarChartIcon,
-  Lock as LockIcon,
-  Settings as SettingsIcon,
-  ShoppingBag as ShoppingBagIcon,
-  User as UserIcon,
-  UserPlus as UserPlusIcon,
-  Users as UsersIcon,
-} from "react-feather";
-import NavItem from "./NavItem";
+import React, { useEffect } from "react";
+import { User as UserIcon } from "react-feather";
 import { useSelector } from "react-redux";
-
-const user = {
-  avatar: "/static/images/avatars/avatar_6.png",
-  jobTitle: "Senior Developer",
-  name: "Katarina Smith",
-};
+import { Link as RouterLink, useLocation } from "react-router-dom";
+import NavItem from "./NavItem";
 
 const items = [
   {
     href: "/cb-pdt/dang-ki-tham-gia",
     icon: UserIcon,
     title: "Đăng kí tham gia",
+  },
+  {
+    href: "/cb-pdt/bo-phieu",
+    icon: UserIcon,
+    title: "Bỏ phiếu",
   },
   {
     href: "/cb-pdt/tao-tk-giao-vu",
@@ -98,10 +88,10 @@ const NavBar = ({ onMobileClose, openMobile }) => {
       <Box alignItems="center" display="flex" flexDirection="column" p={2}>
         <Avatar className={classes.avatar} component={RouterLink} src={user.imgSrc} to="/nh/thong-tin-ca-nhan" />
         <Typography className={classes.name} color="textPrimary" variant="h5">
-          {user.name}
+          {user.universityName || "Trường ĐH ABC"}
         </Typography>
         <Typography color="textSecondary" variant="body2">
-          {user.level || "Cán bộ Phòng Đào Tạo"}
+          {"Cán bộ Phòng Đào Tạo"}
         </Typography>
       </Box>
       <Divider />

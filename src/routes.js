@@ -14,6 +14,7 @@ const routes = [
     element: <DashboardLayout />,
     children: [
       { path: "dang-ki-tham-gia", element: <MakeRequest /> },
+      // { path: "bo-phieu", element: <MakeRequest /> },
       // { path: "tao-tk-giao-vu", element: <ShareCertificate /> },
       // { path: "tao-tk-giao-vien", element: <ShareCertificate /> },
       // { path: "tao-tk-sinh-vien", element: <ShareCertificate /> },

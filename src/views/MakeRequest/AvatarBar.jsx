@@ -65,7 +65,7 @@ export default function AvatarBar() {
             Cán bộ Phòng Đào Tạo
           </Typography>
           <Typography variant="h3" gutterBottom className={cls.name}>
-            {schoolName || "Cán bộ Trường ĐH ABC"}
+            {schoolName || "Trường ĐH ABC"}
           </Typography>
           <Typography variant="body2" className={cls.description}>
             {description ||
