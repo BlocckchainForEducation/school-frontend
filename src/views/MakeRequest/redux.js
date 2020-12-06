@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-export const schoolProfile = createSlice({
-  name: "schoolProfile",
+export const profileSlice = createSlice({
+  name: "profileSlice",
   initialState: { fetching: true, universityName: "", nameInEnglish: "", address: "", email: "", phone: "", pubkey: "", description: "", imgSrc: "" },
   reducers: {
     setProfile: (state, action) => {
@@ -14,5 +14,5 @@ export const schoolProfile = createSlice({
   },
 });
 
-export const { setProfile, updateImgSrc } = schoolProfile.actions;
-export default schoolProfile.reducer;
+export const { setProfile, updateImgSrc } = profileSlice.actions;
+export default profileSlice.reducer;

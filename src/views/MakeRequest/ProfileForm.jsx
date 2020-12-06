@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ProfileForm() {
   const cls = useStyles();
-  const profile = useSelector((state) => state.schoolProfile);
+  const profile = useSelector((state) => state.profileSlice);
   const [state, setState] = useState(profile);
   const dp = useDispatch();
   const { enqueueSnackbar } = useSnackbar();

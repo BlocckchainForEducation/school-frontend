@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
 const DashboardLayout = () => {
   const classes = useStyles();
   const [isMobileNavOpen, setMobileNavOpen] = useState(false);
-  const loading = useSelector((state) => state.schoolProfile.fetching);
+  const loading = useSelector((state) => state.profileSlice.fetching);
   const dp = useDispatch();
 
   useEffect(() => {

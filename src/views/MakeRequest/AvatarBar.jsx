@@ -28,9 +28,9 @@ const useStyles = makeStyles((theme) => ({
 
 export default function AvatarBar() {
   const cls = useStyles();
-  const schoolName = useSelector((state) => state.schoolProfile.universityName);
-  const avatarSrc = useSelector((state) => state.schoolProfile.imgSrc);
-  const description = useSelector((state) => state.schoolProfile.description);
+  const schoolName = useSelector((state) => state.profileSlice.universityName);
+  const avatarSrc = useSelector((state) => state.profileSlice.imgSrc);
+  const description = useSelector((state) => state.profileSlice.description);
   const { enqueueSnackbar } = useSnackbar();
   const dp = useDispatch();
 
