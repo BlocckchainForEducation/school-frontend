@@ -8,14 +8,15 @@ import { setProfile } from "../../views/MakeRequest/redux";
 import { useDispatch, useSelector } from "react-redux";
 import Loading from "../../shared/Loading";
 import PerfectScrollbar from "react-perfect-scrollbar";
+import Voting from "../../views/Voting";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    backgroundColor: theme.palette.background.dark,
-    display: "flex",
     height: "100%",
-    overflow: "hidden",
     width: "100%",
+    display: "flex",
+    overflow: "hidden",
+    backgroundColor: theme.palette.background.dark,
   },
   wrapper: {
     display: "flex",

@@ -3,12 +3,12 @@ import Page from "./Page";
 
 export default function View({ children, title }) {
   return (
-    <div>
-      <Page title={title}>
-        <Container>
-          <Box py={3}>{children}</Box>
-        </Container>
-      </Page>
-    </div>
+    <Page title={title}>
+      <Container style={{ height: "100%" }}>
+        <Box py={3} style={{ height: "100%" }}>
+          {children}
+        </Box>
+      </Container>
+    </Page>
   );
 }
