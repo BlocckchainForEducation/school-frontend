@@ -1,56 +1,16 @@
 import React from "react";
-import DownloadExampleData from "../../../../shared/DownloadExampleData";
+import DownloadExampleData from "../../../shared/DownloadExampleData";
 
 export default function StudentDataExample() {
-  const studdents = [
-    {
-      // count: "1",
-      id: "20161234",
-      name: "Nguyễn Văn An",
-      gender: "Nam",
-      birthDay: "20/10/1998",
-      hometown: "Từ Sơn, Bắc Ninh",
-      cmt: "123456789012",
-      k: "K61",
-      eduPro: "CNTT2-K61",
-    },
-    {
-      // count: "1",
-      id: "20161234",
-      name: "Nguyễn Văn An",
-      gender: "Nam",
-      birthDay: "20/10/1998",
-      hometown: "Từ Sơn, Bắc Ninh",
-      cmt: "123456789012",
-      k: "K61",
-      eduPro: "CNTT2-K61",
-    },
-    {
-      // count: "1",
-      id: "20161234",
-      name: "Nguyễn Văn An",
-      gender: "Nam",
-      birthDay: "20/10/1998",
-      hometown: "Từ Sơn, Bắc Ninh",
-      cmt: "123456789012",
-      k: "K61",
-      eduPro: "CNTT2-K61",
-    },
-    {
-      // count: "1",
-      id: "20161234",
-      name: "Nguyễn Văn An",
-      gender: "Nam",
-      birthDay: "20/10/1998",
-      hometown: "Từ Sơn, Bắc Ninh",
-      cmt: "123456789012",
-      k: "K61",
-      eduPro: "CNTT2-K61",
-    },
+  const title = "Mẫu file dữ liệu Sinh viên";
+  const fileName = "sinh-vien-example.xlsx";
+  const head = ["Mssv", "Họ và tên", "Ngày sinh", "Lớp"];
+  const body = [
+    ["20161234", "Nguyễn Văn B", "20-10-2000", "CNTT1.02"],
+    ["20161235", "Lý Thị C", "20-10-2000", "CNTT2.01"],
+    ["20161236", "Lê Thị D", "20-10-2000", "CNTT2.01"],
+    ["20161237", "Trần Văn E", "20-10-2000", "CNTT2.01"],
+    ["20161238", "Đào Thị F", "20-10-2000", "CNTT2.01"],
   ];
-  const title = "Mẫu file dữ liệu sinh viên";
-  const heads = ["Mssv", "Họ tên", "Giới tính", "Ngày sinh", "Quê quán", "CMT/CCCD", "Khóa", "Mã CTĐT"];
-  const rows = studdents.map((student) => Object.values(student));
-
-  return <DownloadExampleData {...{ title, heads, rows }}></DownloadExampleData>;
+  return <DownloadExampleData {...{ title, fileName, head, body }}></DownloadExampleData>;
 }

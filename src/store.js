@@ -3,6 +3,7 @@ import profileReducer from "src/views/staff/MakeRequest/redux";
 import votingReducer from "src/views/staff//Voting/redux";
 import bureauReducer from "src/views/staff/CreateBureauAccount/redux";
 import teacherReducer from "src/views/staff/CreateTeacherAccount/redux";
+import studentReducer from "src/views/staff/CreateStudentAccount/redux";
 
 export const resetStore = () => {
   return {
@@ -22,6 +23,7 @@ const appReducer = combineReducers({
   votingSlice: votingReducer,
   bureauSlice: bureauReducer,
   teacherSlice: teacherReducer,
+  studentSlice: studentReducer,
 });
 
 export default configureStore({

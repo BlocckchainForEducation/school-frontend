@@ -1,71 +1,71 @@
-import React from "react";
-import UploadHistoryWithTitle from "../../../../shared/UploadHistory/UploadHistoryWithTitle";
+import { useEffect } from "react";
+import { Accordion, makeStyles, AccordionSummary, AccordionDetails, Typography, Box, CircularProgress } from "@material-ui/core";
+import { useDispatch, useSelector } from "react-redux";
+import { getToken } from "src/utils/mng-token";
+import { setPreloadHistory } from "./redux";
+import { useSnackbar } from "notistack";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import SimpleTable from "../../../shared/Table/SimpleTable";
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    width: "100%",
+  },
+  heading: {
+    fontSize: theme.typography.pxToRem(15),
+    fontWeight: theme.typography.fontWeightRegular,
+  },
+}));
 
 export default function StudentUploadHistory() {
-  const histories = [
-    {
-      id: "#1 - ",
-      time: "01/01/2020",
-      heads: ["Mssv", "Họ tên", "Giới tính", "Ngày sinh", "Quê quán", "Khóa", "CTĐT", "Username", "Password"],
-      rows: [
-        [
-          // count: "1",
-          "20161234",
-          "Nguyễn Văn An",
-          "Nam",
-          "20/10/1998",
-          "Từ Sơn, Bắc Ninh",
-          "K61",
-          "CNTT",
-          "bkhn_annv_201098",
-          "we89xvaf",
-        ],
-        [
-          // count: "1",
-          "20161234",
-          "Nguyễn Văn An",
-          "Nam",
-          "20/10/1998",
-          "Từ Sơn, Bắc Ninh",
-          "K61",
-          "CNTT",
-          "bkhn_annv_201098",
-          "we89xvaf",
-        ],
-      ],
-    },
-    {
-      id: "#2 - ",
-      time: "02/01/2020",
-      heads: ["Mssv", "Họ tên", "Giới tính", "Ngày sinh", "Quê quán", "Khóa", "CTĐT", "Username", "Password"],
-      rows: [
-        [
-          // count: "1",
-          "20161234",
-          "Nguyễn Văn An",
-          "Nam",
-          "20/10/1998",
-          "Từ Sơn, Bắc Ninh",
-          "K61",
-          "CNTT",
-          "bkhn_annv_201098",
-          "we89xvaf",
-        ],
-        [
-          // count: "1",
-          "20161234",
-          "Nguyễn Văn An",
-          "Nam",
-          "20/10/1998",
-          "Từ Sơn, Bắc Ninh",
-          "K61",
-          "CNTT",
-          "bkhn_annv_201098",
-          "we89xvaf",
-        ],
-      ],
-    },
-  ];
+  const cls = useStyles();
+  const fetching = useSelector((state) => state.studentSlice.fetching);
+  const history = useSelector((state) => state.studentSlice.history);
+  const dp = useDispatch();
+  const { enqueueSnackbar } = useSnackbar();
 
-  return <UploadHistoryWithTitle title={"Lịch sử upload sinh viên"} histories={histories}></UploadHistoryWithTitle>;
+  useEffect(() => {
+    fetchHistory();
+  }, []);
+
+  async function fetchHistory() {
+    const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/staff/student-history`, {
+      headers: { Authorization: getToken() },
+    });
+    const result = await response.json();
+    if (!response.ok) {
+      enqueueSnackbar("Fail to load history: " + JSON.stringify(result), { variant: "error", anchorOrigin: { vertical: "top", horizontal: "center" } });
+    } else {
+      dp(setPreloadHistory(result));
+    }
+  }
+
+  const head = ["Mssv", "Họ và tên", "Ngày sinh", "Lớp", "Public key", "Private key"];
+  const title = "Lịch sử upload sinh viên";
+  const content = (
+    <Box>
+      {history.map((item, index) => {
+        const body = item.profiles.map((profile) => [
+          profile.studentId,
+          profile.name,
+          profile.birthday,
+          profile.class,
+          profile.publicKey,
+          profile.privateKey,
+          // profile.txid ?? <CircularProgress size="1rem"></CircularProgress>,
+        ]);
+        return (
+          <Accordion key={index}>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />} id={item._id}>
+              <Typography className={cls.heading}>{`#${index + 1}, ${item.time}`}</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <SimpleTable head={head} body={body}></SimpleTable>
+            </AccordionDetails>
+          </Accordion>
+        );
+      })}
+    </Box>
+  );
+  return fetching ? null : content;
 }

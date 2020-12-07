@@ -25,7 +25,7 @@ const items = [
   {
     href: "/cb-pdt/tao-tk-giang-vien",
     icon: UserIcon,
-    title: "Tạo tài khoản giáo viên",
+    title: "Tạo tài khoản giảng viên",
   },
   {
     href: "/cb-pdt/tao-tk-sinh-vien",
