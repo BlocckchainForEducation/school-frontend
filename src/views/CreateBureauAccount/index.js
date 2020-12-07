@@ -3,7 +3,7 @@ import { useSnackbar } from "notistack";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import DragnDropZone from "../../shared/DragnDropZone";
-import View from "../../shared/View";
+import Page from "../../shared/Page";
 import { getToken } from "../../utils/mng-token";
 import BureauDataExample from "./BureauDataExample";
 import BureauUploadHistory from "./BureauUploadHistory";
@@ -13,7 +13,11 @@ const useStyles = makeStyles((theme) => ({
   root: {
     "& > *": {
       marginBottom: theme.spacing(2),
+      "&:last-child": {
+        marginBottom: 0,
+      },
     },
+    paddingBottom: theme.spacing(2.5),
   },
 }));
 
@@ -39,23 +43,23 @@ export default function CreateBureauAccount() {
       setTimeout(() => {
         dp(uploadFileFail());
         enqueueSnackbar("Some thing went wrong: " + JSON.stringify(result), { variant: "error", anchorOrigin: { vertical: "top", horizontal: "center" } });
-      }, 1500);
+      }, 2500);
     } else {
       // TODO: remove setTimeout
       setTimeout(() => {
         dp(uploadFileSuccess(result));
         enqueueSnackbar("Upload file thành công!", { variant: "success", anchorOrigin: { vertical: "bottom", horizontal: "center" } });
-      }, 1500);
+      }, 2500);
     }
   }
 
   return (
-    <View title="Tạo tài khoản giáo vụ ">
+    <Page title="Tạo tài khoản giáo vụ ">
       <div className={cls.root}>
         <BureauDataExample></BureauDataExample>
-        <DragnDropZone onDropAccepted={(hdUploadFile, uploading)}></DragnDropZone>
+        <DragnDropZone onDropAccepted={hdUploadFile} uploading={uploading}></DragnDropZone>
         <BureauUploadHistory></BureauUploadHistory>
       </div>
-    </View>
+    </Page>
   );
 }

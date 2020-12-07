@@ -1,6 +1,6 @@
 import { makeStyles, Typography } from "@material-ui/core";
 import { useSelector } from "react-redux";
-import View from "../../shared/View";
+import Page from "../../shared/Page";
 import RequestList from "./RequestList";
 
 const useStyles = makeStyles((theme) => ({
@@ -18,7 +18,7 @@ export default function Voting(props) {
   const votingState = useSelector((state) => state.profileSlice.state);
 
   return (
-    <View title="Voting">
+    <Page title="Voting">
       {votingState === "accepted" ? (
         <RequestList></RequestList>
       ) : (
@@ -27,6 +27,6 @@ export default function Voting(props) {
           <Typography variant="subtitle1">Sau khi tham gia thành công bạn sẽ có thể thực hiện bỏ phiếu.</Typography>
         </div>
       )}
-    </View>
+    </Page>
   );
 }

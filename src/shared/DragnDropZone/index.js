@@ -1,10 +1,10 @@
-import { Paper } from "@material-ui/core";
+import { CircularProgress, Paper } from "@material-ui/core";
 import { useSnackbar } from "notistack";
 import React, { useMemo } from "react";
 import { useDropzone } from "react-dropzone";
 import UseAnimations from "react-useanimations";
 import arrowDown from "react-useanimations/lib/arrowDown";
-import loading2 from "react-useanimations/lib/loading2";
+import MdInfinite from "react-ionicons/lib/MdInfinite";
 
 const baseStyle = {
   flex: 1,
@@ -20,7 +20,7 @@ const baseStyle = {
   // backgroundColor: "white",
   // color: "#bdbdbd",
   color: "rgba(0,0,0,0.7)",
-  outline: "none",
+  // outline: "1px solid #eeeeee",
   transition: "border .24s ease-in-out",
 };
 
@@ -65,7 +65,7 @@ export default function DragnDropZone({ onDropAccepted, uploading }) {
         <input {...getInputProps()} />
         {uploading ? (
           <>
-            <UseAnimations animation={loading2} size={75} />
+            <MdInfinite rotate={true} fontSize="75px" />
             <p>Uploading...</p>
           </>
         ) : (
