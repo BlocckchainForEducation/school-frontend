@@ -1,0 +1,80 @@
+// MongoDB Playground
+// To disable this template go to Settings | MongoDB | Use Default Template For Playground.
+// Make sure you are connected to enable completions and to be able to run a playground.
+// Use Ctrl+Space inside a snippet or a string literal to trigger completions.
+
+// Select the database to use.
+use('B4E_School_Backend');
+
+db.UniversityProfile.updateOne({state: "voting"}, {$set: {"votes": [{name: "BGD&ĐT", decision: "accept", time: "2020-12-10"}, {name: "KTQT", decision: "accept", time: "2020-12-12"}]}})
+
+db.UniversityProfile.updateMany({state: "voting"}, {$set: {state: "accepted"}})
+
+db.VoteRequest.insertMany([
+  {
+    "id": 23,
+    "universityName": "Truong Dai Hoc Bach Khoa Ha Noi",
+    "nameInEnglish": "HUST",
+    "address": "So 1, Dai Co viet",
+    "phone": "01234567",
+    "email": "bkhn@husst.edu.vn",
+    "pubkey": "1234zfasdfa9zvzdfk2",
+    "state": "new",
+    "date": "2020-12-04"
+  },
+  {
+    "id": 23,
+    "universityName": "Truong Dai Hoc Bach Khoa Ha Noi",
+    "nameInEnglish": "HUST",
+    "address": "So 1, Dai Co viet",
+    "phone": "01234567",
+    "email": "bkhn@husst.edu.vn",
+    "pubkey": "1234zfasdfa9zvzdfk",
+    "state": "new",
+    "date": "2020-12-04"
+  },
+  {
+    "id": 23,
+    "universityName": "Truong Dai Hoc Bach Khoa Ha Noi",
+    "nameInEnglish": "HUST",
+    "address": "So 1, Dai Co viet",
+    "phone": "01234567",
+    "email": "bkhn@husst.edu.vn",
+    "pubkey": "1234zfasdfa9zvzdf",
+    "state": "new",
+    "date": "2020-12-04"
+  },
+  {
+    "id": 23,
+    "universityName": "Truong Dai Hoc Bach Khoa Ha Noi",
+    "nameInEnglish": "HUST",
+    "address": "So 1, Dai Co viet",
+    "phone": "01234567",
+    "email": "bkhn@husst.edu.vn",
+    "pubkey": "1234zfasdfa9zvzdfk22",
+    "state": "new",
+    "date": "2020-12-04"
+  },
+  {
+    "id": 23,
+    "universityName": "Truong Dai Hoc Bach Khoa Ha Noi",
+    "nameInEnglish": "HUST",
+    "address": "So 1, Dai Co viet",
+    "phone": "01234567",
+    "email": "bkhn@husst.edu.vn",
+    "pubkey": "1234zfasdfa9zvzdfk24",
+    "state": "new",
+    "date": "2020-12-04"
+  },
+  {
+    "id": 23,
+    "universityName": "Truong Dai Hoc Bach Khoa Ha Noi",
+    "nameInEnglish": "HUST",
+    "address": "So 1, Dai Co viet",
+    "phone": "01234567",
+    "email": "bkhn@husst.edu.vn",
+    "pubkey": "1234zfasdfa9zvzdfk25",
+    "state": "new",
+    "date": "2020-12-04"
+  }
+])

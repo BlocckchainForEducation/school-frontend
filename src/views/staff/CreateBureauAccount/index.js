@@ -43,13 +43,13 @@ export default function CreateBureauAccount() {
       setTimeout(() => {
         dp(uploadFileFail());
         enqueueSnackbar("Some thing went wrong: " + JSON.stringify(result), { variant: "error", anchorOrigin: { vertical: "top", horizontal: "center" } });
-      }, 2500);
+      }, 2000);
     } else {
       // TODO: remove setTimeout
       setTimeout(() => {
         dp(uploadFileSuccess(result));
         enqueueSnackbar("Upload file thành công!", { variant: "success", anchorOrigin: { vertical: "bottom", horizontal: "center" } });
-      }, 2500);
+      }, 2000);
     }
   }
 
