@@ -1,6 +1,7 @@
 import { Box, Button, Divider, makeStyles, Paper, Typography } from "@material-ui/core";
 import GetAppIcon from "@material-ui/icons/GetApp";
 import SimpleTable from "../Table/SimpleTable";
+import FileSaver from "file-saver";
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -8,8 +9,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function DownloadExampleData({ title, hdClickDownload, head, body }) {
+export default function DownloadExampleData({ title, fileName, head, body }) {
   const cls = useStyles();
+
+  function hdClickDownload(e) {
+    FileSaver.saveAs(`/static/excels/${fileName}`, fileName);
+  }
 
   return (
     <Paper>

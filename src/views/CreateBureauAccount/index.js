@@ -16,11 +16,15 @@ const useStyles = makeStyles((theme) => ({
 export default function CreateBureauAccount() {
   const cls = useStyles();
 
+  async function hdUploadFile() {
+    alert("ok");
+  }
+
   return (
     <View title="Tạo tài khoản giáo vụ ">
       <div className={cls.root}>
         <BureauDataExample></BureauDataExample>
-        <DragnDropZone></DragnDropZone>
+        <DragnDropZone onDropAccepted={hdUploadFile}></DragnDropZone>
         <BureauUploadHistory></BureauUploadHistory>
       </div>
     </View>

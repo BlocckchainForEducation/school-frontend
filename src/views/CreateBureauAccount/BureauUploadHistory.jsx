@@ -1,5 +1,5 @@
 import React from "react";
-import UploadHistoryWithTitle from "../../../../shared/UploadHistory/UploadHistoryWithTitle";
+import UploadHistory from "../../shared/UploadHistory/UploadHistory";
 
 export default function BureauUploadHistory() {
   const histories = [
@@ -9,14 +9,7 @@ export default function BureauUploadHistory() {
       heads: ["Mã số CB", "Họ và tên", "Email", "Viện", "Tài khoản", "Mật khẩu"],
       rows: [
         ["CB1234", "Nguyễn Văn B", "nguyenvanb@soict.hust.edu.vn", "Viện CNTT&TT", "hust_soict_bnv", "ew98sf23x"],
-        [
-          "CB1235",
-          "Nguyễn Thị C",
-          "nguyenthic@spkt.hust.edu.vn",
-          "Viện Sư phạm Kỹ thuật",
-          "hust_spkt_cnt",
-          "a6a8cva90",
-        ],
+        ["CB1235", "Nguyễn Thị C", "nguyenthic@spkt.hust.edu.vn", "Viện Sư phạm Kỹ thuật", "hust_spkt_cnt", "a6a8cva90"],
       ],
     },
     {
@@ -25,14 +18,7 @@ export default function BureauUploadHistory() {
       heads: ["Mã số CB", "Họ và tên", "Email", "Viện", "Tài khoản", "Mật khẩu"],
       rows: [
         ["CB1234", "Nguyễn Văn B", "nguyenvanb@soict.hust.edu.vn", "Viện CNTT&TT", "hust_soict_bnv", "ew98sf23x"],
-        [
-          "CB1235",
-          "Nguyễn Thị C",
-          "nguyenthic@spkt.hust.edu.vn",
-          "Viện Sư phạm Kỹ thuật",
-          "hust_spkt_cnt",
-          "a6a8cva90",
-        ],
+        ["CB1235", "Nguyễn Thị C", "nguyenthic@spkt.hust.edu.vn", "Viện Sư phạm Kỹ thuật", "hust_spkt_cnt", "a6a8cva90"],
       ],
     },
     {
@@ -41,16 +27,9 @@ export default function BureauUploadHistory() {
       heads: ["Mã số CB", "Họ và tên", "Email", "Viện", "Tài khoản", "Mật khẩu"],
       rows: [
         ["CB1234", "Nguyễn Văn B", "nguyenvanb@soict.hust.edu.vn", "Viện CNTT&TT", "hust_soict_bnv", "ew98sf23x"],
-        [
-          "CB1235",
-          "Nguyễn Thị C",
-          "nguyenthic@spkt.hust.edu.vn",
-          "Viện Sư phạm Kỹ thuật",
-          "hust_spkt_cnt",
-          "a6a8cva90",
-        ],
+        ["CB1235", "Nguyễn Thị C", "nguyenthic@spkt.hust.edu.vn", "Viện Sư phạm Kỹ thuật", "hust_spkt_cnt", "a6a8cva90"],
       ],
     },
   ];
-  return <UploadHistoryWithTitle title="Lịch sử tạo tài khoản Giáo vụ" histories={histories}></UploadHistoryWithTitle>;
+  return <UploadHistory histories={histories}></UploadHistory>;
 }

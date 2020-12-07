@@ -1,3 +1,5 @@
+import { Paper } from "@material-ui/core";
+import { useSnackbar } from "notistack";
 import React, { useMemo } from "react";
 import { useDropzone } from "react-dropzone";
 import UseAnimations from "react-useanimations";
@@ -14,7 +16,7 @@ const baseStyle = {
   borderColor: "#eeeeee",
   borderStyle: "dashed",
   // backgroundColor: "#fafafa",
-  backgroundColor: "white",
+  // backgroundColor: "white",
   // color: "#bdbdbd",
   color: "rgba(0,0,0,0.7)",
   outline: "none",
@@ -33,9 +35,17 @@ const rejectStyle = {
   borderColor: "#ff1744",
 };
 
-export default function DragnDropZone(props) {
+export default function DragnDropZone({ onDropAccepted }) {
+  const { enqueueSnackbar } = useSnackbar();
+
+  function onDropRejected(fileRejections) {
+    enqueueSnackbar("Chỉ chấp nhận excel file!", { variant: "error", anchorOrigin: { vertical: "top", horizontal: "center" } });
+  }
+
   const { getRootProps, getInputProps, isDragActive, isDragAccept, isDragReject } = useDropzone({
-    accept: "application/*,image/*",
+    accept: "application/*",
+    onDropRejected,
+    onDropAccepted,
   });
 
   const style = useMemo(
@@ -49,12 +59,12 @@ export default function DragnDropZone(props) {
   );
 
   return (
-    <div className="container">
+    <Paper>
       <div {...getRootProps({ style })}>
         <input {...getInputProps()} />
         <UseAnimations animation={arrowDown} size={75} />
         <p>Drag 'n' drop excel file here, or click to select file</p>
       </div>
-    </div>
+    </Paper>
   );
 }
