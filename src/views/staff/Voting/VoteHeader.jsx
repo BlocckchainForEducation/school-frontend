@@ -2,15 +2,16 @@ import { Avatar, Box, Button, Typography } from "@material-ui/core";
 import { useSnackbar } from "notistack";
 import { useDispatch, useSelector } from "react-redux";
 import { getToken } from "src/utils/mng-token";
-import { setPrivateKey, collapseVoteRequest } from "./redux";
+import { collapseVoteRequest } from "./redux";
+import { setPrivateKeyHex } from "src/redux";
 
 export default function VoteHeader({ request }) {
-  const privateKey = useSelector((state) => state.votingSlice.privateKey);
+  const privateKeyHex = useSelector((state) => state.privateKeySlice.privateKeyHex);
   const dp = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
 
   async function hdVote(decision, publicKeyOfRequest) {
-    if (!privateKey) {
+    if (!privateKeyHex) {
       enqueueSnackbar("Hãy mở ví và chọn tài khoản!", { variant: "info", anchorOrigin: { vertical: "top", horizontal: "center" } });
       const result = await askPrivateKeyFromWallet();
       if (!result.ok) {
@@ -21,19 +22,19 @@ export default function VoteHeader({ request }) {
         return;
       } else {
         // enqueueSnackbar("Đã nhận được private key từ ví!", { variant: "success", anchorOrigin: { vertical: "top", horizontal: "center" } });
-        dp(setPrivateKey({ privateKey: result.privateKey }));
-        sendVote(decision, publicKeyOfRequest, result.privateKey);
+        dp(setPrivateKeyHex({ privateKeyHex: result.privateKeyHex }));
+        sendVote(decision, publicKeyOfRequest, result.privateKeyHex);
       }
     } else {
-      sendVote(decision, publicKeyOfRequest, privateKey);
+      sendVote(decision, publicKeyOfRequest, privateKeyHex);
     }
   }
 
-  async function sendVote(decision, publicKeyOfRequest, privateKey) {
+  async function sendVote(decision, publicKeyOfRequest, privateKeyHex) {
     const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/staff/vote`, {
       headers: { "Content-Type": "application/json", Authorization: getToken() },
       method: "POST",
-      body: JSON.stringify({ decision, publicKeyOfRequest, privateKey }),
+      body: JSON.stringify({ decision, publicKeyOfRequest, privateKeyHex }),
     });
     const result = await response.json();
     if (!response.ok) {
@@ -51,8 +52,8 @@ export default function VoteHeader({ request }) {
         if (event.data.type === "SIGN_RESPONSE") {
           if (event.data.accept) {
             const privKeyBase64 = event.data.account.privateKey;
-            const privKeyHex = Buffer.from(privKeyBase64, "base64").toString("hex");
-            return resolve({ ok: true, privateKey: privKeyHex });
+            const privateKeyHex = Buffer.from(privKeyBase64, "base64").toString("hex");
+            return resolve({ ok: true, privateKeyHex: privateKeyHex });
           } else {
             return resolve({ ok: false });
           }

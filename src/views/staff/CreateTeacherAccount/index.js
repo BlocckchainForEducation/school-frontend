@@ -28,27 +28,31 @@ export default function CreateTeacherAccount() {
   const { enqueueSnackbar } = useSnackbar();
 
   async function hdUploadFile(files) {
-    dp(startUploadFile());
-    const formData = new FormData();
-    formData.append("excel-file", files[0]);
-    const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/staff/create-teacher`, {
-      method: "POST",
-      headers: { Authorization: getToken() },
-      body: formData,
-    });
-    const result = await response.json();
-    if (!response.ok) {
-      // TODO: remove setTimeout
-      setTimeout(() => {
-        dp(uploadFileFail());
-        enqueueSnackbar("Some thing went wrong: " + JSON.stringify(result), { variant: "error", anchorOrigin: { vertical: "top", horizontal: "center" } });
-      }, 2000);
-    } else {
-      // TODO: remove setTimeout
-      setTimeout(() => {
-        dp(uploadFileSuccess(result));
-        enqueueSnackbar("Upload file thành công!", { variant: "success", anchorOrigin: { vertical: "bottom", horizontal: "center" } });
-      }, 2000);
+    try {
+      dp(startUploadFile());
+      const formData = new FormData();
+      formData.append("excel-file", files[0]);
+      const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/staff/create-teacher`, {
+        method: "POST",
+        headers: { Authorization: getToken() },
+        body: formData,
+      });
+      const result = await response.json();
+      if (!response.ok) {
+        // TODO: remove setTimeout
+        setTimeout(() => {
+          dp(uploadFileFail());
+          enqueueSnackbar("Some thing went wrong: " + JSON.stringify(result), { variant: "error", anchorOrigin: { vertical: "top", horizontal: "center" } });
+        }, 2000);
+      } else {
+        // TODO: remove setTimeout
+        setTimeout(() => {
+          dp(uploadFileSuccess(result));
+          enqueueSnackbar("Upload file thành công!", { variant: "success", anchorOrigin: { vertical: "bottom", horizontal: "center" } });
+        }, 2000);
+      }
+    } catch (error) {
+      enqueueSnackbar("Some thing went wrong: " + error, { variant: "error", anchorOrigin: { vertical: "top", horizontal: "center" } });
     }
   }
 

@@ -18,11 +18,8 @@ const votingSlice = createSlice({
       state.voteRequests[index].in = false;
       state.numOfNewVoteRequest -= 1;
     },
-    setPrivateKey: (state, action) => {
-      state.privateKey = action.payload.privateKey;
-    },
   },
 });
 
 export default votingSlice.reducer;
-export const { updateVoteRequestList, removeVotedRequest, collapseVoteRequest, setPrivateKey } = votingSlice.actions;
+export const { updateVoteRequestList, removeVotedRequest, collapseVoteRequest } = votingSlice.actions;
