@@ -10,6 +10,7 @@ import SignUpView from "src/views/guest/SignUp";
 import MakeRequest from "./views/staff/MakeRequest";
 import Voting from "./views/staff/Voting";
 import CreateBureauAccount from "./views/staff/CreateBureauAccount";
+import CreateTeacherAccount from "./views/staff/CreateTeacherAccount";
 
 import { getToken } from "./utils/mng-token";
 
@@ -21,7 +22,7 @@ const routes = [
       { path: "dang-ki-tham-gia", element: <MakeRequest /> },
       { path: "bo-phieu", element: <Voting /> },
       { path: "tao-tk-giao-vu", element: <CreateBureauAccount /> },
-      // { path: "tao-tk-giao-vien", element: <ShareCertificate /> },
+      { path: "tao-tk-giang-vien", element: <CreateTeacherAccount /> },
       // { path: "tao-tk-sinh-vien", element: <ShareCertificate /> },
       // { path: "upload-mon-hoc", element: <ShareCertificate /> },
       // { path: "upload-lop-hoc", element: <ShareCertificate /> },

@@ -28,7 +28,6 @@ export default function CreateBureauAccount() {
   const { enqueueSnackbar } = useSnackbar();
 
   async function hdUploadFile(files) {
-    console.log("prepare send file");
     dp(startUploadFile());
     const formData = new FormData();
     formData.append("excel-file", files[0]);
