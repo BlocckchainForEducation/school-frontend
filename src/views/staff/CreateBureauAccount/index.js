@@ -2,9 +2,10 @@ import { makeStyles } from "@material-ui/core";
 import { useSnackbar } from "notistack";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import DragnDropZone from "../../../shared/DragnDropZone";
 import Page from "src/shared/Page";
 import { getToken } from "src/utils/mng-token";
+import DragnDropZone from "../../../shared/DragnDropZone";
+import { requirePrivateKeyHex } from "../../../utils/keyholder";
 import BureauDataExample from "./BureauDataExample";
 import BureauUploadHistory from "./BureauUploadHistory";
 import { startUploadFile, uploadFileFail, uploadFileSuccess } from "./redux";
@@ -28,9 +29,11 @@ export default function CreateBureauAccount() {
   const { enqueueSnackbar } = useSnackbar();
 
   async function hdUploadFile(files) {
+    const privateKeyHex = await requirePrivateKeyHex(enqueueSnackbar);
     dp(startUploadFile());
     const formData = new FormData();
     formData.append("excel-file", files[0]);
+    formData.append("privateKeyHex", privateKeyHex);
     const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/staff/create-bureau`, {
       method: "POST",
       headers: { Authorization: getToken() },
@@ -41,7 +44,10 @@ export default function CreateBureauAccount() {
       // TODO: remove setTimeout
       setTimeout(() => {
         dp(uploadFileFail());
-        enqueueSnackbar("Some thing went wrong: " + JSON.stringify(result), { variant: "error", anchorOrigin: { vertical: "top", horizontal: "center" } });
+        enqueueSnackbar("Some thing went wrong: " + JSON.stringify(result), {
+          variant: "error",
+          anchorOrigin: { vertical: "top", horizontal: "center" },
+        });
       }, 2000);
     } else {
       // TODO: remove setTimeout

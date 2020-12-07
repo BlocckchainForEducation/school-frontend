@@ -79,3 +79,5 @@ db.VoteRequest.insertMany([
     "date": "2020-12-04"
   }
 ])
+
+db.VoteRequest.updateMany({},{$set: {state: "new"}})
