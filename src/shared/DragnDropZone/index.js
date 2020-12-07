@@ -4,6 +4,7 @@ import React, { useMemo } from "react";
 import { useDropzone } from "react-dropzone";
 import UseAnimations from "react-useanimations";
 import arrowDown from "react-useanimations/lib/arrowDown";
+import loading2 from "react-useanimations/lib/loading2";
 
 const baseStyle = {
   flex: 1,
@@ -35,7 +36,7 @@ const rejectStyle = {
   borderColor: "#ff1744",
 };
 
-export default function DragnDropZone({ onDropAccepted }) {
+export default function DragnDropZone({ onDropAccepted, uploading }) {
   const { enqueueSnackbar } = useSnackbar();
 
   function onDropRejected(fileRejections) {
@@ -43,7 +44,7 @@ export default function DragnDropZone({ onDropAccepted }) {
   }
 
   const { getRootProps, getInputProps, isDragActive, isDragAccept, isDragReject } = useDropzone({
-    accept: "application/*",
+    accept: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     onDropRejected,
     onDropAccepted,
   });
@@ -62,8 +63,17 @@ export default function DragnDropZone({ onDropAccepted }) {
     <Paper>
       <div {...getRootProps({ style })}>
         <input {...getInputProps()} />
-        <UseAnimations animation={arrowDown} size={75} />
-        <p>Drag 'n' drop excel file here, or click to select file</p>
+        {uploading ? (
+          <>
+            <UseAnimations animation={loading2} size={75} />
+            <p>Uploading...</p>
+          </>
+        ) : (
+          <>
+            <UseAnimations animation={arrowDown} size={75} />
+            <p>Drag 'n' drop excel file here, or click to select file</p>
+          </>
+        )}
       </div>
     </Paper>
   );
