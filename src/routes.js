@@ -1,6 +1,6 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
-import DashboardLayout from "src/layouts/DashboardLayout";
+import StaffDashboardLayout from "src/layouts/StaffDashboardLayout";
 import MainLayout from "src/layouts/MainLayout";
 import NotFoundView from "src/shared/NotFoundView";
 
@@ -16,7 +16,7 @@ import { getToken } from "./utils/mng-token";
 const routes = [
   {
     path: "/cb-pdt",
-    element: <DashboardLayout />,
+    element: <StaffDashboardLayout />,
     children: [
       { path: "dang-ki-tham-gia", element: <MakeRequest /> },
       { path: "bo-phieu", element: <Voting /> },
