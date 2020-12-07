@@ -1,35 +1,70 @@
-import React from "react";
-import UploadHistory from "../../shared/UploadHistory/UploadHistory";
+import { useEffect } from "react";
+import { Accordion, makeStyles, AccordionSummary, AccordionDetails, Typography, Box, CircularProgress } from "@material-ui/core";
+import { useDispatch, useSelector } from "react-redux";
+import { getToken } from "../../utils/mng-token";
+import { setPreloadHistory } from "./redux";
+import { useSnackbar } from "notistack";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import SimpleTable from "../../shared/Table/SimpleTable";
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    width: "100%",
+  },
+  heading: {
+    fontSize: theme.typography.pxToRem(15),
+    fontWeight: theme.typography.fontWeightRegular,
+  },
+}));
 
 export default function BureauUploadHistory() {
-  const histories = [
-    {
-      id: "#1 - ",
-      time: "01/01/2020",
-      heads: ["Mã số CB", "Họ và tên", "Email", "Viện", "Tài khoản", "Mật khẩu"],
-      rows: [
-        ["CB1234", "Nguyễn Văn B", "nguyenvanb@soict.hust.edu.vn", "Viện CNTT&TT", "hust_soict_bnv", "ew98sf23x"],
-        ["CB1235", "Nguyễn Thị C", "nguyenthic@spkt.hust.edu.vn", "Viện Sư phạm Kỹ thuật", "hust_spkt_cnt", "a6a8cva90"],
-      ],
-    },
-    {
-      id: "#2 - ",
-      time: "02/01/2020",
-      heads: ["Mã số CB", "Họ và tên", "Email", "Viện", "Tài khoản", "Mật khẩu"],
-      rows: [
-        ["CB1234", "Nguyễn Văn B", "nguyenvanb@soict.hust.edu.vn", "Viện CNTT&TT", "hust_soict_bnv", "ew98sf23x"],
-        ["CB1235", "Nguyễn Thị C", "nguyenthic@spkt.hust.edu.vn", "Viện Sư phạm Kỹ thuật", "hust_spkt_cnt", "a6a8cva90"],
-      ],
-    },
-    {
-      id: "#3 - ",
-      time: "03/01/2020",
-      heads: ["Mã số CB", "Họ và tên", "Email", "Viện", "Tài khoản", "Mật khẩu"],
-      rows: [
-        ["CB1234", "Nguyễn Văn B", "nguyenvanb@soict.hust.edu.vn", "Viện CNTT&TT", "hust_soict_bnv", "ew98sf23x"],
-        ["CB1235", "Nguyễn Thị C", "nguyenthic@spkt.hust.edu.vn", "Viện Sư phạm Kỹ thuật", "hust_spkt_cnt", "a6a8cva90"],
-      ],
-    },
-  ];
-  return <UploadHistory histories={histories}></UploadHistory>;
+  const cls = useStyles();
+  const fetching = useSelector((state) => state.bureauSlice.fetching);
+  const history = useSelector((state) => state.bureauSlice.history);
+  const dp = useDispatch();
+  const { enqueueSnackbar } = useSnackbar();
+
+  useEffect(() => {
+    fetchHistory();
+  }, []);
+
+  async function fetchHistory() {
+    const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/bureau-history`, {
+      headers: { Authorization: getToken() },
+    });
+    const result = await response.json();
+    if (!response.ok) {
+      enqueueSnackbar("Fail to load history: " + JSON.stringify(result), { variant: "error", anchorOrigin: { vertical: "top", horizontal: "center" } });
+    } else {
+      dp(setPreloadHistory(result));
+    }
+  }
+
+  const head = ["Mã giáo vụ", "Họ và tên", "Viện", "Account", "Password", "Txid"];
+  const title = "Lịch sử upload Giáo vụ";
+  const content = (
+    <Box>
+      {history.map((item, index) => {
+        const body = item.profiles.map((profile) => [
+          profile.bureauId,
+          profile.name,
+          profile.department,
+          profile.email,
+          profile.firstTimePassword,
+          profile.txid ?? <CircularProgress size="1rem"></CircularProgress>,
+        ]);
+        return (
+          <Accordion key={index}>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />} id={item._id}>
+              <Typography className={cls.heading}>{`#${index + 1}, ${item.time}`}</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <SimpleTable title={title} head={head} body={body}></SimpleTable>
+            </AccordionDetails>
+          </Accordion>
+        );
+      })}
+    </Box>
+  );
+  return fetching ? null : content;
 }
