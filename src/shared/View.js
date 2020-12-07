@@ -4,8 +4,8 @@ import Page from "./Page";
 export default function View({ children, title }) {
   return (
     <Page title={title}>
-      <Container style={{ height: "100%" }}>
-        <Box py={3} style={{ height: "100%" }}>
+      <Container style={{ minHeight: "100%" }}>
+        <Box py={3} style={{ minHeight: "100%" }}>
           {children}
         </Box>
       </Container>
