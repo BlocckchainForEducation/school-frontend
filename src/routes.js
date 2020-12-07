@@ -14,6 +14,7 @@ import CreateTeacherAccount from "./views/staff/CreateTeacherAccount";
 import CreateStudentAccount from "./views/staff/CreateStudentAccount";
 
 import { getToken } from "./utils/mng-token";
+import UploadSubject from "./views/staff/UploadSubject";
 
 const routes = [
   {
@@ -25,7 +26,7 @@ const routes = [
       { path: "tao-tk-giao-vu", element: <CreateBureauAccount /> },
       { path: "tao-tk-giang-vien", element: <CreateTeacherAccount /> },
       { path: "tao-tk-sinh-vien", element: <CreateStudentAccount /> },
-      // { path: "upload-mon-hoc", element: <ShareCertificate /> },
+      { path: "upload-mon-hoc", element: <UploadSubject /> },
       // { path: "upload-lop-hoc", element: <ShareCertificate /> },
       // { path: "upload-bang-cap", element: <ShareCertificate /> },
       // { path: "thu-hoi-bang-cap", element: <ShareCertificate /> },
