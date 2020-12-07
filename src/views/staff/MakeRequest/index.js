@@ -1,10 +1,9 @@
 import { Box, Grid } from "@material-ui/core";
-import ProfileForm from "./ProfileForm";
-import AvatarBar from "./AvatarBar";
-import VotingState from "./VotingState";
-import { useState } from "react";
 import { useSelector } from "react-redux";
-import Page from "../../shared/Page";
+import Page from "src/shared/Page";
+import AvatarBar from "./AvatarBar";
+import ProfileForm from "./ProfileForm";
+import VotingState from "./VotingState";
 
 export default function StudentProfile() {
   const votingState = useSelector((state) => state.profileSlice.state);

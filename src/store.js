@@ -1,7 +1,7 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import profileReducer from "src/views/MakeRequest/redux";
-import votingReducer from "src/views/Voting/redux";
-import bureauReducer from "src/views/CreateBureauAccount/redux";
+import profileReducer from "src/views/staff/MakeRequest/redux";
+import votingReducer from "src/views/staff//Voting/redux";
+import bureauReducer from "src/views/staff/CreateBureauAccount/redux";
 export const resetStore = () => {
   return {
     type: "RESET_STORE",

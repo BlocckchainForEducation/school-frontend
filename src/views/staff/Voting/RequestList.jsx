@@ -2,7 +2,7 @@ import { Box, Typography } from "@material-ui/core";
 import { useSnackbar } from "notistack";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getToken } from "../../utils/mng-token";
+import { getToken } from "src/utils/mng-token";
 import { updateVoteRequestList } from "./redux";
 import VoteRequest from "./VoteRequest";
 
@@ -19,7 +19,7 @@ export default function RequestList(props) {
   }, []);
 
   async function fetchNewVoteRequests() {
-    const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/vote-requests?state=new`, {
+    const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/staff/vote-requests?state=new`, {
       headers: { Authorization: getToken() },
     });
     if (!response.ok) {

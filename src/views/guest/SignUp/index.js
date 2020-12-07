@@ -13,6 +13,7 @@ import { Alert } from "@material-ui/lab";
 import React, { useState } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { setLocalToken } from "src/utils/mng-token";
+import { getRouteByRole } from "../../../utils/mng-role";
 
 function Copyright() {
   return (
@@ -65,7 +66,7 @@ export default function SignUp() {
 
   async function hdSubmit(e) {
     e.preventDefault();
-    let response = await fetch(`${process.env.REACT_APP_SERVER_URL}/signup`, {
+    let response = await fetch(`${process.env.REACT_APP_SERVER_URL}/acc/signup`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(state),
@@ -78,7 +79,7 @@ export default function SignUp() {
       setLocalToken(result.token);
       setErrors(null);
       setSuccess("Đăng kí tài khoản thành công!");
-      setTimeout(() => navigate("/cb-pdt/dang-ki-tham-gia"), 1000);
+      setTimeout(() => navigate(getRouteByRole(result.role)), 1000);
     }
   }
 

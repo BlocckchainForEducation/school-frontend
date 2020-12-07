@@ -2,9 +2,9 @@ import { makeStyles } from "@material-ui/core";
 import { useSnackbar } from "notistack";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import DragnDropZone from "../../shared/DragnDropZone";
-import Page from "../../shared/Page";
-import { getToken } from "../../utils/mng-token";
+import DragnDropZone from "../../../shared/DragnDropZone";
+import Page from "src/shared/Page";
+import { getToken } from "src/utils/mng-token";
 import BureauDataExample from "./BureauDataExample";
 import BureauUploadHistory from "./BureauUploadHistory";
 import { startUploadFile, uploadFileFail, uploadFileSuccess } from "./redux";
@@ -32,7 +32,7 @@ export default function CreateBureauAccount() {
     dp(startUploadFile());
     const formData = new FormData();
     formData.append("excel-file", files[0]);
-    const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/create-bureau`, {
+    const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/staff/create-bureau`, {
       method: "POST",
       headers: { Authorization: getToken() },
       body: formData,

@@ -45,7 +45,7 @@ export default function ProfileForm() {
 
   async function hdSubmit(e) {
     try {
-      let response = await fetch(`${process.env.REACT_APP_SERVER_URL}/make-request`, {
+      let response = await fetch(`${process.env.REACT_APP_SERVER_URL}/staff/make-request`, {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: getToken() },
         // delete fetching field before send data to backend to avoid fail validate, delete imgSrc to avoid request too large error.

@@ -3,10 +3,10 @@ import { Outlet } from "react-router-dom";
 import { makeStyles } from "@material-ui/core";
 import NavBar from "./NavBar";
 import TopBar from "./TopBar";
-import { getToken } from "../../utils/mng-token";
-import { setProfile } from "../../views/MakeRequest/redux";
+import { getToken } from "src/utils/mng-token";
+import { setProfile } from "src/views/staff/MakeRequest/redux";
 import { useDispatch, useSelector } from "react-redux";
-import Loading from "../../shared/Loading";
+import Loading from "src/shared/Loading";
 import PerfectScrollbar from "react-perfect-scrollbar";
 
 const useStyles = makeStyles((theme) => ({
@@ -50,7 +50,7 @@ const DashboardLayout = () => {
 
   async function fetchProfile() {
     try {
-      const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/profile`, {
+      const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/staff/university-profile`, {
         headers: { Authorization: getToken() },
       });
       if (!response.ok) {

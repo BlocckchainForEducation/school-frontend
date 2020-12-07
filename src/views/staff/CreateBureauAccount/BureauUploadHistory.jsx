@@ -1,11 +1,11 @@
 import { useEffect } from "react";
 import { Accordion, makeStyles, AccordionSummary, AccordionDetails, Typography, Box, CircularProgress } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
-import { getToken } from "../../utils/mng-token";
+import { getToken } from "src/utils/mng-token";
 import { setPreloadHistory } from "./redux";
 import { useSnackbar } from "notistack";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import SimpleTable from "../../shared/Table/SimpleTable";
+import SimpleTable from "../../../shared/Table/SimpleTable";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -29,7 +29,7 @@ export default function BureauUploadHistory() {
   }, []);
 
   async function fetchHistory() {
-    const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/bureau-history`, {
+    const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/staff/bureau-history`, {
       headers: { Authorization: getToken() },
     });
     const result = await response.json();

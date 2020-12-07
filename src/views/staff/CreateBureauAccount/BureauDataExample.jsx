@@ -1,5 +1,5 @@
 import React from "react";
-import DownloadExampleData from "../../shared/DownloadExampleData";
+import DownloadExampleData from "../../../shared/DownloadExampleData";
 
 export default function BureauDataExample() {
   const title = "Mẫu file dữ liệu Giáo vụ Viện";

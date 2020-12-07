@@ -12,10 +12,9 @@ import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import React, { useState } from "react";
-import { Link as RouterLink, Navigate, useNavigate } from "react-router-dom";
-import { setLocalRole, setSessionRole } from "src/utils/mng-role";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { setLocalToken, setSessionToken } from "src/utils/mng-token";
-// import { getRedirect } from "src/utils/role-redirect";
+import { getRouteByRole } from "../../../utils/mng-role";
 
 function Copyright() {
   return (
@@ -68,7 +67,7 @@ export default function SignIn() {
 
   async function hdSubmit(e) {
     e.preventDefault();
-    let response = await fetch(`${process.env.REACT_APP_SERVER_URL}/signin`, {
+    let response = await fetch(`${process.env.REACT_APP_SERVER_URL}/acc/signin`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email: state.email, password: state.password }),
@@ -84,7 +83,7 @@ export default function SignIn() {
       } else {
         setSessionToken(body.token);
       }
-      navigate("/cb-pdt/dang-ki-tham-gia");
+      navigate(getRouteByRole(body.role));
     }
   }
   return (

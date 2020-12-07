@@ -1,6 +1,6 @@
 import { makeStyles, Typography } from "@material-ui/core";
 import { useSelector } from "react-redux";
-import Page from "../../shared/Page";
+import Page from "src/shared/Page";
 import RequestList from "./RequestList";
 
 const useStyles = makeStyles((theme) => ({

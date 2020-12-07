@@ -3,12 +3,15 @@ import { Navigate } from "react-router-dom";
 import DashboardLayout from "src/layouts/DashboardLayout";
 import MainLayout from "src/layouts/MainLayout";
 import NotFoundView from "src/shared/NotFoundView";
-import SignInView from "src/views/SignIn";
-import SignUpView from "src/views/SignUp";
-import MakeRequest from "src/views/MakeRequest";
+
+import SignInView from "src/views/guest/SignIn";
+import SignUpView from "src/views/guest/SignUp";
+
+import MakeRequest from "./views/staff/MakeRequest";
+import Voting from "./views/staff/Voting";
+import CreateBureauAccount from "./views/staff/CreateBureauAccount";
+
 import { getToken } from "./utils/mng-token";
-import Voting from "./views/Voting";
-import CreateBureauAccount from "./views/CreateBureauAccount";
 
 const routes = [
   {
@@ -35,7 +38,7 @@ const routes = [
       { path: "dang-nhap", element: <SignInView /> },
       { path: "404", element: <NotFoundView /> },
       { path: "/", element: <Redirector /> },
-      { path: "*", element: <Navigate to="/404" /> },
+      { path: "*", element: <Navigate to="/404" replace={true} /> },
     ],
   },
 ];

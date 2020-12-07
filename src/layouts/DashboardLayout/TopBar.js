@@ -9,8 +9,7 @@ import { useDispatch } from "react-redux";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import Logo from "src/shared/Logo";
 import { resetStore } from "../../store";
-import { clearRole } from "../../utils/mng-role";
-import { clearToken } from "../../utils/mng-token";
+import { clearToken } from "src/utils/mng-token";
 
 const useStyles = makeStyles(() => ({
   root: {},
@@ -41,7 +40,6 @@ const TopBar = ({ className, onMobileNavOpen, ...rest }) => {
           <IconButton
             color="inherit"
             onClick={(e) => {
-              clearRole();
               clearToken();
               dp(resetStore());
               navigate("/");

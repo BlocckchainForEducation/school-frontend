@@ -1,7 +1,7 @@
 import { Avatar, Box, Button, Typography } from "@material-ui/core";
 import { useSnackbar } from "notistack";
 import { useDispatch, useSelector } from "react-redux";
-import { getToken } from "../../utils/mng-token";
+import { getToken } from "src/utils/mng-token";
 import { setPrivateKey, collapseVoteRequest } from "./redux";
 
 export default function VoteHeader({ request }) {
@@ -30,7 +30,7 @@ export default function VoteHeader({ request }) {
   }
 
   async function sendVote(decision, publicKeyOfRequest, privateKey) {
-    const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/vote`, {
+    const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/staff/vote`, {
       headers: { "Content-Type": "application/json", Authorization: getToken() },
       method: "POST",
       body: JSON.stringify({ decision, publicKeyOfRequest, privateKey }),
