@@ -3,6 +3,7 @@ import Page from "../../../shared/Page";
 
 import { makeStyles } from "@material-ui/core";
 import { useState } from "react";
+import { getToken } from "../../../utils/mng-token";
 const useStyles = makeStyles((theme) => ({
   root: {
     "& > *": {
@@ -78,7 +79,23 @@ export default function SubmitSubjectPoint(props) {
     ],
   });
 
-  async function hdFetchClass(e) {}
+  async function hdFetchClass(e) {
+    try {
+      const classId = e.target.value;
+      const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/teacher/classes/${classId}`, {
+        headers: { Authorization: getToken() },
+      });
+      const result = await response.json();
+      if (!response.ok) {
+        alert(JSON.stringify(await response.json()));
+      } else {
+        setClaxx(result);
+      }
+    } catch (err) {
+      console.log(err);
+      alert(err);
+    }
+  }
 
   function hdChangeHalfSemester(index, e) {
     const newClaxx = { ...claxx };
