@@ -19,6 +19,7 @@ import UploadClass from "./views/staff/UploadClass";
 import UploadCertificate from "./views/staff/UploadCertificate";
 import TeacherProfile from "./views/teacher/Profile";
 import { getRole, ROLE } from "./utils/mng-role";
+import SubmitSubjectPoint from "./views/teacher/SubmitSubjectPoint";
 
 const routes = [
   {
@@ -42,7 +43,7 @@ const routes = [
     element: <TeacherDashboardLayout />,
     children: [
       { path: "thong-tin-ca-nhan", element: <TeacherProfile /> },
-      // { path: "nhap-diem-lop-hoc", element: <Voting /> },
+      { path: "nhap-diem-lop-hoc", element: <SubmitSubjectPoint /> },
       { path: "*", element: <Navigate to="/404" replace={true} /> },
     ],
   },
