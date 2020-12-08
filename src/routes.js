@@ -1,6 +1,7 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
 import StaffDashboardLayout from "src/layouts/StaffDashboardLayout";
+import TeacherDashboardLayout from "src/layouts/TeacherDashboardLayout";
 import MainLayout from "src/layouts/MainLayout";
 import NotFoundView from "src/shared/NotFoundView";
 
@@ -32,6 +33,15 @@ const routes = [
       { path: "upload-lop-hoc", element: <UploadClass /> },
       { path: "upload-bang-cap", element: <UploadCertificate /> },
       // { path: "thu-hoi-bang-cap", element: <ShareCertificate /> },
+      { path: "*", element: <Navigate to="/404" replace={true} /> },
+    ],
+  },
+  {
+    path: "/giang-vien",
+    element: <TeacherDashboardLayout />,
+    children: [
+      { path: "thong-tin-ca-nhan", element: <MakeRequest /> },
+      { path: "ghi-diem-lop-hoc", element: <Voting /> },
       { path: "*", element: <Navigate to="/404" replace={true} /> },
     ],
   },

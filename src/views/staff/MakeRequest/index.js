@@ -5,7 +5,7 @@ import AvatarBar from "./AvatarBar";
 import ProfileForm from "./ProfileForm";
 import VotingState from "./VotingState";
 
-export default function StudentProfile() {
+export default function MakeRequest() {
   const votingState = useSelector((state) => state.profileSlice.state);
   return (
     <Page title="Đăng kí tham gia">
