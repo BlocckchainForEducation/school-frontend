@@ -44,7 +44,7 @@ export default function CreateBureauAccount() {
       // TODO: remove setTimeout
       setTimeout(() => {
         dp(uploadFileFail());
-        enqueueSnackbar("Some thing went wrong: " + JSON.stringify(result), {
+        enqueueSnackbar("Something went wrong: " + JSON.stringify(result), {
           variant: "error",
           anchorOrigin: { vertical: "top", horizontal: "center" },
         });

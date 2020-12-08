@@ -39,7 +39,7 @@ export default function UploadSubject() {
     const result = await response.json();
     if (!response.ok) {
       dp(uploadFileFail());
-      enqueueSnackbar("Some thing went wrong: " + JSON.stringify(result), { variant: "error", anchorOrigin: { vertical: "top", horizontal: "center" } });
+      enqueueSnackbar("Something went wrong: " + JSON.stringify(result), { variant: "error", anchorOrigin: { vertical: "top", horizontal: "center" } });
     } else {
       dp(uploadFileSuccess(result));
       enqueueSnackbar("Upload file thành công!", { variant: "success", anchorOrigin: { vertical: "bottom", horizontal: "center" } });

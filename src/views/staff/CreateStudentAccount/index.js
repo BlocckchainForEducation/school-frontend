@@ -45,7 +45,7 @@ export default function CreateStudentAccount() {
       // TODO: remove setTimeout
       setTimeout(() => {
         dp(uploadFileFail());
-        enqueueSnackbar("Some thing went wrong: " + JSON.stringify(result), { variant: "error", anchorOrigin: { vertical: "top", horizontal: "center" } });
+        enqueueSnackbar("Something went wrong: " + JSON.stringify(result), { variant: "error", anchorOrigin: { vertical: "top", horizontal: "center" } });
       }, 2000);
     } else {
       // TODO: remove setTimeout
