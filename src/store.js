@@ -6,6 +6,7 @@ import teacherReducer from "src/views/staff/CreateTeacherAccount/redux";
 import studentReducer from "src/views/staff/CreateStudentAccount/redux";
 import subjectReducer from "src/views/staff/UploadSubject/redux";
 import classReducer from "src/views/staff/UploadClass/redux";
+import certificateReducer from "src/views/staff/UploadCertificate/redux";
 
 export const resetStore = () => {
   return {
@@ -28,6 +29,7 @@ const appReducer = combineReducers({
   studentSlice: studentReducer,
   subjectSlice: subjectReducer,
   classSlice: classReducer,
+  certificateSlice: certificateReducer,
 });
 
 export default configureStore({

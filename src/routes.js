@@ -16,6 +16,7 @@ import UploadSubject from "./views/staff/UploadSubject";
 import UploadClass from "./views/staff/UploadClass";
 
 import { getToken } from "./utils/mng-token";
+import UploadCertificate from "./views/staff/UploadCertificate";
 
 const routes = [
   {
@@ -29,7 +30,7 @@ const routes = [
       { path: "tao-tk-sinh-vien", element: <CreateStudentAccount /> },
       { path: "upload-mon-hoc", element: <UploadSubject /> },
       { path: "upload-lop-hoc", element: <UploadClass /> },
-      // { path: "upload-bang-cap", element: <ShareCertificate /> },
+      { path: "upload-bang-cap", element: <UploadCertificate /> },
       // { path: "thu-hoi-bang-cap", element: <ShareCertificate /> },
       { path: "*", element: <Navigate to="/404" replace={true} /> },
     ],
