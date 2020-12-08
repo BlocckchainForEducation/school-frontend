@@ -71,7 +71,7 @@ export default function SubmitSubjectPoint(props) {
     setSubmitState(true);
     const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/teacher/submit-point`, {
       method: "POST",
-      headers: { Authorization: getToken() },
+      headers: { "Content-Type": "application/json", Authorization: getToken() },
       body: JSON.stringify({ claxx, privateKeyHex }),
     });
     const result = await response.json();
@@ -112,7 +112,7 @@ export default function SubmitSubjectPoint(props) {
                 <Box>
                   {submitState === true && <CircularProgress size="1rem" color="primary"></CircularProgress>}
                   {submitState === "success" && <CheckIcon color="primary" fontSize="small"></CheckIcon>}
-                  {submitState === "fail" && <CloseIcon color="primary" fontSize="small"></CloseIcon>}
+                  {submitState === "fail" && <CloseIcon color="secondary" fontSize="small"></CloseIcon>}
                 </Box>
               </Box>
               <Divider></Divider>
