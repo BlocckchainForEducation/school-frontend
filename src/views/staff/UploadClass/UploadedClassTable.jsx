@@ -8,11 +8,11 @@ import { setPreloadClasses } from "./redux";
 
 const columns = [
   { field: "id", headerName: "#", width: 75, type: "string" },
-  { field: "semester", headerName: "Mã môn học", width: 125, type: "string" },
-  { field: "subjectId", headerName: "Tên môn học", width: 200, type: "string" },
-  { field: "classId", headerName: "Kì học", width: 75, type: "number" },
-  { field: "teacherId", headerName: "Số tín chỉ", type: "number" },
-  { field: "studentIds", headerName: "Ghi chú", width: 200, type: "string" },
+  { field: "semester", headerName: "Kì học", width: 100, type: "string" },
+  { field: "subjectId", headerName: "Mã môn học", width: 125, type: "string" },
+  { field: "classId", headerName: "Mã lớp học", width: 125, type: "string" },
+  { field: "teacherId", headerName: "Mã GV", width: 125, type: "string" },
+  { field: "studentIds", headerName: "DSSV", width: 400, type: "string" },
 ];
 
 export default function UploadedClassTable(props) {

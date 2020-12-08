@@ -1,10 +1,10 @@
-import { CircularProgress, Paper } from "@material-ui/core";
+import { Paper } from "@material-ui/core";
 import { useSnackbar } from "notistack";
 import React, { useMemo } from "react";
 import { useDropzone } from "react-dropzone";
+import MdInfinite from "react-ionicons/lib/MdInfinite";
 import UseAnimations from "react-useanimations";
 import arrowDown from "react-useanimations/lib/arrowDown";
-import MdInfinite from "react-ionicons/lib/MdInfinite";
 
 const baseStyle = {
   flex: 1,
