@@ -10,6 +10,7 @@ import { Link as RouterLink, useNavigate } from "react-router-dom";
 import Logo from "src/shared/Logo";
 import { resetStore } from "../../store";
 import { clearToken } from "src/utils/mng-token";
+import { clearRole } from "../../utils/mng-role";
 
 const useStyles = makeStyles(() => ({
   root: {},
@@ -41,6 +42,7 @@ const TopBar = ({ className, onMobileNavOpen, ...rest }) => {
             color="inherit"
             onClick={(e) => {
               clearToken();
+              clearRole();
               dp(resetStore());
               navigate("/");
             }}
