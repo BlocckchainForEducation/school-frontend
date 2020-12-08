@@ -2,18 +2,18 @@ const { createSlice } = require("@reduxjs/toolkit");
 
 const subjectSlice = createSlice({
   name: "subjectSlice",
-  initialState: { fetching: true, history: [], uploading: false },
+  initialState: { fetching: true, subjects: [], uploading: false },
   reducers: {
-    setPreloadHistory: (state, action) => {
+    setPreloadSubjects: (state, action) => {
       state.fetching = false;
-      state.history = action.payload;
+      state.subjects = action.payload;
     },
     startUploadFile: (state, action) => {
       state.uploading = true;
     },
     uploadFileSuccess: (state, action) => {
       state.uploading = false;
-      state.history.push(action.payload);
+      state.subjects = action.payload.concat(state.subjects);
     },
     uploadFileFail: (state, action) => {
       state.uploading = false;
@@ -22,4 +22,4 @@ const subjectSlice = createSlice({
 });
 
 export default subjectSlice.reducer;
-export const { setPreloadHistory, startUploadFile, uploadFileSuccess, uploadFileFail } = subjectSlice.actions;
+export const { setPreloadSubjects, startUploadFile, uploadFileSuccess, uploadFileFail } = subjectSlice.actions;

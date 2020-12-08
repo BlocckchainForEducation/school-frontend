@@ -6,8 +6,8 @@ import DragnDropZone from "../../../shared/DragnDropZone";
 import Page from "src/shared/Page";
 import { getToken } from "src/utils/mng-token";
 import SubjectDataExample from "./SubjectDataExample";
-import SubjectUploadHistory from "./SubjectUploadHistory";
 import { startUploadFile, uploadFileFail, uploadFileSuccess } from "./redux";
+import UploadedSubjectTable from "./UploadedSubjectTable";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -51,7 +51,7 @@ export default function UploadSubject() {
       <div className={cls.root}>
         <SubjectDataExample></SubjectDataExample>
         <DragnDropZone onDropAccepted={hdUploadFile} uploading={uploading}></DragnDropZone>
-        {/* <SubjectUploadHistory></SubjectUploadHistory> */}
+        <UploadedSubjectTable></UploadedSubjectTable>
       </div>
     </Page>
   );
