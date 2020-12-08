@@ -18,6 +18,7 @@ import UploadClass from "./views/staff/UploadClass";
 
 import { getToken } from "./utils/mng-token";
 import UploadCertificate from "./views/staff/UploadCertificate";
+import TeacherProfile from "./views/teacher/Profile";
 
 const routes = [
   {
@@ -40,8 +41,8 @@ const routes = [
     path: "/giang-vien",
     element: <TeacherDashboardLayout />,
     children: [
-      { path: "thong-tin-ca-nhan", element: <MakeRequest /> },
-      { path: "ghi-diem-lop-hoc", element: <Voting /> },
+      { path: "thong-tin-ca-nhan", element: <TeacherProfile /> },
+      // { path: "nhap-diem-lop-hoc", element: <Voting /> },
       { path: "*", element: <Navigate to="/404" replace={true} /> },
     ],
   },

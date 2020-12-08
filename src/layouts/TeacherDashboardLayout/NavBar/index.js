@@ -8,49 +8,14 @@ import NavItem from "./NavItem";
 
 const items = [
   {
-    href: "/cb-pdt/dang-ki-tham-gia",
+    href: "/giang-vien/thong-tin-ca-nhan",
     icon: UserIcon,
-    title: "Đăng kí tham gia",
+    title: "Thông tin cá nhân",
   },
   {
-    href: "/cb-pdt/bo-phieu",
+    href: "/giang-vien/nhap-diem-lop-hoc",
     icon: UserIcon,
-    title: "Bỏ phiếu",
-  },
-  {
-    href: "/cb-pdt/tao-tk-giao-vu",
-    icon: UserIcon,
-    title: "Tạo tài khoản giáo vụ",
-  },
-  {
-    href: "/cb-pdt/tao-tk-giang-vien",
-    icon: UserIcon,
-    title: "Tạo tài khoản giảng viên",
-  },
-  {
-    href: "/cb-pdt/tao-tk-sinh-vien",
-    icon: UserIcon,
-    title: "Tạo tài khoản sinh viên",
-  },
-  {
-    href: "/cb-pdt/upload-mon-hoc",
-    icon: UserIcon,
-    title: "Upload môn học",
-  },
-  {
-    href: "/cb-pdt/upload-lop-hoc",
-    icon: UserIcon,
-    title: "Upload lớp học",
-  },
-  {
-    href: "/cb-pdt/upload-bang-cap",
-    icon: UserIcon,
-    title: "Upload bằng cấp",
-  },
-  {
-    href: "/cb-pdt/thu-hoi-bang-cap",
-    icon: UserIcon,
-    title: "Thu hồi bằng câp",
+    title: "Nhập điểm lớp học",
   },
 ];
 
@@ -74,7 +39,7 @@ const NavBar = ({ onMobileClose, openMobile }) => {
   const classes = useStyles();
   const location = useLocation();
 
-  const user = useSelector((state) => state.profileSlice);
+  const user = useSelector((state) => state.teacherProfileSlice);
 
   useEffect(() => {
     if (openMobile && onMobileClose) {
@@ -86,12 +51,12 @@ const NavBar = ({ onMobileClose, openMobile }) => {
   const content = (
     <Box height="100%" display="flex" flexDirection="column">
       <Box alignItems="center" display="flex" flexDirection="column" p={2}>
-        <Avatar className={classes.avatar} component={RouterLink} src={user.imgSrc} to="/cb-pdt/dang-ki-tham-gia" />
+        <Avatar className={classes.avatar} component={RouterLink} src={user.imgSrc} to="/giang-vien/thong-tin-ca-nhan" />
         <Typography className={classes.name} color="textPrimary" variant="h5">
-          {user.universityName || "Trường ĐH ABC"}
+          {user.name}
         </Typography>
         <Typography color="textSecondary" variant="body2">
-          {"Cán bộ Phòng Đào Tạo"}
+          Giảng viên
         </Typography>
       </Box>
       <Divider />
