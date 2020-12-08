@@ -16,9 +16,9 @@ import CreateStudentAccount from "./views/staff/CreateStudentAccount";
 import UploadSubject from "./views/staff/UploadSubject";
 import UploadClass from "./views/staff/UploadClass";
 
-import { getToken } from "./utils/mng-token";
 import UploadCertificate from "./views/staff/UploadCertificate";
 import TeacherProfile from "./views/teacher/Profile";
+import { getRole, ROLE } from "./utils/mng-role";
 
 const routes = [
   {
@@ -60,12 +60,19 @@ const routes = [
 ];
 
 function Redirector(props) {
-  const token = getToken();
-  if (!token) {
-    return <Navigate to="/dang-ki"></Navigate>;
-  } else {
-    return <Navigate to="/cb-pdt/dang-ki-tham-gia" />;
+  const role = getRole();
+  let to = "";
+  if (!role) {
+    to = "/dang-nhap";
+  } else if (role === ROLE.STAFF) {
+    to = "/cb-pdt/dang-ki-tham-gia";
+  } else if (role === ROLE.TEACHER) {
+    to = "/giang-vien/thong-tin-ca-nhan";
+  } else if (role === ROLE.BUREAU) {
+    // TODO: complete path if you like
+    to = "/giao-vu";
   }
+  return <Navigate to={to} />;
 }
 
 export default routes;

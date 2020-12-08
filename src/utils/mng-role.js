@@ -4,6 +4,23 @@ const ROLE = {
   TEACHER: "TEACHER",
 };
 
+function setLocalRole(role) {
+  localStorage.setItem("role", role);
+}
+
+function setSessionRole(role) {
+  sessionStorage.setItem("role", role);
+}
+
+function getRole() {
+  return sessionStorage.getItem("role") || localStorage.getItem("role");
+}
+
+function clearRole() {
+  sessionStorage.removeItem("role");
+  localStorage.removeItem("role");
+}
+
 function getRouteByRole(role) {
   if (role === ROLE.STAFF) {
     return "/cb-pdt/dang-ki-tham-gia";
@@ -14,4 +31,4 @@ function getRouteByRole(role) {
   }
 }
 
-export { ROLE, getRouteByRole };
+export { ROLE, getRouteByRole, setLocalRole, setSessionRole, getRole, clearRole };

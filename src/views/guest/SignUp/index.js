@@ -13,7 +13,7 @@ import { Alert } from "@material-ui/lab";
 import React, { useState } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { setLocalToken } from "src/utils/mng-token";
-import { getRouteByRole } from "../../../utils/mng-role";
+import { getRouteByRole, setLocalRole } from "../../../utils/mng-role";
 
 function Copyright() {
   return (
@@ -77,6 +77,7 @@ export default function SignUp() {
     } else {
       const result = await response.json();
       setLocalToken(result.token);
+      setLocalRole(result.role);
       setErrors(null);
       setSuccess("Đăng kí tài khoản thành công!");
       setTimeout(() => navigate(getRouteByRole(result.role)), 1000);

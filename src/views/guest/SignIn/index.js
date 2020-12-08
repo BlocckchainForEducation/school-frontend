@@ -14,7 +14,7 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import React, { useState } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { setLocalToken, setSessionToken } from "src/utils/mng-token";
-import { getRouteByRole } from "../../../utils/mng-role";
+import { getRouteByRole, setLocalRole, setSessionRole } from "../../../utils/mng-role";
 
 function Copyright() {
   return (
@@ -80,8 +80,10 @@ export default function SignIn() {
       const body = await response.json();
       if (state.remember) {
         setLocalToken(body.token);
+        setLocalRole(body.role);
       } else {
         setSessionToken(body.token);
+        setSessionRole(body.role);
       }
       navigate(getRouteByRole(body.role));
     }
