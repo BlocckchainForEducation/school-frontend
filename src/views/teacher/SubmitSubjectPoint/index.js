@@ -67,7 +67,7 @@ export default function SubmitSubjectPoint(props) {
 
   async function hdSubmit(e) {
     // TODO: validate whether missing input
-    const privateKeyHex = requirePrivateKeyHex(enqueueSnackbar);
+    const privateKeyHex = await requirePrivateKeyHex(enqueueSnackbar);
     setSubmitState(true);
     const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/teacher/submit-point`, {
       method: "POST",

@@ -29,6 +29,7 @@ export default function VotingState(props) {
       <Box className={cls.root}>
         <Paper className={cls.head}>
           <Typography variant="h3">
+            {/* TODO: Add Icons too*/}
             {votingState === "voting" && "Đang bỏ phiếu"}
             {votingState === "accepted" && "Đã tham gia"}
             {votingState === "declined" && "Đã bị từ chối"}

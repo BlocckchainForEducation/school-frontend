@@ -4,6 +4,7 @@ import { useSnackbar } from "notistack";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getToken } from "src/utils/mng-token";
+import { requirePrivateKeyHex } from "../../../utils/keyholder";
 import { setProfile } from "./redux";
 
 const useStyles = makeStyles((theme) => ({
@@ -45,11 +46,12 @@ export default function ProfileForm() {
 
   async function hdSubmit(e) {
     try {
+      const privateKeyHex = await requirePrivateKeyHex(enqueueSnackbar);
       let response = await fetch(`${process.env.REACT_APP_SERVER_URL}/staff/make-request`, {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: getToken() },
         // delete fetching field before send data to backend to avoid fail validate, delete imgSrc to avoid request too large error.
-        body: JSON.stringify({ ...state, fetching: undefined, imgSrc: undefined }),
+        body: JSON.stringify({ profile: { ...state, fetching: undefined, imgSrc: undefined }, privateKeyHex }),
       });
 
       const result = await response.json();
@@ -134,6 +136,7 @@ export default function ProfileForm() {
                 ></TextField>
               </Grid>
             </Grid>
+            {/* TODO: Help user select account from wallet */}
             <TextField
               InputLabelProps={{ shrink: true }}
               fullWidth
