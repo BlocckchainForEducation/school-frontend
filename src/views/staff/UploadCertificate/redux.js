@@ -6,7 +6,7 @@ const certificateSlice = createSlice({
   reducers: {
     setPreloadCertificates: (state, action) => {
       state.fetching = false;
-      state.certificates = action.payload;
+      state.certificates = action.payload.map((cert, index) => ({ ...cert, id: index }));
     },
     startUploadFile: (state, action) => {
       state.uploading = true;

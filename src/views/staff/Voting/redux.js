@@ -9,13 +9,10 @@ const votingSlice = createSlice({
       state.voteRequests = action.payload;
       state.numOfNewVoteRequest = action.payload.length;
     },
-    // not use anymore, use collapse instead to make some effect improve UX
-    removeVotedRequest: (state, action) => {
-      state.voteRequests = state.voteRequests.filter((vote) => vote._id !== action.payload._id);
-    },
     collapseVoteRequest(state, action) {
       const index = state.voteRequests.findIndex((vote) => vote.pubkey === action.payload.pubkey);
       state.voteRequests[index].in = false;
+      // dont remove numOfNewVoteRequest, it is difference from voteRequests.length
       state.numOfNewVoteRequest -= 1;
     },
   },

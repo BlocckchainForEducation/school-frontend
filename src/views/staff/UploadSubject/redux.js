@@ -1,3 +1,5 @@
+import { Subject } from "@material-ui/icons";
+
 const { createSlice } = require("@reduxjs/toolkit");
 
 const subjectSlice = createSlice({
@@ -6,7 +8,10 @@ const subjectSlice = createSlice({
   reducers: {
     setPreloadSubjects: (state, action) => {
       state.fetching = false;
-      state.subjects = action.payload;
+      const subjects = action.payload;
+      // DataGrid need id field for display
+      const subjectsWithId = subjects.map((subject, index) => ({ ...subject, id: index }));
+      state.subjects = subjectsWithId;
     },
     startUploadFile: (state, action) => {
       state.uploading = true;

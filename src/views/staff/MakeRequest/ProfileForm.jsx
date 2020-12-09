@@ -62,7 +62,7 @@ export default function ProfileForm() {
           enqueueSnackbar("Tạo tx thất bại, thử lại sau!", { variant: "error", anchorOrigin: { vertical: "bottom", horizontal: "center" } });
           dp(setProfile({ ...state, imgSrc: profile.imgSrc, state: "fail" }));
         } else {
-          enqueueSnackbar("Đămg kí tham gia thành công, đang chờ bỏ phiếu!", {
+          enqueueSnackbar("Đămg kí tham gia thành công, đang chờ kết quả bỏ phiếu!", {
             variant: "success",
             anchorOrigin: { vertical: "bottom", horizontal: "center" },
           });
@@ -70,7 +70,7 @@ export default function ProfileForm() {
         }
       }
     } catch (error) {
-      alert(error);
+      console.log(error);
     }
   }
 

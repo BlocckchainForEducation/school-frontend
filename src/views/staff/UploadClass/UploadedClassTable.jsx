@@ -12,6 +12,7 @@ const columns = [
   { field: "subjectId", headerName: "Mã môn học", width: 125, type: "string" },
   { field: "classId", headerName: "Mã lớp học", width: 125, type: "string" },
   { field: "teacherId", headerName: "Mã GV", width: 125, type: "string" },
+  { field: "bureauId", headerName: "Mã GVU", width: 125, type: "string" },
   { field: "studentIds", headerName: "DSSV", width: 400, type: "string" },
 ];
 

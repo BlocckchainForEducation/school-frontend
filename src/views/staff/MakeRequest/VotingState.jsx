@@ -29,7 +29,7 @@ export default function VotingState(props) {
       <Box className={cls.root}>
         <Paper className={cls.head}>
           <Typography variant="h3">
-            {/* TODO: Add Icons too*/}
+            {/* TODO: Add Icons too, change color accroding to votingState*/}
             {votingState === "voting" && "Đang bỏ phiếu"}
             {votingState === "accepted" && "Đã tham gia"}
             {votingState === "declined" && "Đã bị từ chối"}
@@ -45,6 +45,7 @@ export default function VotingState(props) {
                       <TableCell>
                         <Avatar></Avatar>
                       </TableCell>
+                      {/* TODO: vote now have no name, but pubkey instead, so we will fetch university from UniversityProfile first */}
                       <TableCell>{vote.name}</TableCell>
                       <TableCell>
                         {vote.decision === "accept" && <CheckIcon color="primary"></CheckIcon>}
