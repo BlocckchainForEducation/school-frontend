@@ -8,17 +8,16 @@ const subjectSlice = createSlice({
   reducers: {
     setPreloadSubjects: (state, action) => {
       state.fetching = false;
-      const subjects = action.payload;
       // DataGrid need id field for display
-      const subjectsWithId = subjects.map((subject, index) => ({ ...subject, id: index }));
-      state.subjects = subjectsWithId;
+      state.subjects = action.payload.map((subject, index) => ({ ...subject, id: index + 1 }));
     },
     startUploadFile: (state, action) => {
       state.uploading = true;
     },
     uploadFileSuccess: (state, action) => {
       state.uploading = false;
-      state.subjects = action.payload.concat(state.subjects);
+      // DataGrid need id field for display
+      state.subjects = action.payload.concat(state.subjects).map((subject, index) => ({ ...subject, id: index + 1 }));
     },
     uploadFileFail: (state, action) => {
       state.uploading = false;

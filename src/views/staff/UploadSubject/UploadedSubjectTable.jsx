@@ -7,7 +7,7 @@ import { getToken } from "../../../utils/mng-token";
 import { setPreloadSubjects } from "./redux";
 
 const columns = [
-  { field: "id", headerName: "#", type: "string" },
+  { field: "id", headerName: "#", width: 50, type: "string" },
   { field: "subjectId", headerName: "Mã môn học", width: 125, type: "string" },
   { field: "name", headerName: "Tên môn học", width: 200, type: "string" },
   { field: "semester", headerName: "Kì học", type: "number" },

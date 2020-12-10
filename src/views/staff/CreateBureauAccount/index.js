@@ -53,7 +53,7 @@ export default function CreateBureauAccount() {
       // TODO: remove setTimeout
       setTimeout(() => {
         dp(uploadFileSuccess(result));
-        enqueueSnackbar("Upload file thành công!", { variant: "success", anchorOrigin: { vertical: "bottom", horizontal: "center" } });
+        enqueueSnackbar("Tạo tài khoản cho các giáo vụ thành công!", { variant: "success", anchorOrigin: { vertical: "bottom", horizontal: "center" } });
       }, 2000);
     }
   }

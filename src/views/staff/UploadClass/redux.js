@@ -6,17 +6,15 @@ const classSlice = createSlice({
   reducers: {
     setPreloadClasses: (state, action) => {
       state.fetching = false;
-      const classes = action.payload;
       // DataGrid need id field
-      const classesWithId = classes.map((claxx, index) => ({ ...claxx, id: index }));
-      state.classes = classesWithId;
+      state.classes = action.payload.map((subject, index) => ({ ...subject, id: index + 1 }));
     },
     startUploadFile: (state, action) => {
       state.uploading = true;
     },
     uploadFileSuccess: (state, action) => {
       state.uploading = false;
-      state.classes = action.payload.concat(state.classes);
+      state.classes = action.payload.concat(state.subjects).map((subject, index) => ({ ...subject, id: index + 1 }));
     },
     uploadFileFail: (state, action) => {
       state.uploading = false;

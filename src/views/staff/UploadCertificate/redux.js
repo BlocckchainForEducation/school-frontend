@@ -6,6 +6,7 @@ const certificateSlice = createSlice({
   reducers: {
     setPreloadCertificates: (state, action) => {
       state.fetching = false;
+      // DataGrid need id
       state.certificates = action.payload.map((cert, index) => ({ ...cert, id: index }));
     },
     startUploadFile: (state, action) => {
@@ -13,7 +14,8 @@ const certificateSlice = createSlice({
     },
     uploadFileSuccess: (state, action) => {
       state.uploading = false;
-      state.certificates = action.payload.concat(state.certificates);
+      // DataGrid need id
+      state.certificates = action.payload.concat(state.subjects).map((subject, index) => ({ ...subject, id: index + 1 }));
     },
     uploadFileFail: (state, action) => {
       state.uploading = false;
