@@ -9,7 +9,7 @@ const subjectSlice = createSlice({
     setPreloadSubjects: (state, action) => {
       state.fetching = false;
       // DataGrid need id field for display
-      state.subjects = action.payload.map((subject, index) => ({ ...subject, id: index + 1 }));
+      if (action.payload.length > 0) state.subjects = action.payload.map((subject, index) => ({ ...subject, id: index + 1 }));
     },
     startUploadFile: (state, action) => {
       state.uploading = true;

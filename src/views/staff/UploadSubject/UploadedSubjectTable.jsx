@@ -40,5 +40,7 @@ export default function UploadedSubjectTable(props) {
     }
   }
 
-  return <Paper style={{ minHeight: "380px", width: "100%" }}>{fetching ? null : <DataGrid rows={subjects} columns={columns} pageSize={5} />}</Paper>;
+  return (
+    <Paper style={{ minHeight: "400px", width: "100%" }}>{fetching ? null : <DataGrid rows={subjects} columns={columns} autoPageSize rowHeight={48} />}</Paper>
+  );
 }

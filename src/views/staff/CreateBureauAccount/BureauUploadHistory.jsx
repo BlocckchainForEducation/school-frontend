@@ -44,6 +44,7 @@ export default function BureauUploadHistory() {
   const title = "Lịch sử upload Giáo vụ";
   const content = (
     <Box>
+      {/* TODO: allow download this data too */}
       {history.map((item, index) => {
         const body = item.profiles.map((profile) => [
           profile.bureauId,

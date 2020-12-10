@@ -11,7 +11,7 @@ const baseStyle = {
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
-  padding: "50px",
+  padding: "40px",
   borderWidth: 4,
   borderRadius: 4,
   borderColor: "#eeeeee",

@@ -49,5 +49,7 @@ export default function UploadedCertificateTable(props) {
     }
   }
 
-  return <Paper style={{ height: "380px", width: "100%" }}>{fetching ? null : <DataGrid rows={certificates} columns={columns} pageSize={5} />}</Paper>;
+  return (
+    <Paper style={{ height: "400px", width: "100%" }}>{fetching ? null : <DataGrid rows={certificates} columns={columns} autoPageSize rowHeight={48} />}</Paper>
+  );
 }

@@ -41,5 +41,7 @@ export default function UploadedClassTable(props) {
     }
   }
 
-  return <Paper style={{ minHeight: "380px", width: "100%" }}>{fetching ? null : <DataGrid rows={classes} columns={columns} pageSize={5} />}</Paper>;
+  return (
+    <Paper style={{ height: "400px", width: "100%" }}>{fetching ? null : <DataGrid rows={classes} columns={columns} autoPageSize rowHeight={48} />}</Paper>
+  );
 }

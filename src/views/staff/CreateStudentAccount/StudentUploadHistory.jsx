@@ -60,7 +60,7 @@ export default function StudentUploadHistory() {
               <Typography className={cls.heading}>{`#${index + 1}, ${item.time}`}</Typography>
             </AccordionSummary>
             <AccordionDetails>
-              <SimpleTable head={head} body={body}></SimpleTable>
+              <SimpleTable head={head} body={body} minWidth="2200px"></SimpleTable>
             </AccordionDetails>
           </Accordion>
         );
