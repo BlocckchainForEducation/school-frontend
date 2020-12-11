@@ -6,9 +6,9 @@
 // Select the database to use.
 use('B4E_School_Backend');
 
-db.UniversityProfile.updateOne({state: "voting"}, {$set: {"votes": [ {name: "ĐHXD", decision: "accept", time: "2020-12-10"}, {name: "KTQT", decision: "decline", time: "2020-12-12"}]}})
+db.UniversityProfile.updateMany({state: "voting"}, {$set: {"votes": [ {name: "ĐHXD", decision: "accept", time: "2020-12-10"}, {name: "KTQT", decision: "decline", time: "2020-12-12"}]}})
 
-db.UniversityProfile.updateOne({state: "voting"}, {$push: {"votes": {name: "BGD&ĐT", decision: "accept", time: "2020-12-13"}}})
+db.UniversityProfile.updateMany({state: "voting"}, {$push: {"votes": {name: "BGD&ĐT", decision: "accept", time: "2020-12-13"}}})
 db.UniversityProfile.updateMany({state: "voting"}, {$set: {state: "accepted"}})
 
 db.VoteRequest.insertMany([

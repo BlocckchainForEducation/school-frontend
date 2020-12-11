@@ -1,7 +1,10 @@
 import { Avatar, Box, makeStyles, Paper, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from "@material-ui/core";
 import CheckIcon from "@material-ui/icons/Check";
 import CloseIcon from "@material-ui/icons/Close";
-import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getToken } from "../../../utils/mng-token";
+import { updateVotes, updateVotingState } from "./redux";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -23,6 +26,26 @@ export default function VotingState(props) {
   const cls = useStyles();
   const votingState = useSelector((state) => state.profileSlice.state);
   const votes = useSelector((state) => state.profileSlice.votes);
+  const dp = useDispatch();
+
+  useEffect(() => {
+    if (votingState === "voting") {
+      const clockId = setInterval(async () => {
+        const res = await fetch(`${process.env.REACT_APP_SERVER_URL}/staff/university-profile`, { headers: { Authorization: getToken() } });
+        if (res.ok) {
+          const body = await res.json();
+          if (body) {
+            dp(updateVotingState(body));
+          }
+        }
+      }, 5000);
+      console.log("clockId " + clockId);
+      return () => {
+        console.log("clear clockId: " + clockId);
+        window.clearInterval(clockId);
+      };
+    }
+  });
 
   return (
     <div>

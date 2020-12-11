@@ -2,17 +2,32 @@ import { createSlice } from "@reduxjs/toolkit";
 
 export const profileSlice = createSlice({
   name: "profileSlice",
-  initialState: { fetching: true, universityName: "", nameInEnglish: "", address: "", email: "", phone: "", pubkey: "", description: "", imgSrc: "" },
+  initialState: {
+    fetching: true,
+    universityName: "",
+    nameInEnglish: "",
+    address: "",
+    email: "",
+    phone: "",
+    pubkey: "",
+    description: "",
+    imgSrc: "",
+    votes: [],
+  }, // votes filed too
   reducers: {
     setProfile: (state, action) => {
-      Object.assign(state, action.payload);
       state.fetching = false;
+      Object.assign(state, action.payload);
     },
     updateImgSrc: (state, action) => {
       state.imgSrc = action.payload;
     },
+    updateVotingState: (state, action) => {
+      if (state.state !== action.payload.state) state.state = action.payload.state;
+      if (state.votes.length < action.payload.votes.length) state.votes = action.payload.votes;
+    },
   },
 });
 
-export const { setProfile, updateImgSrc } = profileSlice.actions;
+export const { setProfile, updateImgSrc, updateVotingState } = profileSlice.actions;
 export default profileSlice.reducer;
