@@ -32,7 +32,7 @@ debug.log
 # :white_check_mark: done: handle request page
 # :bug: bug: require pw twice
 # :bug: fixed: require pw twice
-# :v: improve performance: handle request page
+# :zap: improve performance: handle request page
 # :tada: version: v1.2
 # :truck: move: move A component to new folder
 # :wrench: setup/config: config .env
