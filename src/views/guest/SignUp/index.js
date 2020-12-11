@@ -96,7 +96,7 @@ export default function SignUp() {
         </Typography>
         <div>
           {success ? (
-            <Alert className={classes.alert} severity="success" onClose={() => setSuccess(null)}>
+            <Alert className={classes.alert} severity="success">
               {success}
             </Alert>
           ) : null}

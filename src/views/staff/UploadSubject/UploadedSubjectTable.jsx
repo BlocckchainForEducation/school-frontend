@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getToken } from "../../../utils/mng-token";
 import { setPreloadSubjects } from "./redux";
+import { makeStyles } from "@material-ui/core";
 
 const columns = [
   { field: "id", headerName: "#", width: 50, type: "string" },
@@ -15,7 +16,14 @@ const columns = [
   { field: "note", headerName: "Ghi chú", width: 200, type: "string" },
 ];
 
+const useStyles = makeStyles((theme) => ({
+  root: {
+    backgroundColor: "white",
+  },
+}));
+
 export default function UploadedSubjectTable(props) {
+  const cls = useStyles();
   const fetching = useSelector((state) => state.subjectSlice.fetching);
   const subjects = useSelector((state) => state.subjectSlice.subjects);
   const dp = useDispatch();
@@ -41,6 +49,18 @@ export default function UploadedSubjectTable(props) {
   }
 
   return (
-    <Paper style={{ minHeight: "400px", width: "100%" }}>{fetching ? null : <DataGrid rows={subjects} columns={columns} autoPageSize rowHeight={48} />}</Paper>
+    <Paper style={{ height: "350px", width: "100%" }}>
+      <DataGrid
+        className={cls.root}
+        loading={fetching}
+        rows={subjects}
+        columns={columns}
+        rowHeight={48}
+        autoPageSize
+        // pageSize={5}
+        // autoHeight
+        // rowsPerPageOptions={[5, 10, 25, 50, 100]}
+      />
+    </Paper>
   );
 }
