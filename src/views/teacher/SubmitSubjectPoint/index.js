@@ -37,6 +37,7 @@ export default function SubmitSubjectPoint(props) {
   const [submitState, setSubmitState] = useState(false);
 
   const { enqueueSnackbar } = useSnackbar();
+
   async function hdFetchClass(e) {
     try {
       const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/teacher/classes/${classId}`, {
@@ -66,7 +67,7 @@ export default function SubmitSubjectPoint(props) {
   }
 
   async function hdSubmit(e) {
-    // TODO: validate whether missing input
+    // TODO: validate whether missing input point too
     const privateKeyHex = await requirePrivateKeyHex(enqueueSnackbar);
     setSubmitState(true);
     const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/teacher/submit-point`, {

@@ -46,6 +46,7 @@ const StaffDashboardLayout = () => {
 
   useEffect(() => {
     fetchProfile();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   async function fetchProfile() {
