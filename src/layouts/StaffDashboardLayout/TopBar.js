@@ -11,6 +11,7 @@ import Logo from "src/shared/Logo";
 import { resetStore } from "../../store";
 import { clearToken } from "src/utils/mng-token";
 import { clearRole } from "../../utils/mng-role";
+import { setPrivateKeyHex } from "../../utils/keyholder";
 
 const useStyles = makeStyles(() => ({
   root: {},
@@ -43,6 +44,7 @@ const TopBar = ({ className, onMobileNavOpen, ...rest }) => {
             onClick={(e) => {
               clearToken();
               clearRole();
+              setPrivateKeyHex(null);
               dp(resetStore());
               navigate("/");
             }}
