@@ -114,7 +114,7 @@ export default function SignIn() {
               setState({ ...state, email: e.target.value });
               setErrors({ ...errors, email: null });
             }}
-            error={errors?.email}
+            error={Boolean(errors?.email)}
             helperText={errors?.email}
           />
           <TextField
@@ -132,7 +132,7 @@ export default function SignIn() {
               setState({ ...state, password: e.target.value });
               setErrors({ ...errors, password: null });
             }}
-            error={errors?.password}
+            error={Boolean(errors?.password)}
             helperText={errors?.password}
           />
           <FormControlLabel

@@ -115,7 +115,7 @@ export default function SignUp() {
                   setState({ ...state, email: e.target.value });
                   setErrors(null);
                 }}
-                error={errors?.email}
+                error={Boolean(errors?.email)}
                 helperText={errors?.email}
                 disabled={Boolean(success)}
               />
@@ -133,7 +133,7 @@ export default function SignUp() {
                   setState({ ...state, password: e.target.value });
                   setErrors(null);
                 }}
-                error={errors?.password}
+                error={Boolean(errors?.password)}
                 helperText={errors?.password}
                 disabled={Boolean(success)}
               />
@@ -151,7 +151,7 @@ export default function SignUp() {
                   setState({ ...state, repassword: e.target.value });
                   setErrors(null);
                 }}
-                error={errors?.repassword}
+                error={Boolean(errors?.repassword)}
                 helperText={errors?.repassword}
                 disabled={Boolean(success)}
               />

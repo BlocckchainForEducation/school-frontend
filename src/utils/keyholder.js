@@ -1,5 +1,13 @@
 let privateKeyHex = null;
 
+export function setPrivateKeyHex(privateKeyHexParam) {
+  privateKeyHex = privateKeyHexParam;
+}
+
+export function getPrivateKeyHex() {
+  return privateKeyHex;
+}
+
 export async function requirePrivateKeyHex(enqueueSnackbar) {
   if (!privateKeyHex) {
     enqueueSnackbar("Hãy mở ví và chọn tài khoản!", { variant: "info", anchorOrigin: { vertical: "top", horizontal: "center" } });
@@ -25,9 +33,7 @@ export async function askPrivateKeyHexFromWallet() {
     window.addEventListener("message", function (event) {
       if (event.data.type === "SIGN_RESPONSE") {
         if (event.data.accept) {
-          const privKeyBase64 = event.data.account.privateKey;
-          const privateKeyHex = Buffer.from(privKeyBase64, "base64").toString("hex");
-          return resolve({ ok: true, privateKeyHex: privateKeyHex });
+          return resolve({ ok: true, privateKeyHex: event.data.account.privateKey });
         } else {
           return resolve({ ok: false });
         }

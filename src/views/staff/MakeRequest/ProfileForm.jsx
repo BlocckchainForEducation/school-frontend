@@ -1,12 +1,12 @@
-import { Box, Button, Grid, makeStyles, Paper, TextField, Typography } from "@material-ui/core";
+import { Box, Button, Grid, IconButton, InputAdornment, makeStyles, Paper, TextField, Typography } from "@material-ui/core";
 import "date-fns";
 import { useSnackbar } from "notistack";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getToken } from "src/utils/mng-token";
-import { requirePrivateKeyHex } from "../../../utils/keyholder";
+import { requirePrivateKeyHex, setPrivateKeyHex } from "../../../utils/keyholder";
 import { setProfile } from "./redux";
-
+import AccountBalanceWalletIcon from "@material-ui/icons/AccountBalanceWallet";
 const useStyles = makeStyles((theme) => ({
   root: {
     "& .MuiFormLabel-root.Mui-disabled": {
@@ -62,7 +62,7 @@ export default function ProfileForm() {
           enqueueSnackbar("Tạo tx thất bại, thử lại sau!", { variant: "error", anchorOrigin: { vertical: "top", horizontal: "center" } });
           dp(setProfile({ ...state, imgSrc: profile.imgSrc, state: "fail" }));
         } else {
-          enqueueSnackbar("Đămg kí tham gia thành công, đang chờ kết quả bỏ phiếu!", {
+          enqueueSnackbar("Đăng kí tham gia thành công, đang chờ kết quả bỏ phiếu!", {
             variant: "success",
             anchorOrigin: { vertical: "bottom", horizontal: "center" },
           });
@@ -72,6 +72,21 @@ export default function ProfileForm() {
     } catch (error) {
       console.log(error);
     }
+  }
+
+  async function hdSelectAccountFromWallet() {
+    enqueueSnackbar("Hãy mở ví và chọn tài khoản!", { variant: "info", anchorOrigin: { vertical: "top", horizontal: "center" } });
+    window.postMessage({ type: "SIGN_REQUEST" }, "*");
+    window.addEventListener("message", function (event) {
+      if (event.data.type === "SIGN_RESPONSE") {
+        if (event.data.accept) {
+          setPrivateKeyHex(event.data.account.privateKey);
+          setState({ ...state, pubkey: event.data.account.publicKey });
+        } else {
+          enqueueSnackbar("Bạn cần chọn một tài khoản để có thể tiếp tục!");
+        }
+      }
+    });
   }
 
   return (
@@ -144,6 +159,15 @@ export default function ProfileForm() {
               value={state?.pubkey}
               onChange={(e) => setState({ ...state, pubkey: e.target.value })}
               disabled={disable}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton onClick={hdSelectAccountFromWallet}>
+                      <AccountBalanceWalletIcon></AccountBalanceWalletIcon>{" "}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
             ></TextField>
             <TextField
               InputLabelProps={{ shrink: true }}
