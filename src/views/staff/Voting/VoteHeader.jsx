@@ -29,7 +29,7 @@ export default function VoteHeader({ request }) {
     <div>
       <Box bgcolor="white" px={2} py={1} display="flex" alignItems="center">
         <Box flexGrow={1} display="flex" alignItems="center">
-          <Avatar></Avatar>
+          <Avatar src={request.imgSrc}></Avatar>
           <Box mx={2}>
             <Typography variant="h5">{request.universityName}</Typography>
           </Box>

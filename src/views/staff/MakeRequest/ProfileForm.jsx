@@ -7,6 +7,7 @@ import { getToken } from "src/utils/mng-token";
 import { requirePrivateKeyHex, setPrivateKeyHex } from "../../../utils/keyholder";
 import { setProfile } from "./redux";
 import AccountBalanceWalletIcon from "@material-ui/icons/AccountBalanceWallet";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     "& .MuiFormLabel-root.Mui-disabled": {
