@@ -1,11 +1,23 @@
 import { useEffect } from "react";
-import { Accordion, makeStyles, AccordionSummary, AccordionDetails, Typography, Box, CircularProgress } from "@material-ui/core";
+import {
+  Accordion,
+  makeStyles,
+  AccordionSummary,
+  AccordionDetails,
+  Typography,
+  Box,
+  CircularProgress,
+  Button,
+  AccordionActions,
+  Divider,
+} from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import { getToken } from "src/utils/mng-token";
 import { setPreloadHistory } from "./redux";
 import { useSnackbar } from "notistack";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import SimpleTable from "../../../shared/Table/SimpleTable";
+import XLSX from "xlsx";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -14,6 +26,11 @@ const useStyles = makeStyles((theme) => ({
   heading: {
     fontSize: theme.typography.pxToRem(15),
     fontWeight: theme.typography.fontWeightRegular,
+    flexBasis: "80%",
+  },
+  summary: {
+    justifyContent: "flex-end",
+    alignItems: "center",
   },
 }));
 
@@ -40,6 +57,14 @@ export default function BureauUploadHistory() {
     }
   }
 
+  async function hdDownloadClick(e, item) {
+    // let profiles = item.profiles.map((profile, index) => ({ 'Mã giáo vụ':  }));
+    const wb = XLSX.utils.book_new();
+    const ws = XLSX.utils.json_to_sheet(item.profiles);
+    XLSX.utils.book_append_sheet(wb, ws, "Giáo vụ - " + item.time);
+    XLSX.writeFile(wb, "giao-vu-" + item.time + ".xlsx");
+  }
+
   const head = ["Mã giáo vụ", "Họ và tên", "Viện", "Account", "Password", "Txid"];
   const title = "Lịch sử upload Giáo vụ";
   const content = (
@@ -56,12 +81,18 @@ export default function BureauUploadHistory() {
         ]);
         return (
           <Accordion key={index}>
-            <AccordionSummary expandIcon={<ExpandMoreIcon />} id={item._id}>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />} id={item._id} className={cls.summary}>
               <Typography className={cls.heading}>{`#${index + 1}, ${item.time}`}</Typography>
             </AccordionSummary>
             <AccordionDetails>
               <SimpleTable title={title} head={head} body={body}></SimpleTable>
             </AccordionDetails>
+            <Divider />
+            <AccordionActions>
+              <Button size="small" variant="outlined" color="primary" onClick={(e) => hdDownloadClick(e, item)}>
+                Download
+              </Button>
+            </AccordionActions>
           </Accordion>
         );
       })}

@@ -29,6 +29,7 @@ const useStyles = makeStyles((theme) => ({
   },
   body: { width: "100%", marginTop: "-32px", padding: theme.spacing(6, 2, 2, 2) },
 }));
+
 export default function VotingState(props) {
   const votingState = useSelector((state) => state.profileSlice.state);
   const votes = useSelector((state) => state.profileSlice.votes);
