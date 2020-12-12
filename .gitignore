@@ -33,7 +33,7 @@ debug.log
 # :bug: bug: require pw twice
 # :bug: fixed: require pw twice
 # :zap: improve performance: handle request page
-# :tada: version: v1.2
+# :pushpin: :tada: version: v1.2
 # :truck: move: move A component to new folder
 # :wrench: setup/config: config .env
 # :package: build: build project

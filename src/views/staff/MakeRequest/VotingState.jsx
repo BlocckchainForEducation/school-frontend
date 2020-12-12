@@ -61,7 +61,6 @@ export default function VotingState(props) {
       <Box className={cls.root}>
         <Paper className={cls.head}>
           <Typography variant="h3">
-            {/* TODO: Add Icons too, change color accroding to votingState*/}
             {votingState === "voting" && (
               <>
                 Đang bỏ phiếu <HowToVoteIcon></HowToVoteIcon>

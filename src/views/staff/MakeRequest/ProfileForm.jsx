@@ -152,7 +152,6 @@ export default function ProfileForm() {
                 ></TextField>
               </Grid>
             </Grid>
-            {/* TODO: Help user select account from wallet */}
             <TextField
               InputLabelProps={{ shrink: true }}
               fullWidth
@@ -164,7 +163,7 @@ export default function ProfileForm() {
                 endAdornment: !disable && (
                   <InputAdornment position="end">
                     <IconButton onClick={hdSelectAccountFromWallet}>
-                      <AccountBalanceWalletIcon></AccountBalanceWalletIcon>{" "}
+                      <AccountBalanceWalletIcon></AccountBalanceWalletIcon>
                     </IconButton>
                   </InputAdornment>
                 ),
