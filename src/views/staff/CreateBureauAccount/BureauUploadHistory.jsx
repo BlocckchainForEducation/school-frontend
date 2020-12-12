@@ -17,6 +17,7 @@ import { setPreloadHistory } from "./redux";
 import { useSnackbar } from "notistack";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import SimpleTable from "../../../shared/Table/SimpleTable";
+import GetAppIcon from "@material-ui/icons/GetApp";
 import XLSX from "xlsx";
 
 const useStyles = makeStyles((theme) => ({
@@ -26,11 +27,6 @@ const useStyles = makeStyles((theme) => ({
   heading: {
     fontSize: theme.typography.pxToRem(15),
     fontWeight: theme.typography.fontWeightRegular,
-    flexBasis: "80%",
-  },
-  summary: {
-    justifyContent: "flex-end",
-    alignItems: "center",
   },
 }));
 
@@ -69,7 +65,6 @@ export default function BureauUploadHistory() {
   const title = "Lịch sử upload Giáo vụ";
   const content = (
     <Box>
-      {/* TODO: allow download this data too */}
       {history.map((item, index) => {
         const body = item.profiles.map((profile) => [
           profile.bureauId,
@@ -89,7 +84,7 @@ export default function BureauUploadHistory() {
             </AccordionDetails>
             <Divider />
             <AccordionActions>
-              <Button size="small" variant="outlined" color="primary" onClick={(e) => hdDownloadClick(e, item)}>
+              <Button startIcon={<GetAppIcon />} variant="outlined" color="primary" onClick={(e) => hdDownloadClick(e, item)}>
                 Download
               </Button>
             </AccordionActions>

@@ -1,11 +1,13 @@
 import { useEffect } from "react";
-import { Accordion, makeStyles, AccordionSummary, AccordionDetails, Typography, Box, CircularProgress } from "@material-ui/core";
+import { Accordion, makeStyles, AccordionSummary, AccordionDetails, Typography, Box, CircularProgress, AccordionActions, Button } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import { getToken } from "src/utils/mng-token";
 import { setPreloadHistory } from "./redux";
 import { useSnackbar } from "notistack";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import SimpleTable from "../../../shared/Table/SimpleTable";
+import GetAppIcon from "@material-ui/icons/GetApp";
+import XLSX from "xlsx";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -39,7 +41,12 @@ export default function TeacherUploadHistory() {
       dp(setPreloadHistory(result));
     }
   }
-
+  async function hdDownloadClick(e, item) {
+    const wb = XLSX.utils.book_new();
+    const ws = XLSX.utils.json_to_sheet(item.profiles);
+    XLSX.utils.book_append_sheet(wb, ws, "Giảng viên - " + item.time);
+    XLSX.writeFile(wb, "giang-vien-" + item.time + ".xlsx");
+  }
   const head = ["Mã giảng viên", "Họ và tên", "Viện", "Account", "Password", "Txid"];
   const title = "Lịch sử upload Giảng viên";
   const content = (
@@ -61,6 +68,11 @@ export default function TeacherUploadHistory() {
             <AccordionDetails>
               <SimpleTable head={head} body={body}></SimpleTable>
             </AccordionDetails>
+            <AccordionActions>
+              <Button startIcon={<GetAppIcon />} variant="outlined" color="primary" onClick={(e) => hdDownloadClick(e, item)}>
+                Download
+              </Button>
+            </AccordionActions>
           </Accordion>
         );
       })}

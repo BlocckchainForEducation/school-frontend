@@ -161,7 +161,7 @@ export default function ProfileForm() {
               onChange={(e) => setState({ ...state, pubkey: e.target.value })}
               disabled={disable}
               InputProps={{
-                endAdornment: (
+                endAdornment: !disable && (
                   <InputAdornment position="end">
                     <IconButton onClick={hdSelectAccountFromWallet}>
                       <AccountBalanceWalletIcon></AccountBalanceWalletIcon>{" "}
