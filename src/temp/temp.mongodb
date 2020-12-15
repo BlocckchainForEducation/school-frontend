@@ -5,6 +5,6 @@
 
 // Select the database to use.
 use('B4E_School_Backend');
+db.VoteRequest.updateMany({}, {$set:{state: "new"}})
 
 db.Account.deleteMany({role: {$ne: "STAFF"}})
-

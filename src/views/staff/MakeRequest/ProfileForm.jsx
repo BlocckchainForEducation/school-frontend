@@ -56,11 +56,13 @@ export default function ProfileForm() {
       });
 
       const result = await response.json();
+      // validate profile fail
       if (!response.ok) {
-        enqueueSnackbar("Kiểm tra lại thông tin: " + JSON.stringify(result), { variant: "error", anchorOrigin: { vertical: "top", horizontal: "center" } });
+        enqueueSnackbar("Kiểm tra lại thông tin:" + JSON.stringify(result), { variant: "error", anchorOrigin: { vertical: "top", horizontal: "center" } });
       } else {
+        // send to bkc fail
         if (!result.ok) {
-          enqueueSnackbar("Tạo tx thất bại, thử lại sau!", { variant: "error", anchorOrigin: { vertical: "top", horizontal: "center" } });
+          enqueueSnackbar("Tạo tx thất bại: " + JSON.stringify(result.msg), { variant: "error", anchorOrigin: { vertical: "top", horizontal: "center" } });
           dp(setProfile({ ...state, imgSrc: profile.imgSrc, state: "fail" }));
         } else {
           enqueueSnackbar("Đăng kí tham gia thành công, đang chờ kết quả bỏ phiếu!", {

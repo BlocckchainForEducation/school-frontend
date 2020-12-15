@@ -18,7 +18,7 @@ export default function VoteHeader({ request }) {
     });
     const result = await response.json();
     if (!response.ok) {
-      enqueueSnackbar(JSON.stringify(result), { variant: "error", anchorOrigin: { vertical: "bottom", horizontal: "center" } });
+      enqueueSnackbar(JSON.stringify(result), { variant: "error", anchorOrigin: { vertical: "top", horizontal: "center" } });
     } else {
       dp(collapseVoteRequest({ pubkey: publicKeyOfRequest }));
       enqueueSnackbar("Bỏ phiếu thành công!", { variant: "success", anchorOrigin: { vertical: "bottom", horizontal: "center" } });

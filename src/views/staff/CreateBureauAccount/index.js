@@ -48,13 +48,13 @@ export default function CreateBureauAccount() {
           variant: "error",
           anchorOrigin: { vertical: "top", horizontal: "center" },
         });
-      }, 2000);
+      }, 500);
     } else {
       // TODO: remove setTimeout
       setTimeout(() => {
         dp(uploadFileSuccess(result));
         enqueueSnackbar("Tạo tài khoản cho các giáo vụ thành công!", { variant: "success", anchorOrigin: { vertical: "bottom", horizontal: "center" } });
-      }, 2000);
+      }, 500);
     }
   }
 

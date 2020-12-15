@@ -6,12 +6,13 @@
 // Select the database to use.
 use('B4E_School_Backend');
 
+
 db.UniversityProfile.updateMany({state: "voting"}, {$set: {"votes": [ {name: "ĐHXD", decision: "accept", time: "2020-12-10"}, {name: "KTQT", decision: "decline", time: "2020-12-12"}]}})
 
 db.UniversityProfile.updateMany({state: "voting"}, {$push: {"votes": {name: "BGD&ĐT", decision: "accept", time: "2020-12-13"}}})
 
 db.UniversityProfile.updateMany({state: "voting"}, {$set: {state: "accepted"}})
-
+use('B4E_Ministry_Backend');
 db.VoteRequest.insertMany([
   // {
   //   "universityName": "Trường Đại học Bách Khoa Hà Nội",
