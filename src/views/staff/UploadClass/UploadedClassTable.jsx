@@ -14,6 +14,7 @@ const columns = [
   { field: "teacherId", headerName: "Mã GV", width: 125, type: "string" },
   { field: "bureauId", headerName: "Mã GVU", width: 125, type: "string" },
   { field: "studentIds", headerName: "DSSV", width: 400, type: "string" },
+  { field: "txid", headerName: "Txid", width: 1200, type: "string" },
 ];
 
 export default function UploadedClassTable(props) {
