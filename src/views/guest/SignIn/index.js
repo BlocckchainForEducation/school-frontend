@@ -13,7 +13,7 @@ import Typography from "@material-ui/core/Typography";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import React, { useState } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
-import { setLocalToken, setSessionToken } from "src/utils/mng-token";
+import { setLocalToken, setRemember, setSessionToken } from "src/utils/mng-token";
 import { getRouteByRole, setLocalRole, setSessionRole } from "../../../utils/mng-role";
 
 function Copyright() {
@@ -81,9 +81,11 @@ export default function SignIn() {
       if (state.remember) {
         setLocalToken(body.token);
         setLocalRole(body.role);
+        setRemember(true);
       } else {
         setSessionToken(body.token);
         setSessionRole(body.role);
+        setRemember(false);
       }
       navigate(getRouteByRole(body.role));
     }

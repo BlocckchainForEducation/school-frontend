@@ -12,7 +12,7 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import { Alert } from "@material-ui/lab";
 import React, { useState } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
-import { setLocalToken } from "src/utils/mng-token";
+import { setLocalToken, setRemember } from "src/utils/mng-token";
 import { getRouteByRole, setLocalRole } from "../../../utils/mng-role";
 
 function Copyright() {
@@ -78,6 +78,7 @@ export default function SignUp() {
       const result = await response.json();
       setLocalToken(result.token);
       setLocalRole(result.role);
+      setRemember(true);
       setErrors(null);
       setSuccess("Đăng kí tài khoản thành công!");
       setTimeout(() => navigate(getRouteByRole(result.role)), 1000);

@@ -1,3 +1,5 @@
+import { getRemember } from "./mng-token";
+
 const ROLE = {
   STAFF: "STAFF",
   BUREAU: "BUREAU",
@@ -13,12 +15,13 @@ function setSessionRole(role) {
 }
 
 function getRole() {
-  return sessionStorage.getItem("role") || localStorage.getItem("role");
+  const remember = getRemember();
+  return remember ? localStorage.getItem("role") : sessionStorage.getItem("role");
 }
 
 function clearRole() {
-  sessionStorage.removeItem("role");
-  localStorage.removeItem("role");
+  const remember = getRemember();
+  return remember ? localStorage.removeItem("role") : sessionStorage.removeItem("role");
 }
 
 function getRouteByRole(role) {
