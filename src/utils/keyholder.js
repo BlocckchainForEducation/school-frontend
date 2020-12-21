@@ -29,9 +29,9 @@ export async function requirePrivateKeyHex(enqueueSnackbar) {
 
 export async function askPrivateKeyHexFromWallet() {
   return new Promise((resolve, reject) => {
-    window.postMessage({ type: "SIGN_REQUEST" }, "*");
+    window.postMessage({ type: "SIGN_REQUEST" }, window.origin);
     window.addEventListener("message", function (event) {
-      if (event.data.type === "SIGN_RESPONSE") {
+      if (event.data.type === "SIGN_RESPONSE" && event.origin === window.origin) {
         if (event.data.accept) {
           return resolve({ ok: true, privateKeyHex: event.data.account.privateKey });
         } else {

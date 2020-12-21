@@ -82,16 +82,16 @@ export default function ProfileForm() {
   async function hdSelectAccountFromWallet() {
     enqueueSnackbar("Hãy mở ví và chọn tài khoản!", { variant: "info", anchorOrigin: { vertical: "top", horizontal: "center" } });
     window.addEventListener("message", function (event) {
-      if (event.data.type === "SIGN_RESPONSE") {
+      if (event.data.type === "SIGN_RESPONSE" && event.origin === window.origin) {
         if (event.data.accept) {
           setPrivateKeyHex(event.data.account.privateKey);
           setState({ ...state, pubkey: event.data.account.publicKey });
         } else {
-          enqueueSnackbar("Bạn cần chọn một tài khoản để có thể tiếp tục!");
+          enqueueSnackbar("Bạn cần chọn một tài khoản để có thể tiếp tục!", { variant: "error", anchorOrigin: { vertical: "top", horizontal: "center" } });
         }
       }
     });
-    window.postMessage({ type: "SIGN_REQUEST" }, "*");
+    window.postMessage({ type: "SIGN_REQUEST" }, window.origin);
   }
 
   return (
