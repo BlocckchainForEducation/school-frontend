@@ -10,6 +10,7 @@ import {
   Button,
   AccordionActions,
   Divider,
+  Link,
 } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import { getToken } from "src/utils/mng-token";
@@ -19,6 +20,7 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import SimpleTable from "../../../shared/Table/SimpleTable";
 import GetAppIcon from "@material-ui/icons/GetApp";
 import XLSX from "xlsx";
+import { getHost, getLinkFromTxid } from "../../../utils/utils";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -42,12 +44,18 @@ export default function BureauUploadHistory() {
   }, []);
 
   async function fetchHistory() {
-    const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/staff/bureau-history`, {
-      headers: { Authorization: getToken() },
-    });
+    const response = await fetch(
+      `${process.env.REACT_APP_SERVER_URL}/staff/bureau-history`,
+      {
+        headers: { Authorization: getToken() },
+      }
+    );
     const result = await response.json();
     if (!response.ok) {
-      enqueueSnackbar("Fail to load history: " + JSON.stringify(result), { variant: "error", anchorOrigin: { vertical: "top", horizontal: "center" } });
+      enqueueSnackbar("Fail to load history: " + JSON.stringify(result), {
+        variant: "error",
+        anchorOrigin: { vertical: "top", horizontal: "center" },
+      });
     } else {
       dp(setPreloadHistory(result));
     }
@@ -61,7 +69,14 @@ export default function BureauUploadHistory() {
     XLSX.writeFile(wb, "giao-vu-" + item.time + ".xlsx");
   }
 
-  const head = ["Mã giáo vụ", "Họ và tên", "Viện", "Account", "Password", "Txid"];
+  const head = [
+    "Mã giáo vụ",
+    "Họ và tên",
+    "Viện",
+    "Account",
+    "Password",
+    "Txid",
+  ];
   const title = "Lịch sử upload Giáo vụ";
   const content = (
     <Box>
@@ -72,19 +87,30 @@ export default function BureauUploadHistory() {
           profile.department,
           profile.email,
           profile.firstTimePassword,
-          profile.txid ?? <CircularProgress size="1rem"></CircularProgress>,
+          getLinkFromTxid(profile.txid),
         ]);
         return (
           <Accordion key={index}>
-            <AccordionSummary expandIcon={<ExpandMoreIcon />} id={item._id} className={cls.summary}>
-              <Typography className={cls.heading}>{`#${index + 1}, ${item.time}`}</Typography>
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              id={item._id}
+              className={cls.summary}
+            >
+              <Typography className={cls.heading}>{`#${index + 1}, ${
+                item.time
+              }`}</Typography>
             </AccordionSummary>
             <AccordionDetails>
               <SimpleTable title={title} head={head} body={body}></SimpleTable>
             </AccordionDetails>
             <Divider />
             <AccordionActions>
-              <Button startIcon={<GetAppIcon />} variant="outlined" color="primary" onClick={(e) => hdDownloadClick(e, item)}>
+              <Button
+                startIcon={<GetAppIcon />}
+                variant="outlined"
+                color="primary"
+                onClick={(e) => hdDownloadClick(e, item)}
+              >
                 Download
               </Button>
             </AccordionActions>

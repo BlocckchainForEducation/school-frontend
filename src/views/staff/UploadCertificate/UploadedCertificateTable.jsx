@@ -14,19 +14,42 @@ const columns = [
   { field: "university", headerName: "Trường", width: 250, type: "string" },
   { field: "faculty", headerName: "Ngành học", width: 200, type: "string" },
   { field: "degree", headerName: "Loại bằng", width: 125, type: "string" },
-  { field: "gradyear", headerName: "Năm tốt nghiệp", width: 125, type: "string" },
+  {
+    field: "gradyear",
+    headerName: "Năm tốt nghiệp",
+    width: 125,
+    type: "string",
+  },
   { field: "level", headerName: "Xếp loại", width: 125, type: "string" },
-  { field: "eduform", headerName: "Hình thức đào tạo", width: 200, type: "string" },
+  {
+    field: "eduform",
+    headerName: "Hình thức đào tạo",
+    width: 200,
+    type: "string",
+  },
   { field: "issuelocation", headerName: "Nơi cấp", width: 125, type: "string" },
   { field: "issuedate", headerName: "Ngày cấp", width: 200, type: "string" },
-  { field: "headmaster", headerName: "Hiệu trưởng", width: 200, type: "string" },
+  {
+    field: "headmaster",
+    headerName: "Hiệu trưởng",
+    width: 200,
+    type: "string",
+  },
   { field: "regisno", headerName: "Số hiệu", width: 200, type: "string" },
-  { field: "globalregisno", headerName: "Số hiệu vào sổ", width: 200, type: "string" },
+  {
+    field: "globalregisno",
+    headerName: "Số hiệu vào sổ",
+    width: 200,
+    type: "string",
+  },
+  { field: "txid", headerName: "Txid", width: 1200, type: "string" },
 ];
 
 export default function UploadedCertificateTable(props) {
   const fetching = useSelector((state) => state.certificateSlice.fetching);
-  const certificates = useSelector((state) => state.certificateSlice.certificates);
+  const certificates = useSelector(
+    (state) => state.certificateSlice.certificates
+  );
   const dp = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
 
@@ -35,15 +58,21 @@ export default function UploadedCertificateTable(props) {
   }, []);
 
   async function fetchUploadedCertificate() {
-    const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/staff/certificates`, {
-      headers: { Authorization: getToken() },
-    });
+    const response = await fetch(
+      `${process.env.REACT_APP_SERVER_URL}/staff/certificates`,
+      {
+        headers: { Authorization: getToken() },
+      }
+    );
     const result = await response.json();
     if (!response.ok) {
-      enqueueSnackbar("Fail to load uploaded certificates!: " + JSON.stringify(result), {
-        variant: "error",
-        anchorOrigin: { vertical: "top", horizontal: "center" },
-      });
+      enqueueSnackbar(
+        "Fail to load uploaded certificates!: " + JSON.stringify(result),
+        {
+          variant: "error",
+          anchorOrigin: { vertical: "top", horizontal: "center" },
+        }
+      );
     } else {
       dp(setPreloadCertificates(result));
     }
@@ -51,7 +80,15 @@ export default function UploadedCertificateTable(props) {
 
   return (
     <Paper style={{ height: "350px", width: "100%" }}>
-      {fetching ? null : <DataGrid rows={certificates} columns={columns} autoPageSize rowHeight={48} loading={fetching} />}
+      {fetching ? null : (
+        <DataGrid
+          rows={certificates}
+          columns={columns}
+          autoPageSize
+          rowHeight={48}
+          loading={fetching}
+        />
+      )}
     </Paper>
   );
 }
