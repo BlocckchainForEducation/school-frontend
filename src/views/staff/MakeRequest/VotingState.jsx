@@ -88,7 +88,7 @@ export default function VotingState(props) {
                       </TableCell>
                       {/* TODO: vote now have no name, but pubkey instead, so we will fetch university from UniversityProfile first */}
                       <TableCell>
-                        {vote.name} || {vote.publicKey === "037dd31d79a82b44a3a24314bcdb8ea472dd7da3e07a2c96ff9fce4588b7e6464f" ? "BGD&DT" : ""}
+                        {vote.name || vote.publicKey === "037dd31d79a82b44a3a24314bcdb8ea472dd7da3e07a2c96ff9fce4588b7e6464f" ? "BGD&DT" : ""}
                       </TableCell>
                       <TableCell>
                         {vote.decision === "accept" && <CheckIcon color="primary"></CheckIcon>}
