@@ -48,9 +48,7 @@ export default function VotingState(props) {
           }
         }
       }, 5000);
-      console.log("clockId " + clockId);
       return () => {
-        console.log("clear clockId: " + clockId);
         window.clearInterval(clockId);
       };
     }
@@ -89,7 +87,9 @@ export default function VotingState(props) {
                         <Avatar></Avatar>
                       </TableCell>
                       {/* TODO: vote now have no name, but pubkey instead, so we will fetch university from UniversityProfile first */}
-                      <TableCell>{vote.name}</TableCell>
+                      <TableCell>
+                        {vote.name} || {vote.publicKey === "037dd31d79a82b44a3a24314bcdb8ea472dd7da3e07a2c96ff9fce4588b7e6464f" ? "BGD&DT" : ""}
+                      </TableCell>
                       <TableCell>
                         {vote.decision === "accept" && <CheckIcon color="primary"></CheckIcon>}
                         {vote.decision === "decline" && <CloseIcon color="secondary"></CloseIcon>}
