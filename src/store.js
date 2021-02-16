@@ -3,12 +3,11 @@ import profileReducer from "src/views/staff/MakeRequest/redux";
 import votingReducer from "src/views/staff//Voting/redux";
 import bureauReducer from "src/views/staff/CreateBureauAccount/redux";
 import teacherReducer from "src/views/staff/CreateTeacherAccount/redux";
+import teacherProfileReducer from "src/views/teacher/Profile/redux";
 import studentReducer from "src/views/staff/CreateStudentAccount/redux";
 import subjectReducer from "src/views/staff/UploadSubject/redux";
 import classReducer from "src/views/staff/UploadClass/redux";
 import certificateReducer from "src/views/staff/UploadCertificate/redux";
-
-import teacherProfileReducer from "src/views/teacher/Profile/redux";
 
 export const resetStore = () => {
   return {
