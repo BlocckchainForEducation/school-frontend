@@ -42,19 +42,19 @@ export default function CreateBureauAccount() {
     const result = await response.json();
     if (!response.ok) {
       // TODO: remove setTimeout
-      setTimeout(() => {
-        dp(uploadFileFail());
-        enqueueSnackbar("Something went wrong: " + JSON.stringify(result), {
-          variant: "error",
-          anchorOrigin: { vertical: "top", horizontal: "center" },
-        });
-      }, 500);
+      // setTimeout(() => {
+      dp(uploadFileFail());
+      enqueueSnackbar("Something went wrong: " + JSON.stringify(result), {
+        variant: "error",
+        anchorOrigin: { vertical: "top", horizontal: "center" },
+      });
+      // }, 500);
     } else {
       // TODO: remove setTimeout
-      setTimeout(() => {
-        dp(uploadFileSuccess(result));
-        enqueueSnackbar("Tạo tài khoản cho các giáo vụ thành công!", { variant: "success", anchorOrigin: { vertical: "bottom", horizontal: "center" } });
-      }, 500);
+      // setTimeout(() => {
+      dp(uploadFileSuccess(result));
+      enqueueSnackbar("Tạo tài khoản cho các giáo vụ thành công!", { variant: "success", anchorOrigin: { vertical: "bottom", horizontal: "center" } });
+      // }, 500);
     }
   }
 

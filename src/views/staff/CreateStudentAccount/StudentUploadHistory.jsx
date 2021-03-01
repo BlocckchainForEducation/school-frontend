@@ -48,7 +48,7 @@ export default function StudentUploadHistory() {
     XLSX.writeFile(wb, "sinh-viên" + item.time + ".xlsx");
   }
 
-  const head = ["Mssv", "Họ và tên", "Ngày sinh", "Lớp", "Public key", "Private key"];
+  const head = ["Mssv", "Họ và tên", "Ngày sinh", "Lớp", "Email", "Password"];
   const title = "Lịch sử upload sinh viên";
   const content = (
     <Box>
@@ -58,8 +58,10 @@ export default function StudentUploadHistory() {
           profile.name,
           profile.birthday,
           profile.class,
-          profile.publicKey,
-          profile.privateKey,
+          // profile.publicKey,
+          // profile.privateKey,
+          profile.email,
+          profile.firstTimePassword,
           // profile.txid ?? <CircularProgress size="1rem"></CircularProgress>,
         ]);
         return (
@@ -68,7 +70,7 @@ export default function StudentUploadHistory() {
               <Typography className={cls.heading}>{`#${index + 1}, ${item.time}`}</Typography>
             </AccordionSummary>
             <AccordionDetails>
-              <SimpleTable head={head} body={body} minWidth="2200px"></SimpleTable>
+              <SimpleTable head={head} body={body}></SimpleTable>
             </AccordionDetails>
             <AccordionActions>
               <Button startIcon={<GetAppIcon />} variant="outlined" color="primary" onClick={(e) => hdDownloadClick(e, item)}>

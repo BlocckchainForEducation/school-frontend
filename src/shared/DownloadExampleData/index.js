@@ -9,7 +9,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function DownloadExampleData({ title, fileName, head, body }) {
+export default function DownloadExampleData({ title, fileName, head, body, minWidth }) {
   const cls = useStyles();
 
   function hdClickDownload(e) {
@@ -26,7 +26,7 @@ export default function DownloadExampleData({ title, fileName, head, body }) {
       </Box>
       <Divider></Divider>
       <Box>
-        <SimpleTable head={head} body={body}></SimpleTable>
+        <SimpleTable head={head} body={body} minWidth={minWidth}></SimpleTable>
       </Box>
     </Paper>
   );

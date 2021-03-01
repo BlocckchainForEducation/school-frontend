@@ -33,7 +33,7 @@ export default function Uploadclass() {
     const formData = new FormData();
     formData.append("excel-file", files[0]);
     formData.append("privateKeyHex", privateKeyHex);
-    const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/staff/upload-classes`, {
+    const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/staff/v1.2/upload-classes`, {
       method: "POST",
       headers: { Authorization: getToken() },
       body: formData,
@@ -44,12 +44,12 @@ export default function Uploadclass() {
       setTimeout(() => {
         dp(uploadFileFail());
         enqueueSnackbar("Something went wrong: " + JSON.stringify(result), { variant: "error", anchorOrigin: { vertical: "top", horizontal: "center" } });
-      }, 2000);
+      }, 500);
     } else {
       setTimeout(() => {
         dp(uploadFileSuccess(result));
         enqueueSnackbar("Upload file thành công!", { variant: "success", anchorOrigin: { vertical: "bottom", horizontal: "center" } });
-      }, 2000);
+      }, 500);
     }
   }
 

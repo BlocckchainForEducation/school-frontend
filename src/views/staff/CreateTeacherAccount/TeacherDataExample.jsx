@@ -3,14 +3,18 @@ import DownloadExampleData from "../../../shared/DownloadExampleData";
 
 export default function TeacherDataExample() {
   const title = "Mẫu file dữ liệu Giảng viên";
-  const fileName = "giang-vien-example.xlsx";
-  const head = ["Mã giảng viên", "Họ và tên", "Email", "Viện", "Khóa công khai"];
+  const fileName = "v1.2/giang-vien-example.xlsx";
+  const head = ["Khoa/Viện*", "Bộ môn*", "Mã giảng viên*", "Họ và tên*", "Email*", "Số điện thoại"];
   const body = [
-    ["GV1234", "Nguyễn Văn X", "nguyenvanx@soict.hust.edu.vn", "Viện CNTT&TT", "02a2e3f2b6b9ec1155979ee691072bd17f..."],
-    ["GV1235", "Nguyễn Văn Y", "nguyenvany@spkt.hust.edu.vn", "Viện Sư phạm Kỹ thuật", "02992cf23456bf4167fc2d69f70ee36361a..."],
-    ["GV1236", "Trần Thị Z", "lethidc@nn.hust.edu.vn", "Viện Ngoại ngữ", "028b921e7d9e7e0ece5660dc48e6c7b84..."],
-    ["GV1237", "Trần Văn T", "tranvane@dtvt.hust.edu.vn", "Viện Điện tử viễn thông", "02a09d011afd12783ab87f44ad1932dcca..."],
-    ["GV1238", "Đào Thị W", "daothiw@dktdh.hust.edu.vn", "Viện Điều khiển Tự động hóa", "0351befccfa9fa6ba05d16a2eb94a593f77..."],
+    ["KCNTT", "KHMT", "GV00010", "Vũ Văn Thiệu", "thieu.vuvan@hust.edu.vn", 982928307],
+    ["KCNTT", "CNPM", "GV00011", "Nguyễn Phi Lê", "le.nguyenphi@hust.edu.vn", 1662257624],
+    ["KCNTT", "VP", "GV00012", "Nguyễn Phi Lê", "le.nguyenphi@hust.edu.vn", 1662257624],
+    ["KCNTT", "VP", "GV00013", "Umi Hirose", "umi.hirose@soict.hust.edu.vn"],
+    ["KCNTT", "HTTT", "GV00014", "Nguyễn Ngọc Bích A", "bichann@soict.hust.edu.vn"],
+    ["KCNTT", "KTMT", "GV00015", "Ngô Lam Trung (1.0)", "trung.ngolam@hust.edu.vn", "0968 395 999"],
+    // ["KCNTT", "KTMT", "GV00016", "Nguyễn Văn Hiên (0.0)", "nguyenvanhienbkhn@gmail.com"],
+    // ["KCNTT", "TTMMT", "GV00017", "Nguyễn Linh Giang", "giang.nguyenlinh@hust.edu.vn", 912725672],
+    // ["KCNTT", "KHMT", "GV00018", "Đỗ Quốc Huy", "huy.doquoc@hust.edu.vn", 936356172],
   ];
   return <DownloadExampleData {...{ title, fileName, head, body }}></DownloadExampleData>;
 }

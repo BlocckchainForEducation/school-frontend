@@ -2,18 +2,14 @@ import React from "react";
 import DownloadExampleData from "../../../shared/DownloadExampleData";
 
 export default function CertificateDataExample() {
-  const title = "Mẫu file dữ liệu Môn học";
-  const fileName = "bang-cap-example.xlsx";
+  const title = "Mẫu file dữ liệu Bằng cấp";
+  const fileName = "v1.2/bang-cap-example.xlsx";
   const head = [
-    "Họ và tên",
-    "Ngày sinh",
-    "Giới tính",
-    "Trường",
-    "Ngành học",
+    "Mã số sinh viên",
     "Loại bằng",
-    "Năm",
+    "Năm tốt nghiệp",
     "Xếp loại",
-    // "Hình thức đào tạo",
+    "Hình thức đào tạo",
     "Nơi cấp",
     "Ngày cấp",
     "Hiệu trưởng",
@@ -21,38 +17,10 @@ export default function CertificateDataExample() {
     "Số hiệu vào sổ",
   ];
   const body = [
-    [
-      "Nguyễn Văn An",
-      "01/01/1998",
-      "Nam",
-      "Đại học Bách Khoa Hà Nội",
-      "Công nghệ thông tin",
-      "Kỹ sư",
-      "2019",
-      "Giỏi",
-      // "Chính quy",
-      "Hà Nội",
-      "20/08/2019",
-      "Hoàng Minh Sơn",
-      "12431",
-      "12341231431",
-    ],
-    [
-      "Nguyễn Văn Bình",
-      "01/01/1998",
-      "Nam",
-      "Đại học Bách Khoa Hà Nội",
-      "Công nghệ thông tin",
-      "Kỹ sư",
-      "2019",
-      "Giỏi",
-      // "Chính quy",
-      "Hà Nội",
-      "20/08/2019",
-      "Hoàng Minh Sơn",
-      "12432",
-      "12341231432",
-    ],
+    [20195753, "Kỹ sư", 2019, "Giỏi", "Chính quy", "Hà Nội", "20/11/2020", "Huỳnh Quyết Thắng", 1782649, 48727982437],
+    [20195754, "Kỹ sư", 2019, "Giỏi", "Chính quy", "Hà Nội", "20/11/2020", "Huỳnh Quyết Thắng", 1784563, 48727982423],
+    [20195755, "Kỹ sư", 2019, "Giỏi", "Chính quy", "Hà Nội", "20/11/2020", "Huỳnh Quyết Thắng", 1784567, 48727982426],
+    [20195756, "Kỹ sư", 2019, "Giỏi", "Chính quy", "Hà Nội", "20/11/2020", "Huỳnh Quyết Thắng", 1784568, 48727982429],
   ];
-  return <DownloadExampleData {...{ title, fileName, head, body }}></DownloadExampleData>;
+  return <DownloadExampleData {...{ title, fileName, head, body }} minWidth={"1500px"}></DownloadExampleData>;
 }

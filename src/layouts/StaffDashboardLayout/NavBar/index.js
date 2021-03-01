@@ -1,55 +1,61 @@
 import { Avatar, Box, Divider, Drawer, Hidden, List, makeStyles, Typography } from "@material-ui/core";
+import AccountBalanceIcon from "@material-ui/icons/AccountBalance";
+import AspectRatioIcon from "@material-ui/icons/AspectRatio";
+import CancelPresentationIcon from "@material-ui/icons/CancelPresentation";
+import GroupAddIcon from "@material-ui/icons/GroupAdd";
+import HowToVoteIcon from "@material-ui/icons/HowToVote";
+import PersonAddIcon from "@material-ui/icons/PersonAdd";
 import PropTypes from "prop-types";
 import React, { useEffect } from "react";
-import { User as UserIcon } from "react-feather";
 import { useSelector } from "react-redux";
 import { Link as RouterLink, useLocation } from "react-router-dom";
+import ClassroomIcon from "../../../assets/icons/ClassroomIcon";
 import NavItem from "./NavItem";
 
 const items = [
   {
     href: "/cb-pdt/dang-ki-tham-gia",
-    icon: UserIcon,
+    icon: AccountBalanceIcon,
     title: "Đăng kí tham gia",
   },
   {
     href: "/cb-pdt/bo-phieu",
-    icon: UserIcon,
+    icon: HowToVoteIcon,
     title: "Bỏ phiếu",
   },
   {
     href: "/cb-pdt/tao-tk-giao-vu",
-    icon: UserIcon,
+    icon: PersonAddIcon,
     title: "Tạo tài khoản giáo vụ",
   },
   {
     href: "/cb-pdt/tao-tk-giang-vien",
-    icon: UserIcon,
+    icon: PersonAddIcon,
     title: "Tạo tài khoản giảng viên",
   },
   {
     href: "/cb-pdt/tao-tk-sinh-vien",
-    icon: UserIcon,
+    icon: GroupAddIcon,
     title: "Tạo tài khoản sinh viên",
   },
-  {
-    href: "/cb-pdt/upload-mon-hoc",
-    icon: UserIcon,
-    title: "Upload môn học",
-  },
+  // {
+  //   href: "/cb-pdt/upload-mon-hoc",
+  //   icon: Classroom,
+  //   title: "Upload môn học",
+  // },
   {
     href: "/cb-pdt/upload-lop-hoc",
-    icon: UserIcon,
+    icon: ClassroomIcon,
     title: "Upload lớp học",
   },
   {
     href: "/cb-pdt/upload-bang-cap",
-    icon: UserIcon,
+    icon: AspectRatioIcon,
     title: "Upload bằng cấp",
   },
   {
     href: "/cb-pdt/thu-hoi-bang-cap",
-    icon: UserIcon,
+    icon: CancelPresentationIcon,
     title: "Thu hồi bằng câp",
   },
 ];

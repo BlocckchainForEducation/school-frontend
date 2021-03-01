@@ -136,14 +136,7 @@ export default function ProfileForm() {
             ></TextField>
             <Grid container spacing={2}>
               <Grid item xs={12} md={6}>
-                <TextField
-                  InputLabelProps={{ shrink: true }}
-                  fullWidth
-                  label="Email"
-                  value={state?.email}
-                  onChange={(e) => setState({ ...state, email: e.target.value })}
-                  disabled={disable}
-                ></TextField>
+                <TextField InputLabelProps={{ shrink: true }} fullWidth label="Email" value={state?.email} onChange={(e) => setState({ ...state, email: e.target.value })} disabled={true}></TextField>
               </Grid>
               <Grid item xs={12} md={6}>
                 <TextField

@@ -1,15 +1,5 @@
 import { useEffect } from "react";
-import {
-  Accordion,
-  makeStyles,
-  AccordionSummary,
-  AccordionDetails,
-  Typography,
-  Box,
-  CircularProgress,
-  AccordionActions,
-  Button,
-} from "@material-ui/core";
+import { Accordion, makeStyles, AccordionSummary, AccordionDetails, Typography, Box, CircularProgress, AccordionActions, Button } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import { getToken } from "src/utils/mng-token";
 import { setPreloadHistory } from "./redux";
@@ -42,12 +32,9 @@ export default function TeacherUploadHistory() {
   }, []);
 
   async function fetchHistory() {
-    const response = await fetch(
-      `${process.env.REACT_APP_SERVER_URL}/staff/teacher-history`,
-      {
-        headers: { Authorization: getToken() },
-      }
-    );
+    const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/staff/teacher-history`, {
+      headers: { Authorization: getToken() },
+    });
     const result = await response.json();
     if (!response.ok) {
       enqueueSnackbar("Fail to load history: " + JSON.stringify(result), {
@@ -64,43 +51,22 @@ export default function TeacherUploadHistory() {
     XLSX.utils.book_append_sheet(wb, ws, "Giảng viên - " + item.time);
     XLSX.writeFile(wb, "giang-vien-" + item.time + ".xlsx");
   }
-  const head = [
-    "Mã giảng viên",
-    "Họ và tên",
-    "Viện",
-    "Account",
-    "Password",
-    "Txid",
-  ];
+  const head = ["Mã giảng viên", "Họ và tên", "Bộ môn", "Account", "Password", "Txid"];
   const title = "Lịch sử upload Giảng viên";
   const content = (
     <Box>
       {history.map((item, index) => {
-        const body = item.profiles.map((profile) => [
-          profile.teacherId,
-          profile.name,
-          profile.department,
-          profile.email,
-          profile.firstTimePassword,
-          getLinkFromTxid(profile.txid),
-        ]);
+        const body = item.profiles.map((profile) => [profile.teacherId, profile.name, profile.department, profile.email, profile.firstTimePassword, getLinkFromTxid(profile.txid)]);
         return (
           <Accordion key={index}>
             <AccordionSummary expandIcon={<ExpandMoreIcon />} id={item._id}>
-              <Typography className={cls.heading}>{`#${index + 1}, ${
-                item.time
-              }`}</Typography>
+              <Typography className={cls.heading}>{`#${index + 1}, ${item.time}`}</Typography>
             </AccordionSummary>
             <AccordionDetails>
               <SimpleTable head={head} body={body}></SimpleTable>
             </AccordionDetails>
             <AccordionActions>
-              <Button
-                startIcon={<GetAppIcon />}
-                variant="outlined"
-                color="primary"
-                onClick={(e) => hdDownloadClick(e, item)}
-              >
+              <Button startIcon={<GetAppIcon />} variant="outlined" color="primary" onClick={(e) => hdDownloadClick(e, item)}>
                 Download
               </Button>
             </AccordionActions>
