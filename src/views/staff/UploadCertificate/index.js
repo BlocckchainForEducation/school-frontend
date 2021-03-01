@@ -41,16 +41,14 @@ export default function UploadCertificate() {
     });
     const result = await response.json();
     if (!response.ok) {
-      // TODO: remove setTimeout
-      setTimeout(() => {
-        dp(uploadFileFail());
-        enqueueSnackbar("Something went wrong: " + JSON.stringify(result), { variant: "error", anchorOrigin: { vertical: "top", horizontal: "center" } });
-      }, 2000);
+      dp(uploadFileFail());
+      enqueueSnackbar("Something went wrong: " + JSON.stringify(result), {
+        variant: "error",
+        anchorOrigin: { vertical: "top", horizontal: "center" },
+      });
     } else {
-      setTimeout(() => {
-        dp(uploadFileSuccess(result));
-        enqueueSnackbar("Upload file thành công!", { variant: "success", anchorOrigin: { vertical: "bottom", horizontal: "center" } });
-      }, 2000);
+      dp(uploadFileSuccess(result));
+      enqueueSnackbar("Upload file thành công!", { variant: "success", anchorOrigin: { vertical: "bottom", horizontal: "center" } });
     }
   }
 

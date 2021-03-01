@@ -77,18 +77,15 @@ export default function SubmitSubjectPoint(props) {
     });
     const result = await response.json();
     if (!response.ok) {
-      // TODO: remove setTimeout
-      setTimeout(() => {
-        setSubmitState("fail");
-        enqueueSnackbar("Something went wrong: " + JSON.stringify(result), { variant: "error", anchorOrigin: { vertical: "top", horizontal: "center" } });
-      }, 2000);
+      setSubmitState("fail");
+      enqueueSnackbar("Something went wrong: " + JSON.stringify(result), {
+        variant: "error",
+        anchorOrigin: { vertical: "top", horizontal: "center" },
+      });
     } else {
-      // TODO: remove setTimeout
-      setTimeout(() => {
-        setSubmitState("success");
-        // dp(uploadFileSuccess(result));
-        enqueueSnackbar("Gửi dữ liệu thành công!", { variant: "success", anchorOrigin: { vertical: "bottom", horizontal: "center" } });
-      }, 2000);
+      setSubmitState("success");
+      // dp(uploadFileSuccess(result));
+      enqueueSnackbar("Gửi dữ liệu thành công!", { variant: "success", anchorOrigin: { vertical: "bottom", horizontal: "center" } });
     }
   }
 
@@ -97,7 +94,13 @@ export default function SubmitSubjectPoint(props) {
       <Box className={cls.root}>
         <Paper>
           <Box px={2} py={2} display="flex" alignItems="flex-end">
-            <TextField label="Mã lớp" InputLabelProps={{ shrink: true }} autoFocus value={classId} onChange={(e) => setClassId(e.target.value)}></TextField>
+            <TextField
+              label="Mã lớp"
+              InputLabelProps={{ shrink: true }}
+              autoFocus
+              value={classId}
+              onChange={(e) => setClassId(e.target.value)}
+            ></TextField>
             <Box px={2}>
               <Button variant="contained" color="primary" onClick={hdFetchClass}>
                 Go
@@ -109,7 +112,10 @@ export default function SubmitSubjectPoint(props) {
           <Paper>
             <Box p={2}>
               <Box display="flex" justifyContent="space-between">
-                <Typography variant="h5" gutterBottom>{`Nhập điểm môn ${claxx.subject.name} - Mã lớp ${claxx.classId} - Kì ${claxx.semester}`}</Typography>
+                <Typography
+                  variant="h5"
+                  gutterBottom
+                >{`Nhập điểm môn ${claxx.subject.name} - Mã lớp ${claxx.classId} - Kì ${claxx.semester}`}</Typography>
                 <Box>
                   {submitState === true && <CircularProgress size="1rem" color="primary"></CircularProgress>}
                   {submitState === "success" && <CheckIcon color="primary" fontSize="small"></CheckIcon>}

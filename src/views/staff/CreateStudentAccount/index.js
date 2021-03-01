@@ -29,12 +29,11 @@ export default function CreateStudentAccount() {
   const { enqueueSnackbar } = useSnackbar();
 
   async function hdUploadFile(files) {
-    // let assume we do not push this info to blockchain,
-    // const privateKeyHex = await requirePrivateKeyHex(enqueueSnackbar);
+    const privateKeyHex = await requirePrivateKeyHex(enqueueSnackbar);
     dp(startUploadFile());
     const formData = new FormData();
     formData.append("excel-file", files[0]);
-    // formData.append("privateKeyHex", privateKeyHex);
+    formData.append("privateKeyHex", privateKeyHex);
     const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/staff/create-student`, {
       method: "POST",
       headers: { Authorization: getToken() },
@@ -42,17 +41,14 @@ export default function CreateStudentAccount() {
     });
     const result = await response.json();
     if (!response.ok) {
-      // TODO: remove setTimeout
-      setTimeout(() => {
-        dp(uploadFileFail());
-        enqueueSnackbar("Something went wrong: " + JSON.stringify(result), { variant: "error", anchorOrigin: { vertical: "top", horizontal: "center" } });
-      }, 2000);
+      dp(uploadFileFail());
+      enqueueSnackbar("Something went wrong: " + JSON.stringify(result), {
+        variant: "error",
+        anchorOrigin: { vertical: "top", horizontal: "center" },
+      });
     } else {
-      // TODO: remove setTimeout
-      setTimeout(() => {
-        dp(uploadFileSuccess(result));
-        enqueueSnackbar("Upload file thành công!", { variant: "success", anchorOrigin: { vertical: "bottom", horizontal: "center" } });
-      }, 2000);
+      dp(uploadFileSuccess(result));
+      enqueueSnackbar("Upload file thành công!", { variant: "success", anchorOrigin: { vertical: "bottom", horizontal: "center" } });
     }
   }
 
