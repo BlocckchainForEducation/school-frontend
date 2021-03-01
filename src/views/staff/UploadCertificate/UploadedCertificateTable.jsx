@@ -8,6 +8,7 @@ import { setPreloadCertificates } from "./redux";
 
 const columns = [
   { field: "id", headerName: "#", width: 50, type: "string" },
+  { field: "studentId", headerName: "Mã số sv", width: 125, type: "string" },
   { field: "name", headerName: "Họ và tên", width: 200, type: "string" },
   { field: "birthday", headerName: "Ngày sinh", width: 150, type: "string" },
   { field: "gender", headerName: "Giới tính", type: "string" },
