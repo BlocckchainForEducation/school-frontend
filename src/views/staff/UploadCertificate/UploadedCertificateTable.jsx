@@ -47,9 +47,7 @@ const columns = [
 
 export default function UploadedCertificateTable(props) {
   const fetching = useSelector((state) => state.certificateSlice.fetching);
-  const certificates = useSelector(
-    (state) => state.certificateSlice.certificates
-  );
+  const certificates = useSelector((state) => state.certificateSlice.certificates);
   const dp = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
 
@@ -58,37 +56,25 @@ export default function UploadedCertificateTable(props) {
   }, []);
 
   async function fetchUploadedCertificate() {
-    const response = await fetch(
-      `${process.env.REACT_APP_SERVER_URL}/staff/certificates`,
-      {
-        headers: { Authorization: getToken() },
-      }
-    );
+    const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/staff/certificates`, {
+      headers: { Authorization: getToken() },
+    });
     const result = await response.json();
     if (!response.ok) {
-      enqueueSnackbar(
-        "Fail to load uploaded certificates!: " + JSON.stringify(result),
-        {
-          variant: "error",
-          anchorOrigin: { vertical: "top", horizontal: "center" },
-        }
-      );
+      enqueueSnackbar("Fail to load uploaded certificates!: " + JSON.stringify(result), {
+        variant: "error",
+        anchorOrigin: { vertical: "top", horizontal: "center" },
+      });
     } else {
       dp(setPreloadCertificates(result));
     }
   }
 
   return (
-    <Paper style={{ height: "350px", width: "100%" }}>
-      {fetching ? null : (
-        <DataGrid
-          rows={certificates}
-          columns={columns}
-          autoPageSize
-          rowHeight={48}
-          loading={fetching}
-        />
-      )}
-    </Paper>
+    certificates.length !== 0 && (
+      <Paper style={{ height: "350px", width: "100%" }}>
+        {fetching ? null : <DataGrid rows={certificates} columns={columns} autoPageSize rowHeight={48} loading={fetching} />}
+      </Paper>
+    )
   );
 }

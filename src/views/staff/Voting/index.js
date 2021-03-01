@@ -18,7 +18,7 @@ export default function Voting(props) {
   const votingState = useSelector((state) => state.profileSlice.state);
 
   return (
-    <Page title="Voting">
+    <Page title="Bỏ phiếu">
       {votingState === "accepted" ? (
         <RequestList></RequestList>
       ) : (

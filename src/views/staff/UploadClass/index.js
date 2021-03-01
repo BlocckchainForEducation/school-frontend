@@ -1,12 +1,14 @@
-import { useSnackbar } from "notistack";
 import { makeStyles } from "@material-ui/core";
+import { Alert } from "@material-ui/lab";
+import { useSnackbar } from "notistack";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getToken } from "src/utils/mng-token";
-import { requirePrivateKeyHex } from "../../../utils/keyholder";
-import { startUploadFile, uploadFileFail, uploadFileSuccess } from "./redux";
 import Page from "src/shared/Page";
-import ClassDataExample from "./ClassDataExample";
+import { getToken } from "src/utils/mng-token";
 import DragnDropZone from "../../../shared/DragnDropZone";
+import { requirePrivateKeyHex } from "../../../utils/keyholder";
+import ClassDataExample from "./ClassDataExample";
+import { startUploadFile, uploadFileFail, uploadFileSuccess } from "./redux";
 import UploadedClassTable from "./UploadedClassTable";
 
 const useStyles = makeStyles((theme) => ({
@@ -18,12 +20,16 @@ const useStyles = makeStyles((theme) => ({
       },
     },
     paddingBottom: theme.spacing(2.5),
+    "& .MuiAlert-icon": {
+      alignItems: "center",
+    },
   },
 }));
 
 export default function Uploadclass() {
   const cls = useStyles();
   const uploading = useSelector((state) => state.classSlice.uploading);
+  const [showAlert, setShowAlert] = useState(true);
   const dp = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
 
@@ -43,7 +49,10 @@ export default function Uploadclass() {
       // TODO: remove setTimeout
       setTimeout(() => {
         dp(uploadFileFail());
-        enqueueSnackbar("Something went wrong: " + JSON.stringify(result), { variant: "error", anchorOrigin: { vertical: "top", horizontal: "center" } });
+        enqueueSnackbar("Something went wrong: " + JSON.stringify(result), {
+          variant: "error",
+          anchorOrigin: { vertical: "top", horizontal: "center" },
+        });
       }, 500);
     } else {
       setTimeout(() => {
@@ -57,6 +66,12 @@ export default function Uploadclass() {
     <Page title="Upload lớp học">
       <div className={cls.root}>
         <ClassDataExample></ClassDataExample>
+
+        {showAlert && (
+          <Alert severity="info" variant="filled" onClose={() => setShowAlert(false)} style={{ fontSize: "1.25rem" }}>
+            Lưu ý: Cần tạo Giáo vụ, Giảng viên và Sinh viên của lớp học tương ứng trước!
+          </Alert>
+        )}
         <DragnDropZone onDropAccepted={hdUploadFile} uploading={uploading}></DragnDropZone>
         <UploadedClassTable></UploadedClassTable>
       </div>
