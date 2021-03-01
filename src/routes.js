@@ -20,6 +20,7 @@ import UploadCertificate from "./views/staff/UploadCertificate";
 import TeacherProfile from "./views/teacher/Profile";
 import { getRole, ROLE } from "./utils/mng-role";
 import SubmitSubjectPoint from "./views/teacher/SubmitSubjectPoint";
+import RevokeCertificate from "./views/staff/RevokeCertificate";
 
 const routes = [
   {
@@ -34,7 +35,7 @@ const routes = [
       { path: "upload-mon-hoc", element: <UploadSubject /> },
       { path: "upload-lop-hoc", element: <UploadClass /> },
       { path: "upload-bang-cap", element: <UploadCertificate /> },
-      // { path: "thu-hoi-bang-cap", element: <ShareCertificate /> },
+      { path: "thu-hoi-bang-cap", element: <RevokeCertificate /> },
       { path: "*", element: <Navigate to="/404" replace={true} /> },
     ],
   },

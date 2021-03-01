@@ -11,11 +11,11 @@ const theme = createMuiTheme({
       default: colors.common.white,
       paper: colors.common.white,
     },
-    primary: blue,
+    // primary: blue,
     // primary: {
     //   main: blue,
     // },
-    secondary: pink,
+    // secondary: pink,
     // secondary: {
     //   main: pink,
     // },
