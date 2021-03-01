@@ -22,7 +22,14 @@ const classSlice = createSlice({
     },
     uploadFileSuccess: (state, action) => {
       state.uploading = false;
-      state.classes = action.payload.concat(state.classes).map((claxx, index) => ({ ...claxx, id: index + 1 }));
+      state.classes = action.payload.concat(state.classes).map((claxx, index) => ({
+        ...claxx,
+        id: index + 1,
+        teacherName: claxx.teacher.name,
+        bureauName: claxx.bureau.name,
+        subjectId: claxx.subject.subjectId,
+        subjectName: claxx.subject.subjectName,
+      }));
     },
     uploadFileFail: (state, action) => {
       state.uploading = false;
