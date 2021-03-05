@@ -23,11 +23,11 @@ const items = [
     icon: HowToVoteIcon,
     title: "Bỏ phiếu",
   },
-  {
-    href: "/cb-pdt/tao-tk-giao-vu",
-    icon: PersonAddIcon,
-    title: "Tạo tài khoản giáo vụ",
-  },
+  // {
+  //   href: "/cb-pdt/tao-tk-giao-vu",
+  //   icon: PersonAddIcon,
+  //   title: "Tạo tài khoản giáo vụ",
+  // },
   {
     href: "/cb-pdt/tao-tk-giang-vien",
     icon: PersonAddIcon,
