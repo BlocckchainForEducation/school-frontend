@@ -1,6 +1,8 @@
 import { Avatar, Box, Paper, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { useSnackbar } from "notistack";
+import { useState } from "react";
+import AvatarEditor from "react-avatar-edit";
 import { useDispatch, useSelector } from "react-redux";
 import { getToken } from "src/utils/mng-token";
 import { updateImgSrc } from "./redux";
@@ -8,8 +10,8 @@ import { updateImgSrc } from "./redux";
 const useStyles = makeStyles((theme) => ({
   root: {},
   avatar: {
-    height: "128px",
-    width: "128px",
+    height: 128,
+    width: 128,
     margin: "auto",
     position: "relative",
   },
@@ -31,12 +33,38 @@ export default function AvatarBar() {
   const schoolName = useSelector((state) => state.profileSlice.universityName);
   const avatarSrc = useSelector((state) => state.profileSlice.imgSrc);
   const description = useSelector((state) => state.profileSlice.description);
+
   const { enqueueSnackbar } = useSnackbar();
   const dp = useDispatch();
 
-  async function hdChangeAvatar(e) {
+  const [shouldShowEditor, setShowEditor] = useState(!avatarSrc);
+  const [cropedImgBase64, setCropedImgBase64] = useState(null);
+
+  function hdCrop(cropedImg) {
+    setCropedImgBase64(cropedImg);
+  }
+
+  async function hdClose() {
+    await hdChangeCropedAvatar(base64ToFile(cropedImgBase64, "avatar"));
+    setShowEditor(false);
+  }
+
+  // convert base64 -> File to send it to backend
+  function base64ToFile(dataurl, filename) {
+    var arr = dataurl.split(","),
+      mime = arr[0].match(/:(.*?);/)[1],
+      bstr = atob(arr[1]),
+      n = bstr.length,
+      u8arr = new Uint8Array(n);
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new File([u8arr], filename, { type: mime });
+  }
+
+  async function hdChangeCropedAvatar(file) {
     const formData = new FormData();
-    formData.append("avatar", e.target.files[0]);
+    formData.append("avatar", file);
     const res = await fetch(`${process.env.REACT_APP_SERVER_URL}/staff/change-avatar`, {
       method: "POST",
       headers: { Authorization: getToken() },
@@ -45,7 +73,10 @@ export default function AvatarBar() {
 
     if (!res.ok) {
       const err = await res.json();
-      enqueueSnackbar("Something went wrong: " + JSON.stringify(err), { variant: "error", anchorOrigin: { vertical: "top", horizontal: "center" } });
+      enqueueSnackbar("Something went wrong: " + JSON.stringify(err), {
+        variant: "error",
+        anchorOrigin: { vertical: "top", horizontal: "center" },
+      });
     } else {
       const imgSrc = await res.json();
       dp(updateImgSrc(imgSrc));
@@ -53,16 +84,30 @@ export default function AvatarBar() {
     }
   }
 
+  // async function hdChangeAvatar(e) {
+  //   setShowEditor(true);
+  // }
+
   return (
     <Box className={cls.root}>
-      <label htmlFor="avatar">
-        <input type="file" accept="image/*" id="avatar" style={{ display: "none" }} onChange={hdChangeAvatar} />
-        <Avatar src={avatarSrc} className={cls.avatar}></Avatar>
-      </label>
+      {shouldShowEditor ? (
+        <div>
+          <div style={{ width: 300, height: 128, margin: "auto", position: "relative" }}>
+            <AvatarEditor width={300} height={128} label="Ảnh đại diện" imageHeight={128} onCrop={hdCrop} onClose={hdClose}></AvatarEditor>
+          </div>
+        </div>
+      ) : (
+        // <label htmlFor="avatar">
+        //   <input type="file" accept="image/*" id="avatar" style={{ display: "none" }} onChange={hdChangeAvatar} />
+        //   <Avatar src={avatarSrc} className={cls.avatar}></Avatar>
+        // </label>
+        <Avatar src={avatarSrc} className={cls.avatar} onClick={() => setShowEditor(true)}></Avatar>
+      )}
+
       <Paper className={cls.paper}>
         <Box textAlign="center" px={3} pb={3} pt={"96px"}>
           <Typography variant="h5" gutterBottom>
-            Cán bộ Phòng Đào Tạo
+            Cán bộ Trường
           </Typography>
           <Typography variant="h3" gutterBottom className={cls.name}>
             {schoolName || "Trường ĐH ABC"}

@@ -54,10 +54,16 @@ export default function TeacherProfileForm() {
 
       const result = await response.json();
       if (!response.ok) {
-        enqueueSnackbar("Kiểm tra lại thông tin: " + JSON.stringify(result), { variant: "error", anchorOrigin: { vertical: "top", horizontal: "center" } });
+        enqueueSnackbar("Kiểm tra lại thông tin: " + JSON.stringify(result), {
+          variant: "error",
+          anchorOrigin: { vertical: "top", horizontal: "center" },
+        });
       } else {
         if (!result.ok) {
-          enqueueSnackbar("Có lỗi đã xảy ra, vui lòng thử lại sau!", { variant: "error", anchorOrigin: { vertical: "bottom", horizontal: "center" } });
+          enqueueSnackbar("Có lỗi đã xảy ra, vui lòng thử lại sau!", {
+            variant: "error",
+            anchorOrigin: { vertical: "bottom", horizontal: "center" },
+          });
           dp(setProfile({ ...state, imgSrc: profile.imgSrc }));
         } else {
           enqueueSnackbar("Cập nhât thành công!", {
@@ -131,6 +137,14 @@ export default function TeacherProfileForm() {
               fullWidth
               label="Khóa công khai"
               value={state?.publicKey}
+              onChange={(e) => setState({ ...state, publicKey: e.target.value })}
+              disabled={disable}
+            ></TextField>
+            <TextField
+              InputLabelProps={{ shrink: true }}
+              fullWidth
+              label="Khóa bí mật"
+              value={state?.privateKey}
               onChange={(e) => setState({ ...state, publicKey: e.target.value })}
               disabled={disable}
             ></TextField>
