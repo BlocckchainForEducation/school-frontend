@@ -1,12 +1,13 @@
 import { Box, Button, Grid, IconButton, InputAdornment, makeStyles, Paper, TextField, Typography } from "@material-ui/core";
+import AccountBalanceWalletIcon from "@material-ui/icons/AccountBalanceWallet";
 import "date-fns";
 import { useSnackbar } from "notistack";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getToken } from "src/utils/mng-token";
-import { requirePrivateKeyHex, setPrivateKeyHex } from "../../../utils/keyholder";
+import { requirePrivateKeyHex } from "../../../utils/keyholder";
 import { setProfile } from "./redux";
-import AccountBalanceWalletIcon from "@material-ui/icons/AccountBalanceWallet";
+const { PrivateKey } = require("eciesjs");
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -46,6 +47,13 @@ export default function ProfileForm() {
   const disable = Boolean(profile.state === "voting" || profile.state === "accepted" || profile.state === "declined");
 
   async function hdSubmit(e) {
+    if (!profile.imgSrc) {
+      enqueueSnackbar("Cần bổ sung ảnh đại diện trước khi đăng kí tham gia", {
+        variant: "info",
+        anchorOrigin: { vertical: "top", horizontal: "center" },
+      });
+      return;
+    }
     try {
       const privateKeyHex = await requirePrivateKeyHex(enqueueSnackbar);
       let response = await fetch(`${process.env.REACT_APP_SERVER_URL}/staff/make-request`, {
@@ -58,20 +66,24 @@ export default function ProfileForm() {
       const result = await response.json();
       // validate profile fail
       if (!response.ok) {
-        enqueueSnackbar("Kiểm tra lại thông tin:" + JSON.stringify(result), { variant: "error", anchorOrigin: { vertical: "top", horizontal: "center" } });
+        enqueueSnackbar("Kiểm tra lại thông tin:" + JSON.stringify(result), {
+          variant: "error",
+          anchorOrigin: { vertical: "top", horizontal: "center" },
+        });
       } else {
         // send to bkc fail
         if (!result.ok) {
-          enqueueSnackbar("Tạo tx thất bại: " + JSON.stringify(result.msg), { variant: "error", anchorOrigin: { vertical: "top", horizontal: "center" } });
+          enqueueSnackbar("Tạo tx thất bại: " + JSON.stringify(result.msg), {
+            variant: "error",
+            anchorOrigin: { vertical: "top", horizontal: "center" },
+          });
           dp(setProfile({ ...state, imgSrc: profile.imgSrc, state: "fail" }));
         } else {
-          setTimeout(() => {
-            enqueueSnackbar("Đăng kí tham gia thành công, đang chờ kết quả bỏ phiếu!", {
-              variant: "success",
-              anchorOrigin: { vertical: "bottom", horizontal: "center" },
-            });
-            dp(setProfile({ ...state, imgSrc: profile.imgSrc, state: "voting" }));
-          }, 500);
+          enqueueSnackbar("Đăng kí tham gia thành công, đang chờ kết quả bỏ phiếu!", {
+            variant: "success",
+            anchorOrigin: { vertical: "bottom", horizontal: "center" },
+          });
+          dp(setProfile({ ...state, imgSrc: profile.imgSrc, state: "voting" }));
         }
       }
     } catch (error) {
@@ -79,19 +91,11 @@ export default function ProfileForm() {
     }
   }
 
+  // get public key to fill the form
   async function hdSelectAccountFromWallet() {
-    enqueueSnackbar("Hãy mở ví và chọn tài khoản!", { variant: "info", anchorOrigin: { vertical: "top", horizontal: "center" } });
-    window.addEventListener("message", function (event) {
-      if (event.data.type === "SIGN_RESPONSE" && event.origin === window.origin) {
-        if (event.data.accept) {
-          setPrivateKeyHex(event.data.account.privateKey);
-          setState({ ...state, pubkey: event.data.account.publicKey });
-        } else {
-          enqueueSnackbar("Bạn cần chọn một tài khoản để có thể tiếp tục!", { variant: "error", anchorOrigin: { vertical: "top", horizontal: "center" } });
-        }
-      }
-    });
-    window.postMessage({ type: "SIGN_REQUEST" }, window.origin);
+    // but for now, just deriver from privatkey
+    const privateKeyHex = await requirePrivateKeyHex(enqueueSnackbar);
+    setState({ ...state, pubkey: PrivateKey.fromHex(privateKeyHex).publicKey.toHex(true) });
   }
 
   return (
@@ -136,7 +140,14 @@ export default function ProfileForm() {
             ></TextField>
             <Grid container spacing={2}>
               <Grid item xs={12} md={6}>
-                <TextField InputLabelProps={{ shrink: true }} fullWidth label="Email" value={state?.email} onChange={(e) => setState({ ...state, email: e.target.value })} disabled={true}></TextField>
+                <TextField
+                  InputLabelProps={{ shrink: true }}
+                  fullWidth
+                  label="Email"
+                  value={state?.email}
+                  onChange={(e) => setState({ ...state, email: e.target.value })}
+                  disabled={true}
+                ></TextField>
               </Grid>
               <Grid item xs={12} md={6}>
                 <TextField

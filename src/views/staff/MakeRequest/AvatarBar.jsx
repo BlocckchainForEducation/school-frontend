@@ -101,7 +101,7 @@ export default function AvatarBar() {
         //   <input type="file" accept="image/*" id="avatar" style={{ display: "none" }} onChange={hdChangeAvatar} />
         //   <Avatar src={avatarSrc} className={cls.avatar}></Avatar>
         // </label>
-        <Avatar src={avatarSrc} className={cls.avatar} onClick={() => setShowEditor(true)}></Avatar>
+        <Avatar src={avatarSrc} className={cls.avatar} onClick={() => {}}></Avatar>
       )}
 
       <Paper className={cls.paper}>

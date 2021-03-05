@@ -11,7 +11,7 @@ export const profileSlice = createSlice({
     phone: "",
     pubkey: "",
     description: "",
-    imgSrc: "",
+    imgSrc: null,
     votes: [],
   }, // votes filed too
   reducers: {
