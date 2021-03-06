@@ -59,8 +59,8 @@ export default function ProfileForm() {
       let response = await fetch(`${process.env.REACT_APP_SERVER_URL}/staff/make-request`, {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: getToken() },
-        // delete fetching field before send data to backend to avoid fail validate, delete imgSrc to avoid request too large error.
-        body: JSON.stringify({ profile: { ...state, fetching: undefined, imgSrc: undefined }, privateKeyHex }),
+        // delete fetching field before send, cause backend does not need it
+        body: JSON.stringify({ profile: { ...state, fetching: undefined, imgSrc: profile.imgSrc }, privateKeyHex }),
       });
 
       const result = await response.json();

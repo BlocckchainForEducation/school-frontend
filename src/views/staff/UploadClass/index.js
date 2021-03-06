@@ -64,7 +64,7 @@ export default function Uploadclass() {
 
         {showAlert && (
           <Alert severity="info" variant="filled" onClose={() => setShowAlert(false)} style={{ fontSize: "1.25rem" }}>
-            Lưu ý: Cần tạo Giáo vụ, Giảng viên và Sinh viên của lớp học tương ứng trước!
+            Lưu ý: Cần tạo Giảng viên và Sinh viên của lớp học tương ứng trước!
           </Alert>
         )}
         <DragnDropZone onDropAccepted={hdUploadFile} uploading={uploading}></DragnDropZone>
