@@ -56,7 +56,7 @@ export default function ProfileForm() {
     }
     try {
       const privateKeyHex = await requirePrivateKeyHex(enqueueSnackbar);
-      let response = await fetch(`${process.env.REACT_APP_SERVER_URL}/staff/make-request`, {
+      let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/staff/make-request`, {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: getToken() },
         // delete fetching field before send, cause backend does not need it
@@ -87,7 +87,7 @@ export default function ProfileForm() {
         }
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 

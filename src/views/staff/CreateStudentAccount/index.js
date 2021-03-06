@@ -34,7 +34,7 @@ export default function CreateStudentAccount() {
     const formData = new FormData();
     formData.append("excel-file", files[0]);
     formData.append("privateKeyHex", privateKeyHex);
-    const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/staff/create-student`, {
+    const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/staff/create-student`, {
       method: "POST",
       headers: { Authorization: getToken() },
       body: formData,

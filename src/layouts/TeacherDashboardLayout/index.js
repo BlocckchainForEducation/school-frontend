@@ -50,7 +50,7 @@ const TeacherDashboardLayout = () => {
 
   async function fetchProfile() {
     try {
-      const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/teacher/teacher-profile`, {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/teacher/teacher-profile`, {
         headers: { Authorization: getToken() },
       });
       if (!response.ok) {

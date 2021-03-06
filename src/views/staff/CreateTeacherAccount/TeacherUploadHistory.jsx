@@ -1,5 +1,15 @@
 import { useEffect } from "react";
-import { Accordion, makeStyles, AccordionSummary, AccordionDetails, Typography, Box, CircularProgress, AccordionActions, Button } from "@material-ui/core";
+import {
+  Accordion,
+  makeStyles,
+  AccordionSummary,
+  AccordionDetails,
+  Typography,
+  Box,
+  CircularProgress,
+  AccordionActions,
+  Button,
+} from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import { getToken } from "src/utils/mng-token";
 import { setPreloadHistory } from "./redux";
@@ -32,7 +42,7 @@ export default function TeacherUploadHistory() {
   }, []);
 
   async function fetchHistory() {
-    const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/staff/teacher-history`, {
+    const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/staff/teacher-history`, {
       headers: { Authorization: getToken() },
     });
     const result = await response.json();
@@ -56,7 +66,14 @@ export default function TeacherUploadHistory() {
   const content = (
     <Box>
       {history.map((item, index) => {
-        const body = item.profiles.map((profile) => [profile.teacherId, profile.name, profile.department, profile.email, profile.firstTimePassword, getLinkFromTxid(profile.txid)]);
+        const body = item.profiles.map((profile) => [
+          profile.teacherId,
+          profile.name,
+          profile.department,
+          profile.email,
+          profile.firstTimePassword,
+          getLinkFromTxid(profile.txid),
+        ]);
         return (
           <Accordion key={index}>
             <AccordionSummary expandIcon={<ExpandMoreIcon />} id={item._id}>

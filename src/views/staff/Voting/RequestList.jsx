@@ -19,11 +19,14 @@ export default function RequestList(props) {
   }, []);
 
   async function fetchNewVoteRequests() {
-    const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/staff/vote-requests?state=new`, {
+    const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/staff/vote-requests?state=new`, {
       headers: { Authorization: getToken() },
     });
     if (!response.ok) {
-      enqueueSnackbar(JSON.stringify(await response.json()), { variant: "error", anchorOrigin: { vertical: "bottom", horizontal: "center" } });
+      enqueueSnackbar(JSON.stringify(await response.json()), {
+        variant: "error",
+        anchorOrigin: { vertical: "bottom", horizontal: "center" },
+      });
     } else {
       const result = await response.json();
       dp(updateVoteRequestList(result));

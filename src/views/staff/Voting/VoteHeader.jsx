@@ -11,7 +11,7 @@ export default function VoteHeader({ request }) {
 
   async function hdVote(decision, publicKeyOfRequest) {
     const privateKeyHex = await requirePrivateKeyHex(enqueueSnackbar);
-    const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/staff/vote`, {
+    const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/staff/vote`, {
       headers: { "Content-Type": "application/json", Authorization: getToken() },
       method: "POST",
       body: JSON.stringify({ decision, publicKeyOfRequest, privateKeyHex }),

@@ -66,7 +66,7 @@ export default function SignUp() {
 
   async function hdSubmit(e) {
     e.preventDefault();
-    let response = await fetch(`${process.env.REACT_APP_SERVER_URL}/acc/signup`, {
+    let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/acc/signup`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(state),

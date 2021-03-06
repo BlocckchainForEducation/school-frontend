@@ -31,12 +31,15 @@ export default function StudentUploadHistory() {
   }, []);
 
   async function fetchHistory() {
-    const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/staff/student-history`, {
+    const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/staff/student-history`, {
       headers: { Authorization: getToken() },
     });
     const result = await response.json();
     if (!response.ok) {
-      enqueueSnackbar("Fail to load history: " + JSON.stringify(result), { variant: "error", anchorOrigin: { vertical: "top", horizontal: "center" } });
+      enqueueSnackbar("Fail to load history: " + JSON.stringify(result), {
+        variant: "error",
+        anchorOrigin: { vertical: "top", horizontal: "center" },
+      });
     } else {
       dp(setPreloadHistory(result));
     }

@@ -5,7 +5,7 @@ import App from "./App";
 
 import axios from "axios";
 import { getToken } from "./utils/mng-token";
-axios.defaults.baseURL = process.env.REACT_APP_SERVER_URL;
+axios.defaults.baseURL = `${process.env.REACT_APP_BACKEND_URL}/v1.2`;
 axios.defaults.headers.common["Authorization"] = getToken();
 
 ReactDOM.render(

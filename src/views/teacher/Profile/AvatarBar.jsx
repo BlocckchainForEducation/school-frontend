@@ -37,7 +37,7 @@ export default function AvatarBar() {
   async function hdChangeAvatar(e) {
     const formData = new FormData();
     formData.append("avatar", e.target.files[0]);
-    const res = await fetch(`${process.env.REACT_APP_SERVER_URL}/teacher/change-avatar`, {
+    const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/teacher/change-avatar`, {
       method: "POST",
       headers: { Authorization: getToken() },
       body: formData,
@@ -45,7 +45,10 @@ export default function AvatarBar() {
 
     if (!res.ok) {
       const err = await res.json();
-      enqueueSnackbar("Something went wrong: " + JSON.stringify(err), { variant: "error", anchorOrigin: { vertical: "top", horizontal: "center" } });
+      enqueueSnackbar("Something went wrong: " + JSON.stringify(err), {
+        variant: "error",
+        anchorOrigin: { vertical: "top", horizontal: "center" },
+      });
     } else {
       const imgSrc = await res.json();
       dp(updateImgSrc(imgSrc));

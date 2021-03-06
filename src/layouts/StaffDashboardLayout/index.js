@@ -54,7 +54,7 @@ const StaffDashboardLayout = () => {
 
   async function fetchProfile() {
     try {
-      const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/staff/university-profile`, {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/staff/university-profile`, {
         headers: { Authorization: getToken() },
       });
       if (!response.ok) {

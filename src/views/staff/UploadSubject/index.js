@@ -32,7 +32,7 @@ export default function UploadSubject() {
     dp(startUploadFile());
     const formData = new FormData();
     formData.append("excel-file", files[0]);
-    const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/staff/upload-subjects`, {
+    const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/staff/upload-subjects`, {
       method: "POST",
       headers: { Authorization: getToken() },
       body: formData,
@@ -40,7 +40,10 @@ export default function UploadSubject() {
     const result = await response.json();
     if (!response.ok) {
       dp(uploadFileFail());
-      enqueueSnackbar("Something went wrong: " + JSON.stringify(result), { variant: "error", anchorOrigin: { vertical: "top", horizontal: "center" } });
+      enqueueSnackbar("Something went wrong: " + JSON.stringify(result), {
+        variant: "error",
+        anchorOrigin: { vertical: "top", horizontal: "center" },
+      });
     } else {
       dp(uploadFileSuccess(result));
       enqueueSnackbar("Upload file thành công!", { variant: "success", anchorOrigin: { vertical: "bottom", horizontal: "center" } });
