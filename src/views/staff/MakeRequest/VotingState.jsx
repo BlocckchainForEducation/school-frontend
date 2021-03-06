@@ -40,7 +40,7 @@ export default function VotingState(props) {
   useEffect(() => {
     if (votingState === "voting") {
       const clockId = setInterval(async () => {
-        const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/staff/university-profile`, {
+        const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/v1.2/staff/university-profile`, {
           headers: { Authorization: getToken() },
         });
         if (res.ok) {

@@ -10,6 +10,7 @@ import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import { Alert } from "@material-ui/lab";
+import axios from "axios";
 import React, { useState } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { setLocalToken, setRemember } from "src/utils/mng-token";
@@ -66,22 +67,17 @@ export default function SignUp() {
 
   async function hdSubmit(e) {
     e.preventDefault();
-    let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/acc/signup`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(state),
-    });
-    if (!response.ok) {
-      const errors = await response.json();
-      setErrors(errors);
-    } else {
-      const result = await response.json();
+    try {
+      const response = await axios.post("/acc/signup", state);
+      const result = response.data;
       setLocalToken(result.token);
       setLocalRole(result.role);
       setRemember(true);
       setErrors(null);
       setSuccess("Đăng kí tài khoản thành công!");
       setTimeout(() => navigate(getRouteByRole(result.role)), 1000);
+    } catch (error) {
+      setErrors(error.response.data);
     }
   }
 

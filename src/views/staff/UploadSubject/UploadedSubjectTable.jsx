@@ -34,7 +34,7 @@ export default function UploadedSubjectTable(props) {
   }, []);
 
   async function fetchUploadedSubject() {
-    const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/staff/subjects`, {
+    const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/v1.2/staff/subjects`, {
       headers: { Authorization: getToken() },
     });
     const result = await response.json();

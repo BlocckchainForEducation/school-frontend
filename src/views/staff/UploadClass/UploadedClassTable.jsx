@@ -37,7 +37,7 @@ export default function UploadedClassTable(props) {
   }, []);
 
   async function fetchUploadedClass() {
-    const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/staff/v1.2/classes`, {
+    const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/v1.2/staff/v1.2/classes`, {
       headers: { Authorization: getToken() },
     });
     const result = await response.json();

@@ -11,6 +11,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import axios from "axios";
 import React, { useState } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { setLocalToken, setRemember, setSessionToken } from "src/utils/mng-token";
@@ -67,17 +68,9 @@ export default function SignIn() {
 
   async function hdSubmit(e) {
     e.preventDefault();
-    let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/acc/signin`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email: state.email, password: state.password }),
-    });
-
-    if (!response.ok) {
-      const errs = await response.json();
-      setErrors(errs);
-    } else {
-      const body = await response.json();
+    try {
+      const response = await axios.post("/acc/signin", { email: state.email, password: state.password });
+      const body = response.data;
       if (state.remember) {
         setLocalToken(body.token);
         setLocalRole(body.role);
@@ -88,8 +81,11 @@ export default function SignIn() {
         setRemember(false);
       }
       navigate(getRouteByRole(body.role));
+    } catch (error) {
+      setErrors(error.response.data);
     }
   }
+
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />

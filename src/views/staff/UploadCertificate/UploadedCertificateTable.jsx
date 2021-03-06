@@ -57,7 +57,7 @@ export default function UploadedCertificateTable(props) {
   }, []);
 
   async function fetchUploadedCertificate() {
-    const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/staff/certificates`, {
+    const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/v1.2/staff/certificates`, {
       headers: { Authorization: getToken() },
     });
     const result = await response.json();

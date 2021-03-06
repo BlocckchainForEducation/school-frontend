@@ -34,7 +34,7 @@ export default function UploadCertificate() {
     const formData = new FormData();
     formData.append("excel-file", files[0]);
     formData.append("privateKeyHex", privateKeyHex);
-    const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/staff/upload-certificates`, {
+    const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/v1.2/staff/upload-certificates`, {
       method: "POST",
       headers: { Authorization: getToken() },
       body: formData,

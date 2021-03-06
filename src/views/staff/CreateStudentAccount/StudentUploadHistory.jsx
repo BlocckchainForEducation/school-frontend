@@ -31,7 +31,7 @@ export default function StudentUploadHistory() {
   }, []);
 
   async function fetchHistory() {
-    const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/staff/student-history`, {
+    const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/v1.2/staff/student-history`, {
       headers: { Authorization: getToken() },
     });
     const result = await response.json();

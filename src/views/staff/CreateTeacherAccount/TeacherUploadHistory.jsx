@@ -42,7 +42,7 @@ export default function TeacherUploadHistory() {
   }, []);
 
   async function fetchHistory() {
-    const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/staff/teacher-history`, {
+    const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/v1.2/staff/teacher-history`, {
       headers: { Authorization: getToken() },
     });
     const result = await response.json();

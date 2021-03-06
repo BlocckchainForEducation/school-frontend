@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
 import { Button, makeStyles } from "@material-ui/core";
+import axios from "axios";
+import { useSnackbar } from "notistack";
+import React, { useEffect, useState } from "react";
+import PerfectScrollbar from "react-perfect-scrollbar";
+import { useDispatch, useSelector } from "react-redux";
+import { Outlet, useNavigate } from "react-router-dom";
+import Loading from "src/shared/Loading";
+import { setProfile } from "src/views/staff/MakeRequest/redux";
 import NavBar from "./NavBar";
 import TopBar from "./TopBar";
-import { getToken } from "src/utils/mng-token";
-import { setProfile } from "src/views/staff/MakeRequest/redux";
-import { useDispatch, useSelector } from "react-redux";
-import Loading from "src/shared/Loading";
-import PerfectScrollbar from "react-perfect-scrollbar";
-import { useSnackbar } from "notistack";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -54,32 +54,24 @@ const StaffDashboardLayout = () => {
 
   async function fetchProfile() {
     try {
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/staff/university-profile`, {
-        headers: { Authorization: getToken() },
+      const response = await axios.get("/staff/university-profile");
+      dp(setProfile(response.data));
+    } catch (error) {
+      enqueueSnackbar("Phiên làm việc đã kết thúc, vui lòng đăng nhập lại!", {
+        anchorOrigin: { vertical: "top", horizontal: "center" },
+        action: (key) => (
+          <Button
+            size="small"
+            style={{ color: "white" }}
+            onClick={(e) => {
+              navigate("/dang-nhap");
+              closeSnackbar(key);
+            }}
+          >
+            Đăng nhập
+          </Button>
+        ),
       });
-      if (!response.ok) {
-        enqueueSnackbar("Phiên làm việc đã kết thúc, vui lòng đăng nhập lại!", {
-          anchorOrigin: { vertical: "top", horizontal: "center" },
-          action: (key) => (
-            <Button
-              size="small"
-              style={{ color: "white" }}
-              onClick={(e) => {
-                navigate("/dang-nhap");
-                closeSnackbar(key);
-              }}
-            >
-              Đăng nhập
-            </Button>
-          ),
-        });
-        // alert(JSON.stringify(await response.json()));
-      } else {
-        dp(setProfile(await response.json()));
-      }
-    } catch (err) {
-      console.log(err);
-      alert(err);
     }
   }
 

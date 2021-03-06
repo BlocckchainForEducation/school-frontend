@@ -1,26 +1,25 @@
-import { useEffect } from "react";
 import {
   Accordion,
-  makeStyles,
-  AccordionSummary,
-  AccordionDetails,
-  Typography,
-  Box,
-  CircularProgress,
-  Button,
   AccordionActions,
+  AccordionDetails,
+  AccordionSummary,
+  Box,
+  Button,
   Divider,
-  Link,
+  makeStyles,
+  Typography,
 } from "@material-ui/core";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import GetAppIcon from "@material-ui/icons/GetApp";
+import { useSnackbar } from "notistack";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getToken } from "src/utils/mng-token";
-import { setPreloadHistory } from "./redux";
-import { useSnackbar } from "notistack";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import SimpleTable from "../../../shared/Table/SimpleTable";
-import GetAppIcon from "@material-ui/icons/GetApp";
 import XLSX from "xlsx";
-import { getHost, getLinkFromTxid } from "../../../utils/utils";
+import SimpleTable from "../../../shared/Table/SimpleTable";
+import { ERR_TOP_CENTER } from "../../../utils/snackbar-utils";
+import { getLinkFromTxid } from "../../../utils/utils";
+import { setPreloadHistory } from "./redux";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -44,15 +43,12 @@ export default function BureauUploadHistory() {
   }, []);
 
   async function fetchHistory() {
-    const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/staff/bureau-history`, {
+    const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/v1.2/staff/bureau-history`, {
       headers: { Authorization: getToken() },
     });
     const result = await response.json();
     if (!response.ok) {
-      enqueueSnackbar("Fail to load history: " + JSON.stringify(result), {
-        variant: "error",
-        anchorOrigin: { vertical: "top", horizontal: "center" },
-      });
+      enqueueSnackbar("Fail to load history: " + JSON.stringify(result), ERR_TOP_CENTER);
     } else {
       dp(setPreloadHistory(result));
     }

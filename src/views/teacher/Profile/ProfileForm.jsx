@@ -45,7 +45,7 @@ export default function TeacherProfileForm() {
 
   async function hdSubmit(e) {
     try {
-      let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/teacher/update-profile`, {
+      let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/v1.2/teacher/update-profile`, {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: getToken() },
         // delete fetching field before send data to backend to avoid fail validate, delete imgSrc to avoid request too large error.

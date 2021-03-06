@@ -37,7 +37,7 @@ export default function AvatarBar() {
   async function hdChangeAvatar(e) {
     const formData = new FormData();
     formData.append("avatar", e.target.files[0]);
-    const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/teacher/change-avatar`, {
+    const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/v1.2/teacher/change-avatar`, {
       method: "POST",
       headers: { Authorization: getToken() },
       body: formData,

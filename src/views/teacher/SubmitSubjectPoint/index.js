@@ -40,7 +40,7 @@ export default function SubmitSubjectPoint(props) {
 
   async function hdFetchClass(e) {
     try {
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/teacher/classes/${classId}`, {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/v1.2/teacher/classes/${classId}`, {
         headers: { Authorization: getToken() },
       });
       const result = await response.json();
@@ -70,7 +70,7 @@ export default function SubmitSubjectPoint(props) {
     // TODO: validate whether missing input point too
     const privateKeyHex = await requirePrivateKeyHex(enqueueSnackbar);
     setSubmitState(true);
-    const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/teacher/submit-point`, {
+    const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/v1.2/teacher/submit-point`, {
       method: "POST",
       headers: { "Content-Type": "application/json", Authorization: getToken() },
       body: JSON.stringify({ claxx, privateKeyHex }),

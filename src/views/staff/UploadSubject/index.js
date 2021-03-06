@@ -32,7 +32,7 @@ export default function UploadSubject() {
     dp(startUploadFile());
     const formData = new FormData();
     formData.append("excel-file", files[0]);
-    const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/staff/upload-subjects`, {
+    const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/v1.2/staff/upload-subjects`, {
       method: "POST",
       headers: { Authorization: getToken() },
       body: formData,

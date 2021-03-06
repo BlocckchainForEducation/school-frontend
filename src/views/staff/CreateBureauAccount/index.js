@@ -34,7 +34,7 @@ export default function CreateBureauAccount() {
     const formData = new FormData();
     formData.append("excel-file", files[0]);
     formData.append("privateKeyHex", privateKeyHex);
-    const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/staff/create-bureau`, {
+    const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/v1.2/staff/create-bureau`, {
       method: "POST",
       headers: { Authorization: getToken() },
       body: formData,

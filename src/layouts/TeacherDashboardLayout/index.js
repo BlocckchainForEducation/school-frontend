@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { Outlet } from "react-router-dom";
 import { makeStyles } from "@material-ui/core";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import PerfectScrollbar from "react-perfect-scrollbar";
+import { useDispatch, useSelector } from "react-redux";
+import { Outlet } from "react-router-dom";
+import Loading from "src/shared/Loading";
+import { setProfile } from "src/views/teacher/Profile/redux";
 import NavBar from "./NavBar";
 import TopBar from "./TopBar";
-import { getToken } from "src/utils/mng-token";
-import { useDispatch, useSelector } from "react-redux";
-import { setProfile } from "src/views/teacher/Profile/redux";
-import Loading from "src/shared/Loading";
-import PerfectScrollbar from "react-perfect-scrollbar";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -46,21 +46,15 @@ const TeacherDashboardLayout = () => {
 
   useEffect(() => {
     fetchProfile();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   async function fetchProfile() {
     try {
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/teacher/teacher-profile`, {
-        headers: { Authorization: getToken() },
-      });
-      if (!response.ok) {
-        alert(JSON.stringify(await response.json()));
-      } else {
-        dp(setProfile(await response.json()));
-      }
-    } catch (err) {
-      console.log(err);
-      alert(err);
+      const response = await axios.get("/teacher/profile");
+      dp(setProfile(response.data));
+    } catch (error) {
+      alert(error.response.data);
     }
   }
 
