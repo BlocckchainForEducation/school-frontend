@@ -8,6 +8,7 @@ import SimpleTable from "../../../shared/Table/SimpleTable";
 import { setPreloadHistory } from "./redux";
 import GetAppIcon from "@material-ui/icons/GetApp";
 import XLSX from "xlsx";
+import { ERR_TOP_CENTER } from "../../../utils/snackbar-utils";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -34,13 +35,10 @@ export default function StudentUploadHistory() {
     const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/v1.2/staff/student-history`, {
       headers: { Authorization: getToken() },
     });
-    const result = await response.json();
     if (!response.ok) {
-      enqueueSnackbar("Fail to load history: " + JSON.stringify(result), {
-        variant: "error",
-        anchorOrigin: { vertical: "top", horizontal: "center" },
-      });
+      enqueueSnackbar(`${response.status}: ${await response.text()}`, ERR_TOP_CENTER);
     } else {
+      const result = await response.json();
       dp(setPreloadHistory(result));
     }
   }
@@ -67,7 +65,7 @@ export default function StudentUploadHistory() {
         return (
           <Accordion key={index}>
             <AccordionSummary expandIcon={<ExpandMoreIcon />} id={item._id}>
-              <Typography className={cls.heading}>{`#${index + 1}, ${item.time}`}</Typography>
+              <Typography className={cls.heading}>{`#${index + 1}, ${item.time}, ${item.originalFileName}`}</Typography>
             </AccordionSummary>
             <AccordionDetails>
               <SimpleTable head={head} body={body}></SimpleTable>

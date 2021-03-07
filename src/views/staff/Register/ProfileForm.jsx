@@ -6,6 +6,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getToken } from "src/utils/mng-token";
 import { requirePrivateKeyHex } from "../../../utils/keyholder";
+import { ERR_TOP_CENTER, SUCCESS_BOTTOM_CENTER } from "../../../utils/snackbar-utils";
 import { setProfile } from "./redux";
 const { PrivateKey } = require("eciesjs");
 
@@ -56,33 +57,24 @@ export default function ProfileForm() {
     }
     try {
       const privateKeyHex = await requirePrivateKeyHex(enqueueSnackbar);
-      let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/v1.2/staff/make-request`, {
+      let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/v1.2/staff/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: getToken() },
         // delete fetching field before send, cause backend does not need it
         body: JSON.stringify({ profile: { ...state, fetching: undefined, imgSrc: profile.imgSrc }, privateKeyHex }),
       });
 
-      const result = await response.json();
       // validate profile fail
       if (!response.ok) {
-        enqueueSnackbar("Kiểm tra lại thông tin:" + JSON.stringify(result), {
-          variant: "error",
-          anchorOrigin: { vertical: "top", horizontal: "center" },
-        });
+        enqueueSnackbar("Kiểm tra lại thông tin:" + response.status + (await response.text()), ERR_TOP_CENTER);
       } else {
+        const result = await response.json();
         // send to bkc fail
         if (!result.ok) {
-          enqueueSnackbar("Tạo tx thất bại: " + JSON.stringify(result.msg), {
-            variant: "error",
-            anchorOrigin: { vertical: "top", horizontal: "center" },
-          });
+          enqueueSnackbar("Tạo tx thất bại: " + JSON.stringify(result.msg), ERR_TOP_CENTER);
           dp(setProfile({ ...state, imgSrc: profile.imgSrc, state: "fail" }));
         } else {
-          enqueueSnackbar("Đăng kí tham gia thành công, đang chờ kết quả bỏ phiếu!", {
-            variant: "success",
-            anchorOrigin: { vertical: "bottom", horizontal: "center" },
-          });
+          enqueueSnackbar("Đăng kí tham gia thành công, đang chờ kết quả bỏ phiếu!", SUCCESS_BOTTOM_CENTER);
           dp(setProfile({ ...state, imgSrc: profile.imgSrc, state: "voting" }));
         }
       }

@@ -3,6 +3,7 @@ import { useSnackbar } from "notistack";
 import { useDispatch } from "react-redux";
 import { getToken } from "src/utils/mng-token";
 import { requirePrivateKeyHex } from "../../../utils/keyholder";
+import { ERR_TOP_CENTER, SUCCESS_BOTTOM_CENTER } from "../../../utils/snackbar-utils";
 import { collapseVoteRequest } from "./redux";
 
 export default function VoteHeader({ request }) {
@@ -16,12 +17,11 @@ export default function VoteHeader({ request }) {
       method: "POST",
       body: JSON.stringify({ decision, publicKeyOfRequest, privateKeyHex }),
     });
-    const result = await response.json();
     if (!response.ok) {
-      enqueueSnackbar(JSON.stringify(result), { variant: "error", anchorOrigin: { vertical: "top", horizontal: "center" } });
+      enqueueSnackbar(`${response.status}: ${await response.text()}`, ERR_TOP_CENTER);
     } else {
       dp(collapseVoteRequest({ publicKey: publicKeyOfRequest }));
-      enqueueSnackbar("Bỏ phiếu thành công!", { variant: "success", anchorOrigin: { vertical: "bottom", horizontal: "center" } });
+      enqueueSnackbar("Bỏ phiếu thành công!", SUCCESS_BOTTOM_CENTER);
     }
   }
 

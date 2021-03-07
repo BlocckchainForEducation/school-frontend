@@ -4,6 +4,7 @@ import { useSnackbar } from "notistack";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getToken } from "../../../utils/mng-token";
+import { ERR_TOP_CENTER } from "../../../utils/snackbar-utils";
 import { setPreloadCertificates } from "./redux";
 
 const columns = [
@@ -60,13 +61,10 @@ export default function UploadedCertificateTable(props) {
     const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/v1.2/staff/certificates`, {
       headers: { Authorization: getToken() },
     });
-    const result = await response.json();
     if (!response.ok) {
-      enqueueSnackbar("Fail to load uploaded certificates!: " + JSON.stringify(result), {
-        variant: "error",
-        anchorOrigin: { vertical: "top", horizontal: "center" },
-      });
+      enqueueSnackbar(`${response.status}: ${await response.text()}`, ERR_TOP_CENTER);
     } else {
+      const result = await response.json();
       dp(setPreloadCertificates(result));
     }
   }

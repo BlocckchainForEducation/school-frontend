@@ -6,6 +6,7 @@ import Page from "src/shared/Page";
 import { getToken } from "src/utils/mng-token";
 import DragnDropZone from "../../../shared/DragnDropZone";
 import { requirePrivateKeyHex } from "../../../utils/keyholder";
+import { ERR_TOP_CENTER, SUCCESS_BOTTOM_CENTER } from "../../../utils/snackbar-utils";
 import BureauDataExample from "./BureauDataExample";
 import BureauUploadHistory from "./BureauUploadHistory";
 import { startUploadFile, uploadFileFail, uploadFileSuccess } from "./redux";
@@ -39,19 +40,13 @@ export default function CreateBureauAccount() {
       headers: { Authorization: getToken() },
       body: formData,
     });
-    const result = await response.json();
     if (!response.ok) {
       dp(uploadFileFail());
-      enqueueSnackbar("Something went wrong: " + JSON.stringify(result), {
-        variant: "error",
-        anchorOrigin: { vertical: "top", horizontal: "center" },
-      });
+      enqueueSnackbar(`${response.status}: ${await response.text()}`, ERR_TOP_CENTER);
     } else {
+      const result = await response.json();
       dp(uploadFileSuccess(result));
-      enqueueSnackbar("Tạo tài khoản cho các giáo vụ thành công!", {
-        variant: "success",
-        anchorOrigin: { vertical: "bottom", horizontal: "center" },
-      });
+      enqueueSnackbar("Tạo tài khoản cho các giáo vụ thành công!", SUCCESS_BOTTOM_CENTER);
     }
   }
 

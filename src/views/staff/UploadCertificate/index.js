@@ -9,6 +9,7 @@ import CertificateDataExample from "./CertificateDataExample";
 import { startUploadFile, uploadFileFail, uploadFileSuccess } from "./redux";
 import UploadedCertificateTable from "./UploadedCertificateTable";
 import { requirePrivateKeyHex } from "../../../utils/keyholder";
+import { SUCCESS_BOTTOM_CENTER } from "../../../utils/snackbar-utils";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -39,16 +40,13 @@ export default function UploadCertificate() {
       headers: { Authorization: getToken() },
       body: formData,
     });
-    const result = await response.json();
     if (!response.ok) {
       dp(uploadFileFail());
-      enqueueSnackbar("Something went wrong: " + JSON.stringify(result), {
-        variant: "error",
-        anchorOrigin: { vertical: "top", horizontal: "center" },
-      });
+      enqueueSnackbar(`${response.status}: ${await response.text()}`, ERR_TOP_CENTER);
     } else {
+      const result = await response.json();
       dp(uploadFileSuccess(result));
-      enqueueSnackbar("Upload file thành công!", { variant: "success", anchorOrigin: { vertical: "bottom", horizontal: "center" } });
+      enqueueSnackbar("Upload file thành công!", SUCCESS_BOTTOM_CENTER);
     }
   }
 

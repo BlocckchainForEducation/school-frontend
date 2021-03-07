@@ -7,6 +7,7 @@ import Page from "src/shared/Page";
 import { getToken } from "src/utils/mng-token";
 import DragnDropZone from "../../../shared/DragnDropZone";
 import { requirePrivateKeyHex } from "../../../utils/keyholder";
+import { ERR_TOP_CENTER, SUCCESS_BOTTOM_CENTER } from "../../../utils/snackbar-utils";
 import ClassDataExample from "./ClassDataExample";
 import { startUploadFile, uploadFileFail, uploadFileSuccess } from "./redux";
 import UploadedClassTable from "./UploadedClassTable";
@@ -39,21 +40,18 @@ export default function Uploadclass() {
     const formData = new FormData();
     formData.append("excel-file", files[0]);
     formData.append("privateKeyHex", privateKeyHex);
-    const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/v1.2/staff/v1.2/upload-classes`, {
+    const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/v1.2/staff/upload-classes`, {
       method: "POST",
       headers: { Authorization: getToken() },
       body: formData,
     });
-    const result = await response.json();
     if (!response.ok) {
       dp(uploadFileFail());
-      enqueueSnackbar("Something went wrong: " + JSON.stringify(result), {
-        variant: "error",
-        anchorOrigin: { vertical: "top", horizontal: "center" },
-      });
+      enqueueSnackbar(response.status + ": " + (await response.text()), ERR_TOP_CENTER);
     } else {
+      const result = await response.json();
       dp(uploadFileSuccess(result));
-      enqueueSnackbar("Upload file thành công!", { variant: "success", anchorOrigin: { vertical: "bottom", horizontal: "center" } });
+      enqueueSnackbar("Upload file thành công!", SUCCESS_BOTTOM_CENTER);
     }
   }
 

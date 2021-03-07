@@ -8,6 +8,7 @@ import { getToken } from "src/utils/mng-token";
 import SubjectDataExample from "./SubjectDataExample";
 import { startUploadFile, uploadFileFail, uploadFileSuccess } from "./redux";
 import UploadedSubjectTable from "./UploadedSubjectTable";
+import { ERR_TOP_CENTER, SUCCESS_BOTTOM_CENTER } from "../../../utils/snackbar-utils";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -37,16 +38,13 @@ export default function UploadSubject() {
       headers: { Authorization: getToken() },
       body: formData,
     });
-    const result = await response.json();
     if (!response.ok) {
       dp(uploadFileFail());
-      enqueueSnackbar("Something went wrong: " + JSON.stringify(result), {
-        variant: "error",
-        anchorOrigin: { vertical: "top", horizontal: "center" },
-      });
+      enqueueSnackbar(`${response.status}: ${await response.text()}`, ERR_TOP_CENTER);
     } else {
+      const result = await response.json();
       dp(uploadFileSuccess(result));
-      enqueueSnackbar("Upload file thành công!", { variant: "success", anchorOrigin: { vertical: "bottom", horizontal: "center" } });
+      enqueueSnackbar("Upload file thành công!", SUCCESS_BOTTOM_CENTER);
     }
   }
 

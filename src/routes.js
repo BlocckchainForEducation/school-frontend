@@ -8,9 +8,9 @@ import NotFoundView from "src/shared/NotFoundView";
 import SignInView from "src/views/guest/SignIn";
 import SignUpView from "src/views/guest/SignUp";
 
-import MakeRequest from "./views/staff/MakeRequest";
+import MakeRequest from "./views/staff/Register";
 import Voting from "./views/staff/Voting";
-import CreateBureauAccount from "./views/staff/CreateBureauAccount";
+// import CreateBureauAccount from "./views/staff/CreateBureauAccount";
 import CreateTeacherAccount from "./views/staff/CreateTeacherAccount";
 import CreateStudentAccount from "./views/staff/CreateStudentAccount";
 import UploadSubject from "./views/staff/UploadSubject";

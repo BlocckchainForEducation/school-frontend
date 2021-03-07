@@ -1,7 +1,7 @@
 # TODO
 
-1. Implement revoke certificate
-2. Implement statistic, report
+1. Implement revoke certificate [wokring on]
+2. Implement statistic, report [working]
 3. Notification when voting state change?
 4. Add EduProgram? -> Pre-check when upload certificate
 5. Add voting history?
@@ -10,7 +10,7 @@
 
 # IMPROVE
 
-1. Request Join
+1. Request Join [working on]
 
 - Avatar: allow user crop, choose position...
 - Send avatar image too!
@@ -22,7 +22,8 @@
 - Pagination History
 - Change notistack text
 
-3. Upload Subject, Class, Certificate
+3. Upload Class, Certificate
 
-- Consider use other table template
-- Change notistack text
+- Class: Table: but allow collapse students info...
+- Certificate: Consider use other table template -> allow search ...
+-

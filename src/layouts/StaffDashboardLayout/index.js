@@ -6,7 +6,7 @@ import PerfectScrollbar from "react-perfect-scrollbar";
 import { useDispatch, useSelector } from "react-redux";
 import { Outlet, useNavigate } from "react-router-dom";
 import Loading from "src/shared/Loading";
-import { setProfile } from "src/views/staff/MakeRequest/redux";
+import { setProfile } from "src/views/staff/Register/redux";
 import NavBar from "./NavBar";
 import TopBar from "./TopBar";
 

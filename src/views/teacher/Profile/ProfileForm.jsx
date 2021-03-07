@@ -4,6 +4,7 @@ import { useSnackbar } from "notistack";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getToken } from "src/utils/mng-token";
+import { ERR_TOP_CENTER, SUCCESS_BOTTOM_CENTER } from "../../../utils/snackbar-utils";
 import { setProfile } from "./redux";
 
 const useStyles = makeStyles((theme) => ({
@@ -52,24 +53,15 @@ export default function TeacherProfileForm() {
         body: JSON.stringify({ ...state, fetching: undefined, imgSrc: undefined }),
       });
 
-      const result = await response.json();
       if (!response.ok) {
-        enqueueSnackbar("Kiểm tra lại thông tin: " + JSON.stringify(result), {
-          variant: "error",
-          anchorOrigin: { vertical: "top", horizontal: "center" },
-        });
+        enqueueSnackbar(`${response.status}: ${await response.text()}`, ERR_TOP_CENTER);
       } else {
+        const result = await response.json();
         if (!result.ok) {
-          enqueueSnackbar("Có lỗi đã xảy ra, vui lòng thử lại sau!", {
-            variant: "error",
-            anchorOrigin: { vertical: "bottom", horizontal: "center" },
-          });
+          enqueueSnackbar("Có lỗi đã xảy ra, vui lòng thử lại sau!", ERR_TOP_CENTER);
           dp(setProfile({ ...state, imgSrc: profile.imgSrc }));
         } else {
-          enqueueSnackbar("Cập nhât thành công!", {
-            variant: "success",
-            anchorOrigin: { vertical: "bottom", horizontal: "center" },
-          });
+          enqueueSnackbar("Cập nhât thành công!", SUCCESS_BOTTOM_CENTER);
           dp(setProfile({ ...state, imgSrc: profile.imgSrc }));
         }
       }

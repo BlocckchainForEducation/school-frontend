@@ -5,6 +5,7 @@ import CancelPresentationIcon from "@material-ui/icons/CancelPresentation";
 import GroupAddIcon from "@material-ui/icons/GroupAdd";
 import HowToVoteIcon from "@material-ui/icons/HowToVote";
 import PersonAddIcon from "@material-ui/icons/PersonAdd";
+import SupervisorAccountIcon from "@material-ui/icons/SupervisorAccount";
 import PropTypes from "prop-types";
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";

@@ -45,10 +45,7 @@ export default function AvatarBar() {
 
     if (!res.ok) {
       const err = await res.json();
-      enqueueSnackbar("Something went wrong: " + JSON.stringify(err), {
-        variant: "error",
-        anchorOrigin: { vertical: "top", horizontal: "center" },
-      });
+      enqueueSnackbar("Something went wrong: " + JSON.stringify(err), ERR_TOP_CENTER);
     } else {
       const imgSrc = await res.json();
       dp(updateImgSrc(imgSrc));

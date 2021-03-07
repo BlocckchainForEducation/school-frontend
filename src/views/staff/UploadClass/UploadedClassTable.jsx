@@ -4,6 +4,7 @@ import { useSnackbar } from "notistack";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getToken } from "../../../utils/mng-token";
+import { ERR_TOP_CENTER } from "../../../utils/snackbar-utils";
 import { getLinkFromTxid } from "../../../utils/utils";
 import { setPreloadClasses } from "./redux";
 
@@ -37,16 +38,13 @@ export default function UploadedClassTable(props) {
   }, []);
 
   async function fetchUploadedClass() {
-    const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/v1.2/staff/v1.2/classes`, {
+    const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/v1.2/staff/classes`, {
       headers: { Authorization: getToken() },
     });
-    const result = await response.json();
     if (!response.ok) {
-      enqueueSnackbar("Fail to load uploaded classes!: " + JSON.stringify(result), {
-        variant: "error",
-        anchorOrigin: { vertical: "top", horizontal: "center" },
-      });
+      enqueueSnackbar(`${response.status}: ${await response.text()}`, ERR_TOP_CENTER);
     } else {
+      const result = await response.json();
       dp(setPreloadClasses(result));
     }
   }

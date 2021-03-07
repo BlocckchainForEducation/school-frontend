@@ -41,10 +41,7 @@ export default function RevokeCertificate() {
         setCert(response.data);
       }
     } catch (error) {
-      enqueueSnackbar("Fail to load certificate: " + error.response.data, {
-        variant: "error",
-        anchorOrigin: { vertical: "top", horizontal: "center" },
-      });
+      enqueueSnackbar("Fail to load certificate: " + error.response.data, ERR_TOP_CENTER);
     }
   }
 

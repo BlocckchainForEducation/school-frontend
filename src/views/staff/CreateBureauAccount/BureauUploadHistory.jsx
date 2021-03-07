@@ -46,10 +46,10 @@ export default function BureauUploadHistory() {
     const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/v1.2/staff/bureau-history`, {
       headers: { Authorization: getToken() },
     });
-    const result = await response.json();
     if (!response.ok) {
-      enqueueSnackbar("Fail to load history: " + JSON.stringify(result), ERR_TOP_CENTER);
+      enqueueSnackbar(`${response.status}: ${await response.text()}`, ERR_TOP_CENTER);
     } else {
+      const result = await response.json();
       dp(setPreloadHistory(result));
     }
   }

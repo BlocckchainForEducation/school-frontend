@@ -21,6 +21,7 @@ import { requirePrivateKeyHex } from "../../../utils/keyholder";
 import { useSnackbar } from "notistack";
 import CheckIcon from "@material-ui/icons/Check";
 import CloseIcon from "@material-ui/icons/Close";
+import { ERR_TOP_CENTER, SUCCESS_BOTTOM_CENTER } from "../../../utils/snackbar-utils";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -43,10 +44,10 @@ export default function SubmitSubjectPoint(props) {
       const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/v1.2/teacher/classes/${classId}`, {
         headers: { Authorization: getToken() },
       });
-      const result = await response.json();
       if (!response.ok) {
         alert(JSON.stringify(await response.json()));
       } else {
+        const result = await response.json();
         setClaxx(result);
       }
     } catch (err) {
@@ -75,17 +76,13 @@ export default function SubmitSubjectPoint(props) {
       headers: { "Content-Type": "application/json", Authorization: getToken() },
       body: JSON.stringify({ claxx, privateKeyHex }),
     });
-    const result = await response.json();
     if (!response.ok) {
       setSubmitState("fail");
-      enqueueSnackbar("Something went wrong: " + JSON.stringify(result), {
-        variant: "error",
-        anchorOrigin: { vertical: "top", horizontal: "center" },
-      });
+      enqueueSnackbar(`${response.status}: ${await response.text()}`, ERR_TOP_CENTER);
     } else {
       setSubmitState("success");
       // dp(uploadFileSuccess(result));
-      enqueueSnackbar("Gửi dữ liệu thành công!", { variant: "success", anchorOrigin: { vertical: "bottom", horizontal: "center" } });
+      enqueueSnackbar("Gửi dữ liệu thành công!", SUCCESS_BOTTOM_CENTER);
     }
   }
 

@@ -19,6 +19,7 @@ import SimpleTable from "../../../shared/Table/SimpleTable";
 import GetAppIcon from "@material-ui/icons/GetApp";
 import XLSX from "xlsx";
 import { getLinkFromTxid } from "../../../utils/utils";
+import { ERR_TOP_CENTER } from "../../../utils/snackbar-utils";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -46,13 +47,10 @@ export default function TeacherUploadHistory() {
     const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/v1.2/staff/teacher-history`, {
       headers: { Authorization: getToken() },
     });
-    const result = await response.json();
     if (!response.ok) {
-      enqueueSnackbar("Fail to load history: " + JSON.stringify(result), {
-        variant: "error",
-        anchorOrigin: { vertical: "top", horizontal: "center" },
-      });
+      enqueueSnackbar(`${response.status}: ${await response.text()}`, ERR_TOP_CENTER);
     } else {
+      const result = await response.json();
       dp(setPreloadHistory(result));
     }
   }

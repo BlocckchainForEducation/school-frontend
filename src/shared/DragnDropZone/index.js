@@ -5,6 +5,7 @@ import { useDropzone } from "react-dropzone";
 import MdInfinite from "react-ionicons/lib/MdInfinite";
 import UseAnimations from "react-useanimations";
 import arrowDown from "react-useanimations/lib/arrowDown";
+import { ERR_TOP_CENTER } from "../../utils/snackbar-utils";
 
 const baseStyle = {
   flex: 1,
@@ -40,7 +41,7 @@ export default function DragnDropZone({ onDropAccepted, uploading }) {
   const { enqueueSnackbar } = useSnackbar();
 
   function onDropRejected(fileRejections) {
-    enqueueSnackbar("Chỉ chấp nhận excel file!", { variant: "error", anchorOrigin: { vertical: "top", horizontal: "center" } });
+    enqueueSnackbar("Chỉ chấp nhận excel file!", ERR_TOP_CENTER);
   }
 
   const { getRootProps, getInputProps, isDragActive, isDragAccept, isDragReject } = useDropzone({

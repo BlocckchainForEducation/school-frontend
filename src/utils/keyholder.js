@@ -1,3 +1,5 @@
+import { INFO_TOP_CENTER } from "./snackbar-utils";
+
 let privateKeyHex = null;
 
 export function setPrivateKeyHex(privateKeyHexParam) {
@@ -10,7 +12,7 @@ export function setPrivateKeyHex(privateKeyHexParam) {
 
 export async function requirePrivateKeyHex(enqueueSnackbar) {
   if (privateKeyHex) return privateKeyHex;
-  enqueueSnackbar("Hãy mở ví và chọn tài khoản!", { variant: "info", anchorOrigin: { vertical: "top", horizontal: "center" } });
+  enqueueSnackbar("Hãy mở ví và chọn tài khoản!", INFO_TOP_CENTER);
   return new Promise((resolve, reject) => {
     const tabId = Math.floor(Math.random() * 9999);
     window.addEventListener("message", function (event) {

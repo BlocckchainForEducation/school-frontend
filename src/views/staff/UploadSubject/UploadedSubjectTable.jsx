@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getToken } from "../../../utils/mng-token";
 import { setPreloadSubjects } from "./redux";
 import { makeStyles } from "@material-ui/core";
+import { ERR_TOP_CENTER } from "../../../utils/snackbar-utils";
 
 const columns = [
   { field: "id", headerName: "#", width: 50, type: "string" },
@@ -37,13 +38,10 @@ export default function UploadedSubjectTable(props) {
     const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/v1.2/staff/subjects`, {
       headers: { Authorization: getToken() },
     });
-    const result = await response.json();
     if (!response.ok) {
-      enqueueSnackbar("Fail to load uploaded subjects!: " + JSON.stringify(result), {
-        variant: "error",
-        anchorOrigin: { vertical: "top", horizontal: "center" },
-      });
+      enqueueSnackbar(`${response.status}: ${await response.text()}`, ERR_TOP_CENTER);
     } else {
+      const result = await response.json();
       dp(setPreloadSubjects(result));
     }
   }
