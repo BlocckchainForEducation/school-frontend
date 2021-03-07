@@ -39,6 +39,7 @@ export default function TeacherUploadHistory() {
 
   useEffect(() => {
     fetchHistory();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   async function fetchHistory() {
@@ -61,15 +62,15 @@ export default function TeacherUploadHistory() {
     XLSX.utils.book_append_sheet(wb, ws, "Giảng viên - " + item.time);
     XLSX.writeFile(wb, "giang-vien-" + item.time + ".xlsx");
   }
-  const head = ["Mã giảng viên", "Họ và tên", "Bộ môn", "Account", "Password", "Txid"];
+  const head = ["Bộ môn", "Mã giảng viên", "Họ và tên", "Account", "Password", "Txid"];
   const title = "Lịch sử upload Giảng viên";
   const content = (
     <Box>
       {history.map((item, index) => {
         const body = item.profiles.map((profile) => [
+          profile.department,
           profile.teacherId,
           profile.name,
-          profile.department,
           profile.email,
           profile.firstTimePassword,
           getLinkFromTxid(profile.txid),
@@ -77,7 +78,7 @@ export default function TeacherUploadHistory() {
         return (
           <Accordion key={index}>
             <AccordionSummary expandIcon={<ExpandMoreIcon />} id={item._id}>
-              <Typography className={cls.heading}>{`#${index + 1}, ${item.time}`}</Typography>
+              <Typography className={cls.heading}>{`#${index + 1}, ${item.time}, ${item.originalFileName}`}</Typography>
             </AccordionSummary>
             <AccordionDetails>
               <SimpleTable head={head} body={body}></SimpleTable>

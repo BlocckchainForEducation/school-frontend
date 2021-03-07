@@ -9,7 +9,7 @@ export const profileSlice = createSlice({
     address: "",
     email: "",
     phone: "",
-    pubkey: "",
+    publicKey: "",
     description: "",
     imgSrc: null,
     votes: [],

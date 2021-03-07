@@ -95,7 +95,7 @@ export default function ProfileForm() {
   async function hdSelectAccountFromWallet() {
     // but for now, just deriver from privatkey
     const privateKeyHex = await requirePrivateKeyHex(enqueueSnackbar);
-    setState({ ...state, pubkey: PrivateKey.fromHex(privateKeyHex).publicKey.toHex(true) });
+    setState({ ...state, publicKey: PrivateKey.fromHex(privateKeyHex).publicKey.toHex(true) });
   }
 
   return (
@@ -164,8 +164,8 @@ export default function ProfileForm() {
               InputLabelProps={{ shrink: true }}
               fullWidth
               label="Khóa công khai"
-              value={state?.pubkey}
-              onChange={(e) => setState({ ...state, pubkey: e.target.value })}
+              value={state?.publicKey}
+              onChange={(e) => setState({ ...state, publicKey: e.target.value })}
               disabled={disable}
               InputProps={{
                 endAdornment: !disable && (

@@ -51,7 +51,7 @@ export default function StudentUploadHistory() {
     XLSX.writeFile(wb, "sinh-viên" + item.time + ".xlsx");
   }
 
-  const head = ["Mssv", "Họ và tên", "Ngày sinh", "Lớp", "Email", "Password"];
+  const head = ["Mssv", "Họ và tên", "Ngày sinh", "Email", "Password"];
   const title = "Lịch sử upload sinh viên";
   const content = (
     <Box>
@@ -60,9 +60,6 @@ export default function StudentUploadHistory() {
           profile.studentId,
           profile.name,
           profile.birthday,
-          profile.class,
-          // profile.publicKey,
-          // profile.privateKey,
           profile.email,
           profile.firstTimePassword,
           // profile.txid ?? <CircularProgress size="1rem"></CircularProgress>,

@@ -20,7 +20,7 @@ export default function VoteHeader({ request }) {
     if (!response.ok) {
       enqueueSnackbar(JSON.stringify(result), { variant: "error", anchorOrigin: { vertical: "top", horizontal: "center" } });
     } else {
-      dp(collapseVoteRequest({ pubkey: publicKeyOfRequest }));
+      dp(collapseVoteRequest({ publicKey: publicKeyOfRequest }));
       enqueueSnackbar("Bỏ phiếu thành công!", { variant: "success", anchorOrigin: { vertical: "bottom", horizontal: "center" } });
     }
   }
@@ -35,12 +35,12 @@ export default function VoteHeader({ request }) {
           </Box>
         </Box>
         <Box pr={2} flexShrink={0}>
-          <Button variant="contained" color="primary" onClick={(e) => hdVote("accept", request.pubkey)}>
+          <Button variant="contained" color="primary" onClick={(e) => hdVote("accept", request.publicKey)}>
             Đồng ý
           </Button>
         </Box>
         <Box flexShrink={0}>
-          <Button onClick={(e) => hdVote("decline", request.pubkey)}>Từ chối</Button>
+          <Button onClick={(e) => hdVote("decline", request.publicKey)}>Từ chối</Button>
         </Box>
       </Box>
     </div>

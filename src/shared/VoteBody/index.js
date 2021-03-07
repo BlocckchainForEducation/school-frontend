@@ -30,7 +30,7 @@ export default function VoteBody({ request }) {
             </TableRow>
             <TableRow>
               <TableCell>Public key</TableCell>
-              <TableCell>{request.pubkey}</TableCell>
+              <TableCell>{request.publicKey}</TableCell>
             </TableRow>
           </TableBody>
         </Table>
