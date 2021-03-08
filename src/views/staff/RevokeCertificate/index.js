@@ -1,40 +1,22 @@
-import React, { useState } from "react";
-import {
-  Box,
-  Button,
-  Divider,
-  Grid,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableRow,
-  TextField,
-  Tooltip,
-  Typography,
-} from "@material-ui/core";
-import CheckIcon from "@material-ui/icons/Check";
-import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
-
-import Page from "../../../shared/Page";
+import { Box, Button, Paper, TextField } from "@material-ui/core";
 import axios from "axios";
 import { useSnackbar } from "notistack";
-import { getLinkFromTxid } from "src/utils/utils";
+import React, { useState } from "react";
+import Page from "../../../shared/Page";
 import { ERR_TOP_CENTER, INFO_TOP_CENTER } from "../../../utils/snackbar-utils";
+import SearchResult from "./SearchResult";
 
 export default function RevokeCertificate() {
   const [studentId, setStudentId] = useState("");
-  const [certs, setCerts] = useState(); // just the newest cert
-  const cert = certs[0];
-
+  const [certs, setCerts] = useState();
   const { enqueueSnackbar } = useSnackbar();
 
   async function hdSubmitStudentId() {
     try {
       const response = await axios.get(`/staff/certificate?studentId=${studentId}`);
-      if (response.data.found === false) {
+      if (response.data.length === 0) {
         enqueueSnackbar("Không tìm thấy bằng cấp nào của: " + studentId, INFO_TOP_CENTER);
+        setCerts(null);
       } else {
         setCerts(response.data);
       }
@@ -61,79 +43,8 @@ export default function RevokeCertificate() {
           </Box>
         </Box>
       </Paper>
-      {cert === null && "Khong tim thay bang cap nao"}
-      {cert && <CertTable cert={cert}></CertTable>}
+
+      <Box mt={3}>{certs && <SearchResult certs={certs}></SearchResult>}</Box>
     </Page>
   );
-}
-
-function CertTable({ cert }) {
-  const [certPart1, certPart2] = separateCertificate(cert);
-  return (
-    <Paper>
-      <Box p={2} pb={1} display="flex" justifyContent="flex-start" alignItems="center">
-        <Typography variant="h4">Thông tin bằng cấp</Typography>
-        {cert.active && (
-          <Tooltip title="Bằng cấp hợp lệ">
-            <CheckIcon color="primary" size="1rem"></CheckIcon>
-          </Tooltip>
-        )}
-        {!cert.active && (
-          <Tooltip title="Bằng cấp đã bị thu hồi!">
-            <ErrorOutlineIcon color="secondary" size="1rem"></ErrorOutlineIcon>
-          </Tooltip>
-        )}
-      </Box>
-      <Divider></Divider>
-      <Grid container>
-        <Grid item sm={12} md={6}>
-          <SimpleTable rows={certPart1}></SimpleTable>
-        </Grid>
-        <Grid item sm={12} md={6}>
-          <SimpleTable rows={certPart2}></SimpleTable>
-        </Grid>
-      </Grid>
-    </Paper>
-  );
-}
-
-function SimpleTable({ rows }) {
-  return (
-    <TableContainer>
-      <Table size="small">
-        <TableBody>
-          {Object.entries(rows).map((entry, index) => (
-            <TableRow key={index}>
-              <TableCell style={{ width: "50%" }}>{entry[0]}</TableCell>
-              <TableCell>{entry[1]}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
-  );
-}
-
-function separateCertificate(cert) {
-  const link = getLinkFromTxid(cert.txid);
-  let certPart1 = {
-    "Họ và tên": cert.name,
-    "Ngày sinh": cert.birthday,
-    "Giới tính": cert.gender,
-    Trường: cert.university,
-    "Ngành học": cert.faculty,
-    "Loại bằng": cert.degree,
-    "Năm tốt nghiệp": cert.gradyear,
-  };
-  let certPart2 = {
-    "Xếp loại": cert.level,
-    "Hình thức đào tạo": cert.eduform,
-    "Nơi cấp": cert.issuelocation,
-    "Ngày cấp": cert.issuedate,
-    "Hiệu trưởng": cert.headmaster,
-    // "Số hiệu": cert.regisno,
-    "Số hiệu vào sổ": cert.globalregisno,
-    Txid: link,
-  };
-  return [certPart1, certPart2];
 }
