@@ -16,7 +16,7 @@ import CheckIcon from "@material-ui/icons/Check";
 import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 import axios from "axios";
 import { useSnackbar } from "notistack";
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getLinkFromTxid } from "src/utils/utils";
 import { requirePrivateKeyHex } from "../../../utils/keyholder";
@@ -33,6 +33,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SearchResult() {
   const certs = useSelector((state) => state.revokeCertificateSlice.certificates);
+
   return (
     certs.length > 0 && (
       <Paper>

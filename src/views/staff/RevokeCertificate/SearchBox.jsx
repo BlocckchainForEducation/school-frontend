@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Button, Paper, TextField } from "@material-ui/core";
 import axios from "axios";
 import { useDispatch } from "react-redux";
@@ -10,6 +10,13 @@ export default function SearchBox(props) {
   const [studentId, setStudentId] = useState("");
   const dp = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
+
+  useEffect(() => {
+    return () => {
+      dp(setCertificates([]));
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   async function hdSubmitStudentId() {
     try {
