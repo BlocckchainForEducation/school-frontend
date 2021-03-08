@@ -71,8 +71,18 @@ export default function UploadedCertificateTable(props) {
 
   return (
     certificates.length !== 0 && (
-      <Paper style={{ height: "350px", width: "100%" }}>
-        {fetching ? null : <DataGrid rows={certificates} columns={columns} autoPageSize rowHeight={48} loading={fetching} />}
+      <Paper style={{ height: "650px", width: "100%" }}>
+        {fetching ? null : (
+          <DataGrid
+            rows={certificates}
+            columns={columns}
+            pageSize={10}
+            rowsPerPageOptions={[5, 10, 20]}
+            pagination
+            rowHeight={48}
+            loading={fetching}
+          />
+        )}
       </Paper>
     )
   );
