@@ -1,7 +1,10 @@
-import { Box, Button, Divider, makeStyles, Paper, Typography } from "@material-ui/core";
+import { Box, Button, Collapse, Divider, IconButton, makeStyles, Paper, Typography } from "@material-ui/core";
 import GetAppIcon from "@material-ui/icons/GetApp";
 import SimpleTable from "../Table/SimpleTable";
 import FileSaver from "file-saver";
+import { useState } from "react";
+import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
+import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -11,23 +14,40 @@ const useStyles = makeStyles((theme) => ({
 
 export default function DownloadExampleData({ title, fileName, head, body, minWidth }) {
   const cls = useStyles();
+  const [show, setShow] = useState(true);
 
   function hdClickDownload(e) {
     FileSaver.saveAs(`/static/excels/${fileName}`, fileName);
   }
 
+  function toggleCollapse() {
+    setShow(!show);
+  }
+
   return (
     <Paper>
-      <Box px={2} display="flex" justifyContent="space-between" alignItems="center">
+      <Box pl={2} pr={1} display="flex" justifyContent="space-between" alignItems="center">
         <Typography variant="h4">{title || "Mẫu dữ liệu"}</Typography>
-        <Button variant="outlined" color="primary" className={cls.button} startIcon={<GetAppIcon />} onClick={hdClickDownload}>
-          Download
-        </Button>
+        <Box>
+          {/* <Button variant="outlined" color="primary" className={cls.button} startIcon={<GetAppIcon />} onClick={hdClickDownload}></Button> */}
+          <IconButton onClick={hdClickDownload}>
+            <GetAppIcon />
+          </IconButton>
+          {show ? (
+            <IconButton onClick={toggleCollapse}>
+              <KeyboardArrowUpIcon />
+            </IconButton>
+          ) : (
+            <IconButton onClick={toggleCollapse}>
+              <KeyboardArrowDownIcon />
+            </IconButton>
+          )}
+        </Box>
       </Box>
       <Divider></Divider>
-      <Box>
+      <Collapse in={show}>
         <SimpleTable head={head} body={body} minWidth={minWidth}></SimpleTable>
-      </Box>
+      </Collapse>
     </Paper>
   );
 }
