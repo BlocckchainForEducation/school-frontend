@@ -3,6 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { useSnackbar } from "notistack";
 import { useDispatch, useSelector } from "react-redux";
 import { getToken } from "src/utils/mng-token";
+import { ERR_TOP_CENTER } from "../../../utils/snackbar-utils";
 import { updateImgSrc } from "./redux";
 
 const useStyles = makeStyles((theme) => ({
@@ -44,8 +45,7 @@ export default function AvatarBar() {
     });
 
     if (!res.ok) {
-      const err = await res.json();
-      enqueueSnackbar("Something went wrong: " + JSON.stringify(err), ERR_TOP_CENTER);
+      enqueueSnackbar(await res.text(), ERR_TOP_CENTER);
     } else {
       const imgSrc = await res.json();
       dp(updateImgSrc(imgSrc));

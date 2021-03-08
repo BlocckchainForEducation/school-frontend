@@ -2,11 +2,11 @@ import { Avatar, Box, Paper, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { useSnackbar } from "notistack";
 import { useState } from "react";
-import AvatarEditor from "react-avatar-edit";
 import { useDispatch, useSelector } from "react-redux";
 import { getToken } from "src/utils/mng-token";
-import { ERR_TOP_CENTER } from "../../../utils/snackbar-utils";
+import { ERR_TOP_CENTER, SUCCESS_BOTTOM_RIGHT } from "../../../utils/snackbar-utils";
 import { updateImgSrc } from "./redux";
+import AvatarEditor from "react-avatar-edit";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -78,7 +78,7 @@ export default function AvatarBar() {
     } else {
       const imgSrc = await res.json();
       dp(updateImgSrc(imgSrc));
-      enqueueSnackbar("Cập nhật Avatar thành công!", { variant: "success", anchorOrigin: { vertical: "bottom", horizontal: "right" } });
+      enqueueSnackbar("Cập nhật Avatar thành công!", SUCCESS_BOTTOM_RIGHT);
     }
   }
 

@@ -9,7 +9,7 @@ import CertificateDataExample from "./CertificateDataExample";
 import { startUploadFile, uploadFileFail, uploadFileSuccess } from "./redux";
 import UploadedCertificateTable from "./UploadedCertificateTable";
 import { requirePrivateKeyHex } from "../../../utils/keyholder";
-import { SUCCESS_BOTTOM_CENTER } from "../../../utils/snackbar-utils";
+import { ERR_TOP_CENTER, SUCCESS_BOTTOM_CENTER } from "../../../utils/snackbar-utils";
 
 const useStyles = makeStyles((theme) => ({
   root: {

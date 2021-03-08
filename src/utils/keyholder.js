@@ -1,4 +1,4 @@
-import { INFO_TOP_CENTER } from "./snackbar-utils";
+import { ERR_TOP_CENTER, INFO_TOP_CENTER } from "./snackbar-utils";
 
 let privateKeyHex = null;
 
@@ -21,10 +21,7 @@ export async function requirePrivateKeyHex(enqueueSnackbar) {
           privateKeyHex = event.data.account.privateKey;
           resolve(privateKeyHex);
         } else {
-          enqueueSnackbar("Bạn cần chọn một tài khoản để có thể thực hiện thao tác này!", {
-            variant: "error",
-            anchorOrigin: { vertical: "top", horizontal: "center" },
-          });
+          enqueueSnackbar("Bạn cần chọn một tài khoản để có thể thực hiện thao tác này!", ERR_TOP_CENTER);
           reject();
         }
       }

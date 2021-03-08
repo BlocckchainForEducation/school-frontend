@@ -21,6 +21,7 @@ import Page from "../../../shared/Page";
 import axios from "axios";
 import { useSnackbar } from "notistack";
 import { getLinkFromTxid } from "src/utils/utils";
+import { ERR_TOP_CENTER } from "../../../utils/snackbar-utils";
 
 export default function RevokeCertificate() {
   const [studentId, setStudentId] = useState("");

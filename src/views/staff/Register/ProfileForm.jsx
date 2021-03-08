@@ -1,12 +1,12 @@
 import { Box, Button, Grid, IconButton, InputAdornment, makeStyles, Paper, TextField, Typography } from "@material-ui/core";
 import AccountBalanceWalletIcon from "@material-ui/icons/AccountBalanceWallet";
+import axios from "axios";
 import "date-fns";
 import { useSnackbar } from "notistack";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getToken } from "src/utils/mng-token";
 import { requirePrivateKeyHex } from "../../../utils/keyholder";
-import { ERR_TOP_CENTER, SUCCESS_BOTTOM_CENTER } from "../../../utils/snackbar-utils";
+import { ERR_TOP_CENTER, INFO_TOP_CENTER, SUCCESS_BOTTOM_CENTER } from "../../../utils/snackbar-utils";
 import { setProfile } from "./redux";
 const { PrivateKey } = require("eciesjs");
 
@@ -49,43 +49,25 @@ export default function ProfileForm() {
 
   async function hdSubmit(e) {
     if (!profile.imgSrc) {
-      enqueueSnackbar("Cần bổ sung ảnh đại diện trước khi đăng kí tham gia", {
-        variant: "info",
-        anchorOrigin: { vertical: "top", horizontal: "center" },
-      });
-      return;
+      return enqueueSnackbar("Cần bổ sung ảnh đại diện trước khi đăng kí tham gia", INFO_TOP_CENTER);
     }
+
     try {
       const privateKeyHex = await requirePrivateKeyHex(enqueueSnackbar);
-      let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/v1.2/staff/register`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Authorization: getToken() },
-        // delete fetching field before send, cause backend does not need it
-        body: JSON.stringify({ profile: { ...state, fetching: undefined, imgSrc: profile.imgSrc }, privateKeyHex }),
+      await axios.post("/staff/register", {
+        profile: { ...state, fetching: undefined, imgSrc: profile.imgSrc },
+        privateKeyHex,
       });
 
-      // validate profile fail
-      if (!response.ok) {
-        enqueueSnackbar("Kiểm tra lại thông tin:" + response.status + (await response.text()), ERR_TOP_CENTER);
-      } else {
-        const result = await response.json();
-        // send to bkc fail
-        if (!result.ok) {
-          enqueueSnackbar("Tạo tx thất bại: " + JSON.stringify(result.msg), ERR_TOP_CENTER);
-          dp(setProfile({ ...state, imgSrc: profile.imgSrc, state: "fail" }));
-        } else {
-          enqueueSnackbar("Đăng kí tham gia thành công, đang chờ kết quả bỏ phiếu!", SUCCESS_BOTTOM_CENTER);
-          dp(setProfile({ ...state, imgSrc: profile.imgSrc, state: "voting" }));
-        }
-      }
+      enqueueSnackbar("Đăng kí tham gia thành công, đang chờ kết quả bỏ phiếu!", SUCCESS_BOTTOM_CENTER);
+      dp(setProfile({ ...state, imgSrc: profile.imgSrc, state: "voting" }));
     } catch (error) {
-      console.error(error);
+      return enqueueSnackbar(JSON.stringify(error.response.data), ERR_TOP_CENTER);
     }
   }
 
   // get public key to fill the form
   async function hdSelectAccountFromWallet() {
-    // but for now, just deriver from privatkey
     const privateKeyHex = await requirePrivateKeyHex(enqueueSnackbar);
     setState({ ...state, publicKey: PrivateKey.fromHex(privateKeyHex).publicKey.toHex(true) });
   }
