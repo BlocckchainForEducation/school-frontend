@@ -1,12 +1,12 @@
 import { Avatar, Box, Paper, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import axios from "axios";
 import { useSnackbar } from "notistack";
 import { useState } from "react";
+import AvatarEditor from "react-avatar-edit";
 import { useDispatch, useSelector } from "react-redux";
-import { getToken } from "src/utils/mng-token";
 import { ERR_TOP_CENTER, SUCCESS_BOTTOM_RIGHT } from "../../../utils/snackbar-utils";
 import { updateImgSrc } from "./redux";
-import AvatarEditor from "react-avatar-edit";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -66,19 +66,12 @@ export default function AvatarBar() {
   async function hdChangeCropedAvatar(file) {
     const formData = new FormData();
     formData.append("avatar", file);
-    const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/v1.2/staff/change-avatar`, {
-      method: "POST",
-      headers: { Authorization: getToken() },
-      body: formData,
-    });
-
-    if (!res.ok) {
-      const err = await res.json();
-      enqueueSnackbar("Something went wrong: " + JSON.stringify(err), ERR_TOP_CENTER);
-    } else {
-      const imgSrc = await res.json();
-      dp(updateImgSrc(imgSrc));
+    try {
+      const response = await axios.post("/staff/change-avatar", formData);
+      dp(updateImgSrc(response.data));
       enqueueSnackbar("Cập nhật Avatar thành công!", SUCCESS_BOTTOM_RIGHT);
+    } catch (error) {
+      enqueueSnackbar(error.response.data, ERR_TOP_CENTER);
     }
   }
 

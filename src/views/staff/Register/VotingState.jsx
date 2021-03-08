@@ -1,12 +1,12 @@
 import { Avatar, Box, makeStyles, Paper, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from "@material-ui/core";
 import CheckIcon from "@material-ui/icons/Check";
 import CloseIcon from "@material-ui/icons/Close";
+import DoneAllIcon from "@material-ui/icons/DoneAll";
+import HowToVoteIcon from "@material-ui/icons/HowToVote";
+import axios from "axios";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getToken } from "../../../utils/mng-token";
 import { updateVotingState } from "./redux";
-import HowToVoteIcon from "@material-ui/icons/HowToVote";
-import DoneAllIcon from "@material-ui/icons/DoneAll";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -36,18 +36,15 @@ export default function VotingState(props) {
   const cls = useStyles({ votingState });
   const dp = useDispatch();
 
-  // realtime update voting state! (y), so professional!
+  // interval update voting state! (y), so professional!
   useEffect(() => {
     if (votingState === "voting") {
       const clockId = setInterval(async () => {
-        const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/v1.2/staff/university-profile`, {
-          headers: { Authorization: getToken() },
-        });
-        if (res.ok) {
-          const body = await res.json();
-          if (body) {
-            dp(updateVotingState(body));
-          }
+        try {
+          const response = await axios.get("/staff/university-profile");
+          dp(updateVotingState(response.data));
+        } catch (error) {
+          console.error(error);
         }
       }, 5000);
       return () => {

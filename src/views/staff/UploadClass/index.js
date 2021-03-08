@@ -1,5 +1,6 @@
 import { makeStyles } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
+import axios from "axios";
 import { useSnackbar } from "notistack";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -40,18 +41,13 @@ export default function Uploadclass() {
     const formData = new FormData();
     formData.append("excel-file", files[0]);
     formData.append("privateKeyHex", privateKeyHex);
-    const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/v1.2/staff/upload-classes`, {
-      method: "POST",
-      headers: { Authorization: getToken() },
-      body: formData,
-    });
-    if (!response.ok) {
-      dp(uploadFileFail());
-      enqueueSnackbar(response.status + ": " + (await response.text()), ERR_TOP_CENTER);
-    } else {
-      const result = await response.json();
-      dp(uploadFileSuccess(result));
+    try {
+      const response = await axios.post("/staff/upload-classes", formData);
       enqueueSnackbar("Upload file thành công!", SUCCESS_BOTTOM_CENTER);
+      dp(uploadFileSuccess(response.data));
+    } catch (error) {
+      enqueueSnackbar(error.response.data, ERR_TOP_CENTER);
+      dp(uploadFileFail());
     }
   }
 

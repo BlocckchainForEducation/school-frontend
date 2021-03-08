@@ -21,25 +21,22 @@ import Page from "../../../shared/Page";
 import axios from "axios";
 import { useSnackbar } from "notistack";
 import { getLinkFromTxid } from "src/utils/utils";
-import { ERR_TOP_CENTER } from "../../../utils/snackbar-utils";
+import { ERR_TOP_CENTER, INFO_TOP_CENTER } from "../../../utils/snackbar-utils";
 
 export default function RevokeCertificate() {
   const [studentId, setStudentId] = useState("");
-  const [cert, setCert] = useState(); // just the newest cert
+  const [certs, setCerts] = useState(); // just the newest cert
+  const cert = certs[0];
 
   const { enqueueSnackbar } = useSnackbar();
 
   async function hdSubmitStudentId() {
     try {
       const response = await axios.get(`/staff/certificate?studentId=${studentId}`);
-      console.log(response);
       if (response.data.found === false) {
-        enqueueSnackbar("Không tìm thấy bằng cấp nào của: " + studentId, {
-          variant: "info",
-          anchorOrigin: { vertical: "top", horizontal: "center" },
-        });
+        enqueueSnackbar("Không tìm thấy bằng cấp nào của: " + studentId, INFO_TOP_CENTER);
       } else {
-        setCert(response.data);
+        setCerts(response.data);
       }
     } catch (error) {
       enqueueSnackbar("Fail to load certificate: " + error.response.data, ERR_TOP_CENTER);
@@ -77,7 +74,7 @@ function CertTable({ cert }) {
       <Box p={2} pb={1} display="flex" justifyContent="flex-start" alignItems="center">
         <Typography variant="h4">Thông tin bằng cấp</Typography>
         {cert.active && (
-          <Tooltip title="Bằng cấp hợp lệ, sẵn sàng để chia sẻ">
+          <Tooltip title="Bằng cấp hợp lệ">
             <CheckIcon color="primary" size="1rem"></CheckIcon>
           </Tooltip>
         )}

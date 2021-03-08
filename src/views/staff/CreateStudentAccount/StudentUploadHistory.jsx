@@ -9,6 +9,7 @@ import { setPreloadHistory } from "./redux";
 import GetAppIcon from "@material-ui/icons/GetApp";
 import XLSX from "xlsx";
 import { ERR_TOP_CENTER } from "../../../utils/snackbar-utils";
+import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -29,28 +30,27 @@ export default function StudentUploadHistory() {
 
   useEffect(() => {
     fetchHistory();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   async function fetchHistory() {
-    const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/v1.2/staff/student-history`, {
-      headers: { Authorization: getToken() },
-    });
-    if (!response.ok) {
-      enqueueSnackbar(`${response.status}: ${await response.text()}`, ERR_TOP_CENTER);
-    } else {
-      const result = await response.json();
-      dp(setPreloadHistory(result));
+    try {
+      const response = await axios.get("/staff/student-history");
+      dp(setPreloadHistory(response.data));
+    } catch (error) {
+      enqueueSnackbar(error.response.data, ERR_TOP_CENTER);
     }
   }
+
   async function hdDownloadClick(e, item) {
     const wb = XLSX.utils.book_new();
     const ws = XLSX.utils.json_to_sheet(item.profiles);
     XLSX.utils.book_append_sheet(wb, ws, "Sinh viên - " + item.time);
-    XLSX.writeFile(wb, "sinh-viên" + item.time + ".xlsx");
+    XLSX.writeFile(wb, item.time + " - " + item.originalFileName);
   }
 
   const head = ["Mssv", "Họ và tên", "Ngày sinh", "Email", "Password"];
-  const title = "Lịch sử upload sinh viên";
+  // const title = "Lịch sử upload sinh viên";
   const content = (
     <Box>
       {history.map((item, index) => {

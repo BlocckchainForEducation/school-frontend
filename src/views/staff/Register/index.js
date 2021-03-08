@@ -15,7 +15,9 @@ export default function MakeRequest() {
         </Grid>
         <Grid item xs={12} md={4}>
           <AvatarBar></AvatarBar>
-          <Box mt={2}>{votingState !== undefined && votingState !== "fail" && <VotingState></VotingState>}</Box>
+          <Box mt={2}>
+            {(votingState === "voting" || votingState === "accepted" || votingState === "declined") && <VotingState></VotingState>}
+          </Box>
         </Grid>
       </Grid>
     </Page>

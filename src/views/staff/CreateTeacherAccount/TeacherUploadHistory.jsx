@@ -58,10 +58,10 @@ export default function TeacherUploadHistory() {
     const wb = XLSX.utils.book_new();
     const ws = XLSX.utils.json_to_sheet(item.profiles);
     XLSX.utils.book_append_sheet(wb, ws, "Giảng viên - " + item.time);
-    XLSX.writeFile(wb, "giang-vien-" + item.time + ".xlsx");
+    XLSX.writeFile(wb, item.time + " - " + item.originalFileName);
   }
   const head = ["Bộ môn", "Mã giảng viên", "Họ và tên", "Account", "Password", "Txid"];
-  const title = "Lịch sử upload Giảng viên";
+  // const title = "Lịch sử upload Giảng viên";
   const content = (
     <Box>
       {history.map((item, index) => {
