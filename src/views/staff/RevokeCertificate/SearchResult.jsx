@@ -16,10 +16,12 @@ import CheckIcon from "@material-ui/icons/Check";
 import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 import axios from "axios";
 import { useSnackbar } from "notistack";
-import React, { useState } from "react";
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { getLinkFromTxid } from "src/utils/utils";
 import { requirePrivateKeyHex } from "../../../utils/keyholder";
 import { ERR_TOP_CENTER, SUCCESS_TOP_CENTER } from "../../../utils/snackbar-utils";
+import { setCertificates } from "./redux";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -29,20 +31,23 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SearchResult({ certs }) {
-  const newestCert = useState(certs[0]);
-
+export default function SearchResult() {
+  const certs = useSelector((state) => state.revokeCertificateSlice.certificates);
   return (
-    <Paper>
-      <Title cert={newestCert}></Title>
-      <Divider></Divider>
-      <CertificateInfo cert={newestCert}></CertificateInfo>
-    </Paper>
+    certs.length > 0 && (
+      <Paper>
+        {/* for now, just show the newest; in the future, may show history of list certificates */}
+        <Title cert={certs[0]}></Title>
+        <Divider></Divider>
+        <CertificateInfo cert={certs[0]}></CertificateInfo>
+      </Paper>
+    )
   );
 }
 
-function Title(cert) {
+function Title({ cert }) {
   const cls = useStyles();
+  const dp = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
 
   async function hdRevoke(cert) {
@@ -50,12 +55,22 @@ function Title(cert) {
     try {
       const response = await axios.post("/staff/revoke-certificate", { privateKeyHex, cert });
       enqueueSnackbar("Thu hồi bằng cấp thành công!", SUCCESS_TOP_CENTER);
+      dp(setCertificates([response.data]));
     } catch (error) {
       enqueueSnackbar(error.response.data, ERR_TOP_CENTER);
     }
   }
 
-  async function hdReactive(cert) {}
+  async function hdReactive(cert) {
+    const privateKeyHex = await requirePrivateKeyHex(enqueueSnackbar);
+    try {
+      const response = await axios.post("/staff/reactive-certificate", { privateKeyHex, cert });
+      enqueueSnackbar("Cấp lại bằng cấp thành công!", SUCCESS_TOP_CENTER);
+      dp(setCertificates([response.data]));
+    } catch (error) {
+      enqueueSnackbar(error.response.data, ERR_TOP_CENTER);
+    }
+  }
 
   return (
     <Box px={2} py={1} display="flex" justifyContent="space-between" alignItems="center">
@@ -63,6 +78,12 @@ function Title(cert) {
         <>
           <Typography variant="h4" className={cls.typo}>
             Trạng thái bằng cấp: &nbsp; <ErrorOutlineIcon color="secondary"></ErrorOutlineIcon>
+          </Typography>
+          <Typography variant="h4" className={cls.typo}>
+            {`Version: ${cert.version}`}
+          </Typography>
+          <Typography variant="h4" className={cls.typo}>
+            {`Timestamp: ${cert.timestamp}`}
           </Typography>
           <Button color="primary" variant="outlined" onClick={(e) => hdReactive(cert)}>
             Cấp lại
@@ -72,6 +93,12 @@ function Title(cert) {
         <>
           <Typography variant="h4" className={cls.typo}>
             Trạng thái bằng cấp: &nbsp; <CheckIcon style={{ color: "green" }}></CheckIcon>
+          </Typography>
+          <Typography variant="h4" className={cls.typo}>
+            {`Version: ${cert.version}`}
+          </Typography>
+          <Typography variant="h4" className={cls.typo}>
+            {`Timestamp: ${cert.timestamp}`}
           </Typography>
           <Button color="primary" variant="outlined" onClick={(e) => hdRevoke(cert)}>
             Thu hồi
