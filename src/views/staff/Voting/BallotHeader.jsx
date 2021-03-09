@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { getToken } from "src/utils/mng-token";
 import { requirePrivateKeyHex } from "../../../utils/keyholder";
 import { ERR_TOP_CENTER, SUCCESS_BOTTOM_CENTER } from "../../../utils/snackbar-utils";
-import { collapseVoteRequest } from "./redux";
+import { collapseBallot } from "./redux";
 
 export default function VoteHeader({ request }) {
   const dp = useDispatch();
@@ -20,7 +20,7 @@ export default function VoteHeader({ request }) {
     if (!response.ok) {
       enqueueSnackbar(`${response.status}: ${await response.text()}`, ERR_TOP_CENTER);
     } else {
-      dp(collapseVoteRequest({ publicKey: publicKeyOfRequest }));
+      dp(collapseBallot({ publicKey: publicKeyOfRequest }));
       enqueueSnackbar("Bỏ phiếu thành công!", SUCCESS_BOTTOM_CENTER);
     }
   }

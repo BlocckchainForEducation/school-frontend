@@ -17,6 +17,7 @@ export default function DownloadExampleData({ title, fileName, head, body, minWi
   const [show, setShow] = useState(false);
 
   function hdClickDownload(e) {
+    e.stopPropagation();
     FileSaver.saveAs(`/static/excels/${fileName}`, fileName);
   }
 
@@ -25,11 +26,10 @@ export default function DownloadExampleData({ title, fileName, head, body, minWi
   }
 
   return (
-    <Paper>
+    <Paper onClick={toggleCollapse} style={{ cursor: "pointer" }}>
       <Box pl={2} pr={1} display="flex" justifyContent="space-between" alignItems="center">
         <Typography variant="h4">{title || "Mẫu dữ liệu"}</Typography>
         <Box>
-          {/* <Button variant="outlined" color="primary" className={cls.button} startIcon={<GetAppIcon />} onClick={hdClickDownload}></Button> */}
           <IconButton onClick={hdClickDownload}>
             <GetAppIcon />
           </IconButton>

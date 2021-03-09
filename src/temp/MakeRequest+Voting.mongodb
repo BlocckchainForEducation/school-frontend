@@ -13,7 +13,7 @@ db.UniversityProfile.updateMany({state: "voting"}, {$push: {"votes": {name: "BGD
 
 db.UniversityProfile.updateMany({state: "voting"}, {$set: {state: "accepted"}})
 use('B4E_Ministry_Backend');
-db.VoteRequest.insertMany([
+db.Ballot.insertMany([
   // {
   //   "universityName": "Trường Đại học Bách Khoa Hà Nội",
   //   "nameInEnglish": "HUST",
@@ -56,4 +56,4 @@ db.VoteRequest.insertMany([
   },
 ])
 
-db.VoteRequest.updateMany({},{$set: {state: "new"}})
+db.Ballot.updateMany({},{$set: {state: "new"}})

@@ -6,7 +6,7 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableRow from "@material-ui/core/TableRow";
 
 // table show school info
-export default function VoteBody({ request }) {
+export default function BallotBody({ request }) {
   return (
     <div>
       <TableContainer component={Paper}>
