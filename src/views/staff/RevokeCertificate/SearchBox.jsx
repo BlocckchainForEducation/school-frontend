@@ -11,6 +11,7 @@ export default function SearchBox(props) {
   const dp = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
 
+  // remove cached on unmount cpn
   useEffect(() => {
     return () => {
       dp(setDocument(null));
