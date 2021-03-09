@@ -1,13 +1,13 @@
 import { Box, Collapse } from "@material-ui/core";
 import BallotBody from "src/shared/BallotBody";
-import VoteHeader from "./BallotHeader";
+import BallotHeader from "./BallotHeader";
 
-export default function Ballot({ request }) {
+export default function Ballot({ ballot }) {
   return (
-    <Collapse in={request.in ?? true} collapsedHeight={0}>
+    <Collapse in={ballot.in ?? true} collapsedHeight={0}>
       <Box mb={3}>
-        <VoteHeader request={request}></VoteHeader>
-        <BallotBody request={request}></BallotBody>
+        <BallotHeader ballot={ballot}></BallotHeader>
+        <BallotBody ballot={ballot}></BallotBody>
       </Box>
     </Collapse>
   );

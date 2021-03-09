@@ -6,7 +6,7 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableRow from "@material-ui/core/TableRow";
 
 // table show school info
-export default function BallotBody({ request }) {
+export default function BallotBody({ ballot }) {
   return (
     <div>
       <TableContainer component={Paper}>
@@ -14,23 +14,23 @@ export default function BallotBody({ request }) {
           <TableBody>
             <TableRow>
               <TableCell>Tên Tiếng Anh</TableCell>
-              <TableCell>{request.nameInEnglish}</TableCell>
+              <TableCell>{ballot.nameInEnglish}</TableCell>
             </TableRow>
             <TableRow>
               <TableCell>Địa chỉ</TableCell>
-              <TableCell>{request.address}</TableCell>
+              <TableCell>{ballot.address}</TableCell>
             </TableRow>
             <TableRow>
               <TableCell>Email</TableCell>
-              <TableCell>{request.email}</TableCell>
+              <TableCell>{ballot.email}</TableCell>
             </TableRow>
             <TableRow>
               <TableCell>Số điện thoại</TableCell>
-              <TableCell>{request.phone}</TableCell>
+              <TableCell>{ballot.phone}</TableCell>
             </TableRow>
             <TableRow>
               <TableCell>Public key</TableCell>
-              <TableCell>{request.publicKey}</TableCell>
+              <TableCell>{ballot.publicKey}</TableCell>
             </TableRow>
           </TableBody>
         </Table>
