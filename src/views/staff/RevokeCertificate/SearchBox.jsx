@@ -24,7 +24,7 @@ export default function SearchBox(props) {
       const response = await axios.get(`/staff/certificate?studentId=${studentId}`);
       dp(setDocument(response.data));
     } catch (error) {
-      enqueueSnackbar(error.response.data, ERR_TOP_CENTER);
+      enqueueSnackbar(JSON.stringify(error.response.data), ERR_TOP_CENTER);
     }
   }
   return (

@@ -40,7 +40,7 @@ export default function UploadCertificate() {
       enqueueSnackbar("Upload file thành công!", SUCCESS_BOTTOM_CENTER);
       dp(uploadFileSuccess(response.data));
     } catch (error) {
-      enqueueSnackbar(error.response.data, ERR_TOP_CENTER);
+      enqueueSnackbar(JSON.stringify(error.response.data), ERR_TOP_CENTER);
       dp(uploadFileFail());
     }
   }

@@ -62,7 +62,8 @@ export default function ProfileForm() {
       enqueueSnackbar("Đăng kí tham gia thành công, đang chờ kết quả bỏ phiếu!", SUCCESS_BOTTOM_CENTER);
       dp(setProfile({ ...state, imgSrc: profile.imgSrc, state: "voting" }));
     } catch (error) {
-      return enqueueSnackbar(error.response.data, ERR_TOP_CENTER);
+      console.log(typeof error.response.data);
+      return enqueueSnackbar(JSON.stringify(error.response.data), ERR_TOP_CENTER);
     }
   }
 
