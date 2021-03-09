@@ -2,13 +2,13 @@ const { createSlice } = require("@reduxjs/toolkit");
 
 const revokeCertificateSlice = createSlice({
   name: "revokeCertificateSlice",
-  initialState: { certificates: [] },
+  initialState: { document: null },
   reducers: {
-    setCertificates: (state, action) => {
-      state.certificates = action.payload;
+    setDocument: (state, action) => {
+      state.document = action.payload;
     },
   },
 });
 
 export default revokeCertificateSlice.reducer;
-export const { setCertificates } = revokeCertificateSlice.actions;
+export const { setDocument } = revokeCertificateSlice.actions;

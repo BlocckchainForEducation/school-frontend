@@ -2,20 +2,18 @@ const { createSlice } = require("@reduxjs/toolkit");
 
 const certificateSlice = createSlice({
   name: "certificateSlice",
-  initialState: { fetching: true, certificates: [], uploading: false },
+  initialState: { fetching: true, docs: [], uploading: false },
   reducers: {
-    setPreloadCertificates: (state, action) => {
+    setPreloadCertDocuments: (state, action) => {
       state.fetching = false;
-      // DataGrid need id
-      if (action.payload.length > 0) state.certificates = action.payload.map((cert, index) => ({ ...cert, id: index + 1 }));
+      if (action.payload.length > 0) state.docs = action.payload;
     },
     startUploadFile: (state, action) => {
       state.uploading = true;
     },
     uploadFileSuccess: (state, action) => {
       state.uploading = false;
-      // DataGrid need id
-      state.certificates = action.payload.concat(state.certificates).map((cert, index) => ({ ...cert, id: index + 1 }));
+      state.docs = action.payload.concat(state.docs);
     },
     uploadFileFail: (state, action) => {
       state.uploading = false;
@@ -24,4 +22,4 @@ const certificateSlice = createSlice({
 });
 
 export default certificateSlice.reducer;
-export const { setPreloadCertificates, startUploadFile, uploadFileSuccess, uploadFileFail } = certificateSlice.actions;
+export const { setPreloadCertDocuments, startUploadFile, uploadFileSuccess, uploadFileFail } = certificateSlice.actions;

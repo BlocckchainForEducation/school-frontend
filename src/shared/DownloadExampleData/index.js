@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function DownloadExampleData({ title, fileName, head, body, minWidth }) {
   const cls = useStyles();
-  const [show, setShow] = useState(true);
+  const [show, setShow] = useState(false);
 
   function hdClickDownload(e) {
     FileSaver.saveAs(`/static/excels/${fileName}`, fileName);

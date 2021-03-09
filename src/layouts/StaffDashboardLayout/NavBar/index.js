@@ -98,7 +98,7 @@ const NavBar = ({ onMobileClose, openMobile }) => {
           {user.universityName || "Trường ĐH ABC"}
         </Typography>
         <Typography color="textSecondary" variant="body2">
-          {"Cán bộ Phòng Đào Tạo"}
+          {"Cán bộ Trường"}
         </Typography>
       </Box>
       <Divider />

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Box, Button, Paper, TextField } from "@material-ui/core";
 import axios from "axios";
 import { useDispatch } from "react-redux";
-import { setCertificates } from "./redux";
+import { setDocument } from "./redux";
 import { useSnackbar } from "notistack";
 import { ERR_TOP_CENTER } from "../../../utils/snackbar-utils";
 
@@ -13,7 +13,7 @@ export default function SearchBox(props) {
 
   useEffect(() => {
     return () => {
-      dp(setCertificates([]));
+      dp(setDocument(null));
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -21,7 +21,7 @@ export default function SearchBox(props) {
   async function hdSubmitStudentId() {
     try {
       const response = await axios.get(`/staff/certificate?studentId=${studentId}`);
-      dp(setCertificates(response.data));
+      dp(setDocument(response.data));
     } catch (error) {
       enqueueSnackbar(error.response.data, ERR_TOP_CENTER);
     }

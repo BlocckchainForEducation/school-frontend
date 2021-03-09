@@ -12,7 +12,6 @@ const classSlice = createSlice({
           ...claxx,
           id: index + 1,
           teacherName: claxx.teacher.name,
-          bureauName: claxx.bureau.name,
           subjectId: claxx.subject.subjectId,
           subjectName: claxx.subject.subjectName,
         }));
@@ -26,7 +25,6 @@ const classSlice = createSlice({
         ...claxx,
         id: index + 1,
         teacherName: claxx.teacher.name,
-        bureauName: claxx.bureau.name,
         subjectId: claxx.subject.subjectId,
         subjectName: claxx.subject.subjectName,
       }));
