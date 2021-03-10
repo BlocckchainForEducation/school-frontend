@@ -1,6 +1,11 @@
 import {
   Box,
   Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   Divider,
   Grid,
   makeStyles,
@@ -16,7 +21,7 @@ import CheckIcon from "@material-ui/icons/Check";
 import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 import axios from "axios";
 import { useSnackbar } from "notistack";
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getLinkFromTxid } from "src/utils/utils";
 import { requirePrivateKeyHex } from "../../../utils/keyholder";
@@ -50,16 +55,44 @@ function Title({ cert }) {
   const cls = useStyles();
   const dp = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
+  const [confirmDialog, setConfirmDialog] = useState(null);
 
   async function hdRevoke(cert) {
-    const privateKeyHex = await requirePrivateKeyHex(enqueueSnackbar);
-    try {
-      const response = await axios.post("/staff/revoke-certificate", { privateKeyHex, cert });
-      enqueueSnackbar("Thu hồi bằng cấp thành công!", INFO_TOP_CENTER);
-      dp(setDocument(response.data));
-    } catch (error) {
-      enqueueSnackbar(JSON.stringify(error.response.data), ERR_TOP_CENTER);
+    const dialog = (
+      <Dialog open={true} onClose={() => setConfirmDialog(null)}>
+        <DialogTitle>
+          <Typography variant="h4">{"Thu hồi bằng cấp?"}</Typography>
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText>Sau khi thu hồi, bằng cấp sẽ không còn hợp lệ và không thể chia sẻ với người khác!</DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setConfirmDialog(null)}>Cancel</Button>
+          <Button
+            color="primary"
+            onClick={() => {
+              setConfirmDialog(null);
+              revoke();
+            }}
+          >
+            Yes
+          </Button>
+        </DialogActions>
+      </Dialog>
+    );
+
+    async function revoke() {
+      const privateKeyHex = await requirePrivateKeyHex(enqueueSnackbar);
+      try {
+        const response = await axios.post("/staff/revoke-certificate", { privateKeyHex, cert });
+        enqueueSnackbar("Thu hồi bằng cấp thành công!", INFO_TOP_CENTER);
+        dp(setDocument(response.data));
+      } catch (error) {
+        enqueueSnackbar(JSON.stringify(error.response.data), ERR_TOP_CENTER);
+      }
     }
+
+    setConfirmDialog(dialog);
   }
 
   async function hdReactive(cert) {
@@ -104,6 +137,7 @@ function Title({ cert }) {
           <Button color="secondary" variant="outlined" onClick={(e) => hdRevoke(cert)}>
             Thu hồi
           </Button>
+          {confirmDialog}
         </>
       )}
     </Box>

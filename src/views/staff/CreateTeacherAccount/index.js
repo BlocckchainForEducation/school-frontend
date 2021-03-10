@@ -38,7 +38,7 @@ export default function CreateTeacherAccount() {
     try {
       const response = await axios.post("/staff/create-teacher", formData);
       dp(uploadFileSuccess(response.data));
-      enqueueSnackbar("Upload file thành công!", SUCCESS_BOTTOM_CENTER);
+      enqueueSnackbar("Tạo tài khoản các giảng viên thành công!", SUCCESS_BOTTOM_CENTER);
     } catch (error) {
       dp(uploadFileFail());
       enqueueSnackbar(JSON.stringify(error.response.data), ERR_TOP_CENTER);

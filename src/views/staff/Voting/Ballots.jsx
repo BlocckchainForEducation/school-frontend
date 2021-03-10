@@ -26,6 +26,10 @@ export default function Ballots(props) {
   }, [dp, enqueueSnackbar]);
 
   useEffect(() => {
+    fetchNewBallots();
+  }, [fetchNewBallots]);
+
+  useEffect(() => {
     const clockId = setInterval(() => {
       fetchNewBallots();
     }, 3000);

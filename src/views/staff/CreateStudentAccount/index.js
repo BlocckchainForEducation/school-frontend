@@ -46,7 +46,7 @@ export default function CreateStudentAccount() {
     } else {
       const result = await response.json();
       dp(uploadFileSuccess(result));
-      enqueueSnackbar("Upload file thành công!", SUCCESS_BOTTOM_CENTER);
+      enqueueSnackbar("Tạo tài khoản các sinh viên thành công!", SUCCESS_BOTTOM_CENTER);
     }
   }
 

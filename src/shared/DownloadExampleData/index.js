@@ -26,8 +26,16 @@ export default function DownloadExampleData({ title, fileName, head, body, minWi
   }
 
   return (
-    <Paper onClick={toggleCollapse} style={{ cursor: "pointer" }}>
-      <Box pl={2} pr={1} display="flex" justifyContent="space-between" alignItems="center">
+    <Paper>
+      <Box
+        pl={2}
+        pr={1}
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        onClick={toggleCollapse}
+        style={{ cursor: "pointer" }}
+      >
         <Typography variant="h4">{title || "Mẫu dữ liệu"}</Typography>
         <Box>
           <IconButton onClick={hdClickDownload}>
