@@ -18,7 +18,7 @@ export default function Ballots(props) {
   // make thing complicated just for remove warning on useEffect :v
   const fetchNewBallots = useCallback(async () => {
     try {
-      const response = await axios.get("staff/ballots?state=new");
+      const response = await axios.get("/staff/ballots?state=new");
       dp(setBallots(response.data));
     } catch (error) {
       enqueueSnackbar(JSON.stringify(error.response.data), ERR_TOP_CENTER);
@@ -26,8 +26,13 @@ export default function Ballots(props) {
   }, [dp, enqueueSnackbar]);
 
   useEffect(() => {
-    fetchNewBallots();
-  }, [fetchNewBallots]);
+    const clockId = setInterval(() => {
+      fetchNewBallots();
+    }, 3000);
+    return () => {
+      window.clearInterval(clockId);
+    };
+  });
 
   let content =
     numOfNewBallot > 0 ? (

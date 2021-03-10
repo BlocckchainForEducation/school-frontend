@@ -54,7 +54,7 @@ const StaffDashboardLayout = () => {
 
   async function fetchProfile() {
     try {
-      const response = await axios.get("/staff/university-profile");
+      const response = await axios.get("/staff/my-university-profile");
       dp(setProfile(response.data));
     } catch (error) {
       enqueueSnackbar("Phiên làm việc đã kết thúc, vui lòng đăng nhập lại!", {
