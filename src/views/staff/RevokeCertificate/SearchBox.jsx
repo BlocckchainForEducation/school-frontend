@@ -4,14 +4,14 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import { setDocument } from "./redux";
 import { useSnackbar } from "notistack";
-import { ERR_TOP_CENTER } from "../../../utils/snackbar-utils";
+import { ERR_TOP_CENTER, INFO_TOP_CENTER } from "../../../utils/snackbar-utils";
 
 export default function SearchBox(props) {
   const [studentId, setStudentId] = useState("");
   const dp = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
 
-  // remove cached on unmount cpn
+  // remove redux cached on unmount
   useEffect(() => {
     return () => {
       dp(setDocument(null));
@@ -22,6 +22,7 @@ export default function SearchBox(props) {
   async function hdSubmitStudentId() {
     try {
       const response = await axios.get(`/staff/certificate?studentId=${studentId}`);
+      if (!response.data) enqueueSnackbar("Không tìm thấy bằng cấp của " + studentId, INFO_TOP_CENTER);
       dp(setDocument(response.data));
     } catch (error) {
       enqueueSnackbar(JSON.stringify(error.response.data), ERR_TOP_CENTER);
