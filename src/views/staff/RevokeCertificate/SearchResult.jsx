@@ -17,6 +17,7 @@ export default function SearchResult(props) {
   const cls = useStyles();
 
   const document = useSelector((state) => state.revokeCertificateSlice.document);
+  const lastestVersion = document?.versions[document.versions.length - 1];
   return (
     <div>
       {document && (
@@ -24,14 +25,17 @@ export default function SearchResult(props) {
         <Timeline align="left" className={cls.root}>
           <TimelineItem>
             <TimelineSeparator>
-              <TimelineDot
-                color={document.versions[document.versions.length - 1].type === "revoke" ? "secondary" : "primary"}
-              ></TimelineDot>
+              <TimelineDot color={lastestVersion.type === "revoke" ? "secondary" : "primary"}></TimelineDot>
               <TimelineConnector></TimelineConnector>
             </TimelineSeparator>
             <TimelineContent>
               <Paper style={{ padding: 8 }}>
-                <Typography>{toDateTimeString(document.versions[document.versions.length - 1].timestamp)}</Typography>
+                <Typography>
+                  {`v${document.versions.length},${toDateTimeString(lastestVersion.timestamp)}: `}
+                  <strong>{lastestVersion.type === "revoke" && "Thu hồi"}</strong>
+                  <strong>{lastestVersion.type === "create" && "Cấp lần đầu"}</strong>
+                  <strong>{lastestVersion.type === "reactive" && "Cấp lại"}</strong>
+                </Typography>
               </Paper>
               <Box mt={2}>
                 <CertificateInfoTable cert={document.versions[document.versions.length - 1]}></CertificateInfoTable>
@@ -51,7 +55,9 @@ export default function SearchResult(props) {
                   <Paper style={{ padding: 8 }}>
                     <Typography>
                       {`v${version.version}, ${toDateTimeString(version.timestamp)}: `}
-                      <strong>{version.type === "revoke" ? "Thu hồi" : "Cấp lại"}</strong>
+                      <strong>{version.type === "revoke" && "Thu hồi"}</strong>
+                      <strong>{version.type === "create" && "Cấp lần đầu"}</strong>
+                      <strong>{version.type === "reactive" && "Cấp lại"}</strong>
                     </Typography>
                   </Paper>
                 </TimelineContent>

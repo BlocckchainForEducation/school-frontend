@@ -89,12 +89,12 @@ export default function Title({ cert }) {
           <Typography variant="h4" className={cls.typo}>
             Trạng thái bằng cấp: &nbsp; <ErrorOutlineIcon color="secondary"></ErrorOutlineIcon>
           </Typography>
-          <Typography variant="h4" className={cls.typo}>
+          {/* <Typography variant="h4" className={cls.typo}>
             {`Version: ${cert.version}`}
           </Typography>
           <Typography variant="h4" className={cls.typo}>
             {`Timestamp: ${cert.timestamp}`}
-          </Typography>
+          </Typography> */}
           <Button color="primary" variant="outlined" onClick={(e) => hdReactive(cert)}>
             Cấp lại
           </Button>
@@ -104,12 +104,12 @@ export default function Title({ cert }) {
           <Typography variant="h4" className={cls.typo}>
             Trạng thái bằng cấp: &nbsp; <CheckIcon style={{ color: "green" }}></CheckIcon>
           </Typography>
-          <Typography variant="h4" className={cls.typo}>
+          {/* <Typography variant="h4" className={cls.typo}>
             {`Version: ${cert.version}`}
           </Typography>
           <Typography variant="h4" className={cls.typo}>
             {`Timestamp: ${cert.timestamp}`}
-          </Typography>
+          </Typography> */}
           <Button color="secondary" variant="outlined" onClick={(e) => hdRevoke(cert)}>
             Thu hồi
           </Button>
