@@ -1,6 +1,6 @@
 import Page from "../../../shared/Page";
 import SearchBox from "./SearchBox";
-import SearchResult from "./SearchResult";
+import SearchResult from "./CertificateInfoTable";
 import { Box } from "@material-ui/core";
 
 export default function RevokeCertificate() {

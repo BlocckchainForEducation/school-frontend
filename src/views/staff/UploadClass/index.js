@@ -2,15 +2,13 @@ import { makeStyles } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
 import axios from "axios";
 import { useSnackbar } from "notistack";
-import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Page from "src/shared/Page";
-import { getToken } from "src/utils/mng-token";
 import DragnDropZone from "../../../shared/DragnDropZone";
 import { requirePrivateKeyHex } from "../../../utils/keyholder";
 import { ERR_TOP_CENTER, SUCCESS_BOTTOM_CENTER } from "../../../utils/snackbar-utils";
 import ClassDataExample from "./ClassDataExample";
-import { startUploadFile, uploadFileFail, uploadFileSuccess } from "./redux";
+import { setShouldShowCaution, startUploadFile, uploadFileFail, uploadFileSuccess } from "./redux";
 import UploadedClassTable from "./UploadedClassTable";
 
 const useStyles = makeStyles((theme) => ({
@@ -31,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Uploadclass() {
   const cls = useStyles();
   const uploading = useSelector((state) => state.classSlice.uploading);
-  const [showAlert, setShowAlert] = useState(true);
+  const shouldShowCaution = useSelector((state) => state.classSlice.shouldShowCaution);
   const dp = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
 
@@ -56,8 +54,8 @@ export default function Uploadclass() {
       <div className={cls.root}>
         <ClassDataExample></ClassDataExample>
 
-        {showAlert && (
-          <Alert severity="info" variant="filled" onClose={() => setShowAlert(false)} style={{ fontSize: "1.25rem" }}>
+        {shouldShowCaution && (
+          <Alert severity="info" variant="filled" onClose={() => dp(setShouldShowCaution(false))} style={{ fontSize: "1.25rem" }}>
             Lưu ý: Cần tạo Giảng viên và Sinh viên của lớp học tương ứng trước!
           </Alert>
         )}
