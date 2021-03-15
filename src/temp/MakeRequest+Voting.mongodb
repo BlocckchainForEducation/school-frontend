@@ -6,6 +6,8 @@
 // Select the database to use.
 use('B4E_School_Backend');
 
+db.Account.deleteMany({role: "TEACHER"})
+db.TeacherHistory.deleteMany({})
 
 db.UniversityProfile.updateMany({state: "voting"}, {$set: {"votes": [ {name: "ĐHXD", decision: "accept", time: "2020-12-10"}, {name: "KTQT", decision: "decline", time: "2020-12-12"}]}})
 

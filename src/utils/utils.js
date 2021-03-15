@@ -9,10 +9,11 @@ function getHost() {
   return host;
 }
 
-function getLinkFromTxid(txid) {
+function getLinkFromTxid(txid, length) {
+  if (!length) length = 30;
   return (
     <Link target="_blank" href={`${process.env.REACT_APP_EXPLORER_URL}/#/transactions/${txid}`}>
-      {txid.slice(0, 30)}...
+      {txid.slice(0, length)}...
     </Link>
   );
 }

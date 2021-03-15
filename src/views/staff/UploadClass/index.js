@@ -52,6 +52,7 @@ export default function Uploadclass() {
   return (
     <Page title="Upload lớp học">
       <div className={cls.root}>
+        {/* TODO: change to not redundancy version would be better */}
         <ClassDataExample></ClassDataExample>
 
         {shouldShowCaution && (

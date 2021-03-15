@@ -20,10 +20,12 @@ import axios from "axios";
 import { useSnackbar } from "notistack";
 import { useEffect, useState } from "react";
 import Page from "../../../shared/Page";
-import { ERR_TOP_CENTER, SUCCESS_BOTTOM_RIGHT } from "../../../utils/snackbar-utils";
+import { ERR_TOP_CENTER, SUCCESS_BOTTOM_RIGHT, SUCCESS_TOP_CENTER } from "../../../utils/snackbar-utils";
 import SaveIcon from "@material-ui/icons/Save";
 import SendIcon from "@material-ui/icons/Send";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import { requirePrivateKeyHex } from "../../../utils/keyholder";
+import { getLinkFromTxid } from "../../../utils/utils";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -31,6 +33,12 @@ const useStyles = makeStyles((theme) => ({
     "& .MuiTimelineItem-missingOppositeContent:before": {
       flex: 0,
       padding: 0,
+    },
+    "& .MuiInputBase-input": {
+      paddingLeft: "20px",
+    },
+    "& .MuiInputBase-input.Mui-disabled": {
+      color: "black",
     },
   },
 }));
@@ -62,14 +70,13 @@ export default function SubmitGrade(props) {
       setFetching(false);
     } catch (error) {
       console.log(error);
-      // enqueueSnackbar(JSON.stringify(error.response.data), ERR_TOP_CENTER);
+      enqueueSnackbar(JSON.stringify(error.response.data), ERR_TOP_CENTER);
     }
   }
 
   function hdChangeHalfSemester(classId, studentIndex, e) {
     const cloneClasses = [...classes];
     const claxx = cloneClasses.find((clx) => clx.classId === classId);
-    // claxx.students[studentIndex].halfSemesterPoint = e.target.value;
     if (!claxx.students[studentIndex].versions) {
       claxx.students[studentIndex].versions = [{ halfSemesterPoint: e.target.value }];
     } else {
@@ -77,10 +84,10 @@ export default function SubmitGrade(props) {
     }
     setClasses(cloneClasses);
   }
+
   function hdChangeFinalSemester(classId, studentIndex, e) {
     const cloneClasses = [...classes];
     const claxx = cloneClasses.find((clx) => clx.classId === classId);
-    // claxx.students[studentIndex].finalSemesterPoint = e.target.value;
     if (!claxx.students[studentIndex].versions) {
       claxx.students[studentIndex].versions = [{ finalSemesterPoint: e.target.value }];
     } else {
@@ -98,7 +105,24 @@ export default function SubmitGrade(props) {
       enqueueSnackbar(JSON.stringify(error.response.data), ERR_TOP_CENTER);
     }
   }
-  async function hdSubmitGrade(classId) {}
+  async function hdSubmitGrade(classId) {
+    const privateKeyHex = await requirePrivateKeyHex(enqueueSnackbar);
+    const claxx = classes.find((clx) => clx.classId === classId);
+    try {
+      const response = await axios.post("/teacher/submit-grade", { privateKeyHex, claxx });
+      {
+        const cloneClasses = [...classes];
+        // remove old claxx, add new claxx (has txid, isSubmited...)
+        const filterdClasses = cloneClasses.filter((clx) => clx.classId !== classId);
+        filterdClasses.push(response.data);
+        setClasses(filterdClasses);
+      }
+      enqueueSnackbar("Gửi điểm thành công", SUCCESS_TOP_CENTER);
+    } catch (error) {
+      console.error(error);
+      enqueueSnackbar(JSON.stringify(error.response.data), ERR_TOP_CENTER);
+    }
+  }
 
   const content = !groupedClassesBySemester ? (
     "Không tìm thấy lớp học nào!"
@@ -108,91 +132,105 @@ export default function SubmitGrade(props) {
         return (
           <TimelineItem>
             <TimelineSeparator>
-              <TimelineDot />
+              <TimelineDot color="primary" />
               {index !== Object.entries(groupedClassesBySemester).length - 1 && <TimelineConnector />}
             </TimelineSeparator>
             <TimelineContent>
               <Box>
-                <Typography>{`Kì ${entry[0]}`}</Typography>
-                {entry[1].map((claxx) => {
-                  return (
-                    <Accordion>
-                      <AccordionSummary
-                        expandIcon={<ExpandMoreIcon />}
-                      >{`Lớp: ${claxx.classId}, ${claxx.subject.subjectId}, ${claxx.subject.subjectName} `}</AccordionSummary>
-                      <AccordionDetails>
-                        <TableContainer>
-                          <Table size="small">
-                            <TableHead>
-                              <TableRow>
-                                <TableCell>#</TableCell>
-                                <TableCell>MSSV</TableCell>
-                                <TableCell>Họ và tên</TableCell>
-                                <TableCell>Ngày sinh</TableCell>
-                                <TableCell>Email</TableCell>
-                                <TableCell style={{ width: "100px" }}>Điểm GK</TableCell>
-                                <TableCell style={{ width: "100px" }}>Điểm CK</TableCell>
-                              </TableRow>
-                            </TableHead>
-                            <TableBody>
-                              {claxx.students.map((student, index) => {
-                                const halfPoint = claxx.students[index]?.versions?.[0].halfSemesterPoint;
-                                // const halfError = !Boolean(halfPoint <= 10 && halfPoint >= 0);
-                                const halfError = Boolean(halfPoint > 10 || halfPoint < 0);
-                                const finalPoint = claxx.students[index]?.versions?.[0].finalSemesterPoint;
-                                // const finalError = !Boolean(finalPoint <= 10 && finalPoint >= 0);
-                                const finalError = Boolean(finalPoint > 10 || finalPoint < 0);
-                                return (
-                                  <TableRow key={index}>
-                                    <TableCell>{index + 1}</TableCell>
-                                    <TableCell>{student.studentId}</TableCell>
-                                    <TableCell>{student.name}</TableCell>
-                                    <TableCell>{student.birthday}</TableCell>
-                                    <TableCell>{student.email}</TableCell>
-                                    <TableCell>
-                                      <TextField
-                                        value={halfPoint}
-                                        onChange={(e) => hdChangeHalfSemester(claxx.classId, index, e)}
-                                        error={halfError}
-                                        helperText={halfError && "Từ 0 - 10"}
-                                      ></TextField>
-                                    </TableCell>
-                                    <TableCell>
-                                      <TextField
-                                        value={finalPoint}
-                                        onChange={(e) => hdChangeFinalSemester(claxx.classId, index, e)}
-                                        error={finalError}
-                                        helperText={finalError && "Từ 0 - 10"}
-                                      ></TextField>
-                                    </TableCell>
-                                  </TableRow>
-                                );
-                              })}
-                            </TableBody>
-                          </Table>
-                        </TableContainer>
-                      </AccordionDetails>
-                      <AccordionActions>
-                        <Button
-                          startIcon={<SaveIcon></SaveIcon>}
-                          variant="contained"
-                          style={{ backgroundColor: "#4caf50", color: "white" }}
-                          onClick={(e) => hdSaveDraff(claxx.classId)}
-                        >
-                          Lưu nháp
-                        </Button>
-                        <Button
-                          startIcon={<SendIcon></SendIcon>}
-                          variant="contained"
-                          color="primary"
-                          onClick={(e) => hdSubmitGrade(claxx.classId)}
-                        >
-                          Gửi điểm
-                        </Button>
-                      </AccordionActions>
-                    </Accordion>
-                  );
-                })}
+                {/* semester */}
+                <Typography gutterBottom variant="h5">{`Kì ${entry[0]}`}</Typography>
+
+                {/* class list */}
+                <Box px={1}>
+                  {entry[1].map((claxx) => {
+                    const disable = claxx.isSubmited;
+                    return (
+                      <Accordion>
+                        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                          {`Lớp: ${claxx.classId} - ${claxx.subject.subjectId} - ${claxx.subject.subjectName}`}
+                        </AccordionSummary>
+                        <AccordionDetails>
+                          <TableContainer>
+                            <Table size="small">
+                              <TableHead>
+                                <TableRow>
+                                  <TableCell>#</TableCell>
+                                  <TableCell>MSSV</TableCell>
+                                  <TableCell>Họ và tên</TableCell>
+                                  <TableCell>Ngày sinh</TableCell>
+                                  <TableCell>Email</TableCell>
+                                  <TableCell style={{ width: "100px" }}>Điểm GK</TableCell>
+                                  <TableCell style={{ width: "100px" }}>Điểm CK</TableCell>
+                                  {disable && <TableCell>Txid</TableCell>}
+                                </TableRow>
+                              </TableHead>
+                              <TableBody>
+                                {claxx.students.map((student, index) => {
+                                  const halfPoint = claxx.students[index]?.versions?.[0].halfSemesterPoint;
+                                  // const halfError = !Boolean(halfPoint <= 10 && halfPoint >= 0);
+                                  const halfError = Boolean(halfPoint > 10 || halfPoint < 0);
+                                  const finalPoint = claxx.students[index]?.versions?.[0].finalSemesterPoint;
+                                  // const finalError = !Boolean(finalPoint <= 10 && finalPoint >= 0);
+                                  const finalError = Boolean(finalPoint > 10 || finalPoint < 0);
+                                  return (
+                                    <TableRow key={index}>
+                                      <TableCell>{index + 1}</TableCell>
+                                      <TableCell>{student.studentId}</TableCell>
+                                      <TableCell>{student.name}</TableCell>
+                                      <TableCell>{student.birthday}</TableCell>
+                                      <TableCell>{student.email}</TableCell>
+                                      <TableCell>
+                                        <TextField
+                                          // type="number"
+                                          value={halfPoint}
+                                          onChange={(e) => hdChangeHalfSemester(claxx.classId, index, e)}
+                                          error={halfError}
+                                          helperText={halfError && "Từ 0 - 10"}
+                                          disabled={disable}
+                                        ></TextField>
+                                      </TableCell>
+                                      <TableCell>
+                                        <TextField
+                                          // type="number"
+                                          value={finalPoint}
+                                          onChange={(e) => hdChangeFinalSemester(claxx.classId, index, e)}
+                                          error={finalError}
+                                          helperText={finalError && "Từ 0 - 10"}
+                                          disabled={disable}
+                                        ></TextField>
+                                      </TableCell>
+                                      {disable && <TableCell>{getLinkFromTxid(student.versions[0].txid, 15)} </TableCell>}
+                                    </TableRow>
+                                  );
+                                })}
+                              </TableBody>
+                            </Table>
+                          </TableContainer>
+                        </AccordionDetails>
+                        <AccordionActions>
+                          <Button
+                            startIcon={<SaveIcon></SaveIcon>}
+                            variant="contained"
+                            // style={{ backgroundColor: "#4caf50", color: "white" }}
+                            onClick={(e) => hdSaveDraff(claxx.classId)}
+                            disabled={disable}
+                          >
+                            Lưu nháp
+                          </Button>
+                          <Button
+                            startIcon={<SendIcon></SendIcon>}
+                            variant="contained"
+                            color="primary"
+                            onClick={(e) => hdSubmitGrade(claxx.classId)}
+                            disabled={disable}
+                          >
+                            Gửi điểm
+                          </Button>
+                        </AccordionActions>
+                      </Accordion>
+                    );
+                  })}
+                </Box>
               </Box>
             </TimelineContent>
           </TimelineItem>
