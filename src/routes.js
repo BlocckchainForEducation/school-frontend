@@ -22,6 +22,7 @@ import { getRole, ROLE } from "./utils/mng-role";
 // import SubmitSubjectPoint from "./views/teacher/SubmitSubjectPoint";
 import RevokeCertificate from "./views/staff/RevokeCertificate";
 import SubmitGrade from "./views/teacher/SubmitGrade";
+import EditGrade from "./views/teacher/EditGrade";
 
 const routes = [
   {
@@ -46,6 +47,7 @@ const routes = [
     children: [
       { path: "thong-tin-ca-nhan", element: <TeacherProfile /> },
       { path: "nhap-diem-lop-hoc", element: <SubmitGrade /> },
+      { path: "sua-diem", element: <EditGrade /> },
       { path: "*", element: <Navigate to="/404" replace={true} /> },
     ],
   },

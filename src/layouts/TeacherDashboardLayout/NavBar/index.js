@@ -5,6 +5,8 @@ import { User as UserIcon } from "react-feather";
 import { useSelector } from "react-redux";
 import { Link as RouterLink, useLocation } from "react-router-dom";
 import NavItem from "./NavItem";
+import GavelIcon from "@material-ui/icons/Gavel";
+import EditIcon from "@material-ui/icons/Edit";
 
 const items = [
   {
@@ -14,8 +16,13 @@ const items = [
   },
   {
     href: "/giang-vien/nhap-diem-lop-hoc",
-    icon: UserIcon,
+    icon: GavelIcon,
     title: "Nhập điểm lớp học",
+  },
+  {
+    href: "/giang-vien/sua-diem",
+    icon: EditIcon,
+    title: "Sửa điểm",
   },
 ];
 

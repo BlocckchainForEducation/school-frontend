@@ -15,16 +15,16 @@ import {
   TextField,
   Typography,
 } from "@material-ui/core";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import SaveIcon from "@material-ui/icons/Save";
+import SendIcon from "@material-ui/icons/Send";
 import { Timeline, TimelineConnector, TimelineContent, TimelineDot, TimelineItem, TimelineSeparator } from "@material-ui/lab";
 import axios from "axios";
 import { useSnackbar } from "notistack";
 import { useEffect, useState } from "react";
 import Page from "../../../shared/Page";
-import { ERR_TOP_CENTER, SUCCESS_BOTTOM_RIGHT, SUCCESS_TOP_CENTER } from "../../../utils/snackbar-utils";
-import SaveIcon from "@material-ui/icons/Save";
-import SendIcon from "@material-ui/icons/Send";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { requirePrivateKeyHex } from "../../../utils/keyholder";
+import { ERR_TOP_CENTER, SUCCESS_BOTTOM_RIGHT, SUCCESS_TOP_CENTER } from "../../../utils/snackbar-utils";
 import { getLinkFromTxid } from "../../../utils/utils";
 
 const useStyles = makeStyles((theme) => ({
@@ -40,6 +40,10 @@ const useStyles = makeStyles((theme) => ({
     "& .MuiInputBase-input.Mui-disabled": {
       color: "black",
     },
+  },
+  accordionHeader: {
+    alignItems: "center",
+    justifyContent: "space-between",
   },
 }));
 
@@ -110,13 +114,10 @@ export default function SubmitGrade(props) {
     const claxx = classes.find((clx) => clx.classId === classId);
     try {
       const response = await axios.post("/teacher/submit-grade", { privateKeyHex, claxx });
-      {
-        const cloneClasses = [...classes];
-        // remove old claxx, add new claxx (has txid, isSubmited...)
-        const filterdClasses = cloneClasses.filter((clx) => clx.classId !== classId);
-        filterdClasses.push(response.data);
-        setClasses(filterdClasses);
-      }
+      const cloneClasses = [...classes];
+      const clxx = cloneClasses.find((clx) => clx.classId === classId);
+      Object.assign(clxx, response.data);
+      setClasses(cloneClasses);
       enqueueSnackbar("Gửi điểm thành công", SUCCESS_TOP_CENTER);
     } catch (error) {
       console.error(error);
@@ -133,7 +134,8 @@ export default function SubmitGrade(props) {
           <TimelineItem>
             <TimelineSeparator>
               <TimelineDot color="primary" />
-              {index !== Object.entries(groupedClassesBySemester).length - 1 && <TimelineConnector />}
+              {/* {index !== Object.entries(groupedClassesBySemester).length - 1 && <TimelineConnector />} */}
+              <TimelineConnector />
             </TimelineSeparator>
             <TimelineContent>
               <Box>
@@ -148,6 +150,7 @@ export default function SubmitGrade(props) {
                       <Accordion>
                         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                           {`Lớp: ${claxx.classId} - ${claxx.subject.subjectId} - ${claxx.subject.subjectName}`}
+                          {/* {disable && <CheckIcon size="small" color="primary"></CheckIcon>} */}
                         </AccordionSummary>
                         <AccordionDetails>
                           <TableContainer>
