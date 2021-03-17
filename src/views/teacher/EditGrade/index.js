@@ -22,8 +22,9 @@ import axios from "axios";
 import { useSnackbar } from "notistack";
 import { useState } from "react";
 import Page from "../../../shared/Page";
+import { requirePrivateKeyHex } from "../../../utils/keyholder";
 import { ERR_TOP_CENTER } from "../../../utils/snackbar-utils";
-import { getLinkFromTxid } from "../../../utils/utils";
+import { getLinkFromTxid, toDateTimeString } from "../../../utils/utils";
 
 const useRowStyles = makeStyles({
   root: {
@@ -41,9 +42,10 @@ const useRowStyles = makeStyles({
 });
 
 function RowWithCollapseContent(props) {
-  const { student, index } = props;
+  const { claxx, student, index } = props;
   const [open, setOpen] = useState(false);
   const cls = useRowStyles();
+  const { enqueueSnackbar } = useSnackbar();
 
   return (
     <>
@@ -62,36 +64,54 @@ function RowWithCollapseContent(props) {
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
           <Collapse in={open} timeout="auto" unmountOnExit>
-            <Box px={2} pt={2}>
-              <EditGradeForm hdSubmit={(halfSemesterPoint, finalSemesterPoint) => {}}></EditGradeForm>
-              <Box mt={3}></Box>
-
-              <Timeline className={cls.timeline}>
-                {student.versions.map((version, versionIndex) => {
-                  return (
-                    <TimelineItem>
-                      <TimelineSeparator>
-                        <TimelineDot color="primary"></TimelineDot>
-                        {versionIndex !== student.versions.length - 1 && <TimelineConnector></TimelineConnector>}
-                      </TimelineSeparator>
-                      <TimelineContent>
-                        <Typography>
-                          {`v${versionIndex + 1}`}, {`GK: ${version.halfSemesterPoint}`}, {`CK: ${version.finalSemesterPoint}`}, Txid:{" "}
-                          {getLinkFromTxid(version.txid, 20)}
-                        </Typography>
-                        {/* <Grid container>
-                          <Grid item xs={3}>{`Version: ${versionIndex + 1}`}</Grid>
-                          <Grid item xs={3}>{`GK: ${version.halfSemesterPoint}`}</Grid>
-                          <Grid item xs={3}>{`CK: ${version.finalSemesterPoint}`}</Grid>
-                          <Grid item xs={3}>
-                            Txid: {getLinkFromTxid(version.txid, 12)}
-                          </Grid>
-                        </Grid> */}
-                      </TimelineContent>
-                    </TimelineItem>
-                  );
-                })}
-              </Timeline>
+            <Box p={2}>
+              <Typography variant="h4">Lịch sử điểm</Typography>
+              <TableContainer>
+                <Table size="small">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>#</TableCell>
+                      <TableCell>Điểm GK</TableCell>
+                      <TableCell>Điểm CK</TableCell>
+                      <TableCell>Thời gian</TableCell>
+                      <TableCell>Txid</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {student.versions.map((version, vIndex) => {
+                      return (
+                        <TableRow>
+                          <TableCell>{vIndex + 1}</TableCell>
+                          <TableCell>{version.halfSemesterPoint}</TableCell>
+                          <TableCell>{version.finalSemesterPoint}</TableCell>
+                          <TableCell>{toDateTimeString(version.timestamp)}</TableCell>
+                          <TableCell>{getLinkFromTxid(version.txid, 20)}</TableCell>
+                        </TableRow>
+                      );
+                    })}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+              <Box mt={4}></Box>
+              <EditGradeForm
+                hdSubmit={async (halfSemesterPoint, finalSemesterPoint) => {
+                  const privateKeyHex = await requirePrivateKeyHex(enqueueSnackbar);
+                  try {
+                    const response = await axios.post("/teacher/edit-grade", {
+                      privateKeyHex,
+                      claxx,
+                      student,
+                      halfSemesterPoint,
+                      finalSemesterPoint,
+                    });
+                    const clonedClass = { ...claxx };
+                    const stdInClonedClass = clonedClass.students.find((std) => std.studentId === student.studentId);
+                    stdInClonedClass.versions.push(response.data);
+                  } catch (error) {
+                    enqueueSnackbar(JSON.stringify(error.response.data), ERR_TOP_CENTER);
+                  }
+                }}
+              ></EditGradeForm>
             </Box>
           </Collapse>
         </TableCell>
@@ -106,10 +126,10 @@ function EditGradeForm({ hdSubmit }) {
 
   return (
     <Grid container justify="space-between" alignItems="center">
-      <Grid item>
+      <Grid item xs={12} md={3}>
         <Typography variant="h4">Nhập điểm mới:</Typography>
       </Grid>
-      <Grid item>
+      <Grid item xs={12} md={4}>
         <TextField
           variant="outlined"
           color="primary"
@@ -119,7 +139,7 @@ function EditGradeForm({ hdSubmit }) {
           onChange={(e) => setHalfSemesterPoint(e.target.value)}
         ></TextField>
       </Grid>
-      <Grid item>
+      <Grid item xs={12} md={4}>
         <TextField
           variant="outlined"
           color="primary"
@@ -129,7 +149,7 @@ function EditGradeForm({ hdSubmit }) {
           onChange={(e) => setFinalSemesterPoint(e.target.value)}
         ></TextField>
       </Grid>
-      <Grid item>
+      <Grid item xs={12} md={1}>
         <Button variant="contained" color="primary" onClick={(e) => hdSubmit(halfSemesterPoint, finalSemesterPoint)}>
           Submit
         </Button>
@@ -138,7 +158,7 @@ function EditGradeForm({ hdSubmit }) {
   );
 }
 
-export default function EditGrade(props) {
+export default function EditGrade() {
   const [classId, setClassId] = useState("");
   const [claxx, setClaxx] = useState(false);
 
@@ -197,7 +217,7 @@ export default function EditGrade(props) {
                 </TableHead>
                 <TableBody>
                   {claxx.students.map((student, index) => {
-                    return <RowWithCollapseContent key={index} student={student} index={index}></RowWithCollapseContent>;
+                    return <RowWithCollapseContent key={index} student={student} index={index} claxx={claxx}></RowWithCollapseContent>;
                   })}
                 </TableBody>
               </Table>

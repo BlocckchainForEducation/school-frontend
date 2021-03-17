@@ -1,6 +1,7 @@
 import { Box, makeStyles, Paper, Typography } from "@material-ui/core";
 import { Timeline, TimelineConnector, TimelineContent, TimelineDot, TimelineItem, TimelineSeparator } from "@material-ui/lab";
 import { useSelector } from "react-redux";
+import { toDateTimeString } from "../../../utils/utils";
 import CertificateInfoTable from "./CertificateInfoTable";
 
 const useStyles = makeStyles((theme) => ({
@@ -68,8 +69,4 @@ export default function SearchResult(props) {
       )}
     </div>
   );
-}
-
-function toDateTimeString(timestamp) {
-  return ` ${new Date(timestamp).toISOString().split("T")[0]}, ${new Date(timestamp).toISOString().split("T")[1].split(".")[0]}`;
 }

@@ -18,4 +18,8 @@ function getLinkFromTxid(txid, length) {
   );
 }
 
-export { getHost, getLinkFromTxid };
+function toDateTimeString(timestamp) {
+  return ` ${new Date(timestamp).toISOString().split("T")[0]}, ${new Date(timestamp).toISOString().split("T")[1].split(".")[0]}`;
+}
+
+export { getHost, getLinkFromTxid, toDateTimeString };
