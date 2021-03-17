@@ -15,14 +15,15 @@ import {
   TextField,
   Typography,
 } from "@material-ui/core";
+import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
+import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
+import { Timeline, TimelineConnector, TimelineContent, TimelineDot, TimelineItem, TimelineSeparator } from "@material-ui/lab";
 import axios from "axios";
 import { useSnackbar } from "notistack";
 import { useState } from "react";
 import Page from "../../../shared/Page";
 import { ERR_TOP_CENTER } from "../../../utils/snackbar-utils";
-import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
-import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
-import { Timeline, TimelineConnector, TimelineContent, TimelineDot, TimelineItem, TimelineSeparator } from "@material-ui/lab";
+import { getLinkFromTxid } from "../../../utils/utils";
 
 const useRowStyles = makeStyles({
   root: {
@@ -61,12 +62,10 @@ function RowWithCollapseContent(props) {
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
           <Collapse in={open} timeout="auto" unmountOnExit>
-            <Box>
-              <Grid container>
-                <Grid></Grid>
-                <Grid></Grid>
-                <Grid></Grid>
-              </Grid>
+            <Box px={2} pt={2}>
+              <EditGradeForm hdSubmit={(halfSemesterPoint, finalSemesterPoint) => {}}></EditGradeForm>
+              <Box mt={3}></Box>
+
               <Timeline className={cls.timeline}>
                 {student.versions.map((version, versionIndex) => {
                   return (
@@ -75,9 +74,20 @@ function RowWithCollapseContent(props) {
                         <TimelineDot color="primary"></TimelineDot>
                         {versionIndex !== student.versions.length - 1 && <TimelineConnector></TimelineConnector>}
                       </TimelineSeparator>
-                      <TimelineContent>{`v${versionIndex + 1}, GK: ${version.halfSemesterPoint}, CK: ${
-                        version.finalSemesterPoint
-                      }, Txid: ${version.txid.slice(0, 15)}`}</TimelineContent>
+                      <TimelineContent>
+                        <Typography>
+                          {`v${versionIndex + 1}`}, {`GK: ${version.halfSemesterPoint}`}, {`CK: ${version.finalSemesterPoint}`}, Txid:{" "}
+                          {getLinkFromTxid(version.txid, 20)}
+                        </Typography>
+                        {/* <Grid container>
+                          <Grid item xs={3}>{`Version: ${versionIndex + 1}`}</Grid>
+                          <Grid item xs={3}>{`GK: ${version.halfSemesterPoint}`}</Grid>
+                          <Grid item xs={3}>{`CK: ${version.finalSemesterPoint}`}</Grid>
+                          <Grid item xs={3}>
+                            Txid: {getLinkFromTxid(version.txid, 12)}
+                          </Grid>
+                        </Grid> */}
+                      </TimelineContent>
                     </TimelineItem>
                   );
                 })}
@@ -87,6 +97,44 @@ function RowWithCollapseContent(props) {
         </TableCell>
       </TableRow>
     </>
+  );
+}
+
+function EditGradeForm({ hdSubmit }) {
+  const [halfSemesterPoint, setHalfSemesterPoint] = useState();
+  const [finalSemesterPoint, setFinalSemesterPoint] = useState();
+
+  return (
+    <Grid container justify="space-between" alignItems="center">
+      <Grid item>
+        <Typography variant="h4">Nhập điểm mới:</Typography>
+      </Grid>
+      <Grid item>
+        <TextField
+          variant="outlined"
+          color="primary"
+          size="small"
+          label="Điểm GK"
+          value={halfSemesterPoint}
+          onChange={(e) => setHalfSemesterPoint(e.target.value)}
+        ></TextField>
+      </Grid>
+      <Grid item>
+        <TextField
+          variant="outlined"
+          color="primary"
+          size="small"
+          label="Điểm CK"
+          value={finalSemesterPoint}
+          onChange={(e) => setFinalSemesterPoint(e.target.value)}
+        ></TextField>
+      </Grid>
+      <Grid item>
+        <Button variant="contained" color="primary" onClick={(e) => hdSubmit(halfSemesterPoint, finalSemesterPoint)}>
+          Submit
+        </Button>
+      </Grid>
+    </Grid>
   );
 }
 
@@ -134,9 +182,9 @@ export default function EditGrade(props) {
       {/* if found */}
       {claxx && (
         <Paper>
-          <Box p={2}>
+          <Box px={1} py={2}>
             <TableContainer>
-              <Table size="small">
+              <Table>
                 <TableHead>
                   <TableRow>
                     <TableCell>#</TableCell>
