@@ -5,7 +5,7 @@ import axios from "axios";
 import { useSnackbar } from "notistack";
 import { useState } from "react";
 import { requirePrivateKeyHex } from "../../../utils/keyholder";
-import { ERR_TOP_CENTER } from "../../../utils/snackbar-utils";
+import { ERR_TOP_CENTER, SUCCESS_TOP_CENTER } from "../../../utils/snackbar-utils";
 import EditGradeForm from "./EditGradeForm";
 import EditGradeHistory from "./EditGradeHistory";
 
@@ -44,6 +44,7 @@ export default function RowWithCollapseContent(props) {
       const stdInClonedClass = clonedClass.students.find((std) => std.studentId === student.studentId);
       stdInClonedClass.versions.push(response.data);
       setClaxx(clonedClass);
+      enqueueSnackbar("Sửa điểm thành công!", SUCCESS_TOP_CENTER);
     } catch (error) {
       console.error(error);
       if (error.response) enqueueSnackbar(JSON.stringify(error.response.data), ERR_TOP_CENTER);
@@ -67,10 +68,12 @@ export default function RowWithCollapseContent(props) {
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
           <Collapse in={open} timeout="auto" unmountOnExit>
-            <Box p={2}>
-              <EditGradeHistory student={student}></EditGradeHistory>
-              <Box mt={4}></Box>
-              <EditGradeForm hdSubmit={hdSubmit}></EditGradeForm>
+            <Box px={1} pb={3}>
+              <Box p={2} border="1px solid grey">
+                <EditGradeHistory student={student}></EditGradeHistory>
+                <Box mt={4}></Box>
+                <EditGradeForm hdSubmit={hdSubmit}></EditGradeForm>
+              </Box>
             </Box>
           </Collapse>
         </TableCell>

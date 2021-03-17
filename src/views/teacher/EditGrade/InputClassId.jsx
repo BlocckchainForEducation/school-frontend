@@ -1,5 +1,4 @@
 import { Box, Button, Paper, TextField } from "@material-ui/core";
-import { useState } from "react";
 
 export default function InputClassId({ classId, setClassId, hdGetClass }) {
   return (
@@ -11,6 +10,11 @@ export default function InputClassId({ classId, setClassId, hdGetClass }) {
           autoFocus
           value={classId}
           onChange={(e) => setClassId(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              hdGetClass();
+            }
+          }}
         ></TextField>
         <Box px={2}>
           <Button variant="contained" color="primary" onClick={hdGetClass}>

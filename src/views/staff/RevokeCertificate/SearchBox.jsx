@@ -38,6 +38,11 @@ export default function SearchBox(props) {
           autoFocus
           value={studentId}
           onChange={(e) => setStudentId(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              hdSubmitStudentId();
+            }
+          }}
         ></TextField>
         <Box px={2}>
           <Button variant="contained" color="primary" onClick={hdSubmitStudentId}>

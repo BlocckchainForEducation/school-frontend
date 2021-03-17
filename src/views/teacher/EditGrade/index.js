@@ -1,16 +1,4 @@
-import {
-  Box,
-  Button,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  TextField,
-  Typography,
-} from "@material-ui/core";
+import { Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@material-ui/core";
 import axios from "axios";
 import { useSnackbar } from "notistack";
 import { useState } from "react";
@@ -22,7 +10,6 @@ import RowWithCollapseContent from "./RowWithCollapseContent.jsx";
 export default function EditGrade() {
   const [claxx, setClaxx] = useState(false);
   const [classId, setClassId] = useState("");
-
   const { enqueueSnackbar } = useSnackbar();
 
   async function hdGetClass() {
@@ -37,9 +24,7 @@ export default function EditGrade() {
 
   return (
     <Page title="Sửa điểm">
-      {/* input class id */}
       <InputClassId {...{ classId, setClassId, hdGetClass }}></InputClassId>
-      {/* mt */}
       <Box mt={2}> </Box>
 
       {/* if not found */}
