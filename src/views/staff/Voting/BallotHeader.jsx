@@ -17,7 +17,8 @@ export default function BallotHeader({ ballot }) {
       dp(collapseBallot({ publicKey: publicKeyOfRequest }));
       enqueueSnackbar("Đã bỏ phiếu xong!", SUCCESS_BOTTOM_CENTER);
     } catch (error) {
-      enqueueSnackbar(JSON.stringify(error.response.data), ERR_TOP_CENTER);
+      console.error(error);
+      if (error.response) enqueueSnackbar(JSON.stringify(error.response.data), ERR_TOP_CENTER);
     }
   }
 

@@ -71,7 +71,8 @@ export default function AvatarBar() {
       dp(updateImgSrc(response.data));
       enqueueSnackbar("Cập nhật Avatar thành công!", SUCCESS_BOTTOM_RIGHT);
     } catch (error) {
-      enqueueSnackbar(JSON.stringify(error.response.data), ERR_TOP_CENTER);
+      console.error(error);
+      if (error.response) enqueueSnackbar(JSON.stringify(error.response.data), ERR_TOP_CENTER);
     }
   }
 

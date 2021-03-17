@@ -64,7 +64,8 @@ export default function Title({ cert }) {
         enqueueSnackbar("Thu hồi bằng cấp thành công!", INFO_TOP_CENTER);
         dp(setDocument(response.data));
       } catch (error) {
-        enqueueSnackbar(JSON.stringify(error.response.data), ERR_TOP_CENTER);
+        console.error(error);
+        if (error.response) enqueueSnackbar(JSON.stringify(error.response.data), ERR_TOP_CENTER);
       }
     }
 
@@ -78,7 +79,8 @@ export default function Title({ cert }) {
       enqueueSnackbar("Cấp lại bằng cấp thành công!", SUCCESS_TOP_CENTER);
       dp(setDocument(response.data));
     } catch (error) {
-      enqueueSnackbar(JSON.stringify(error.response.data), ERR_TOP_CENTER);
+      console.error(error);
+      if (error.response) enqueueSnackbar(JSON.stringify(error.response.data), ERR_TOP_CENTER);
     }
   }
 

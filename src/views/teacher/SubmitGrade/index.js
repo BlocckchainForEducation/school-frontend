@@ -74,7 +74,8 @@ export default function SubmitGrade(props) {
       setFetching(false);
     } catch (error) {
       console.log(error);
-      enqueueSnackbar(JSON.stringify(error.response.data), ERR_TOP_CENTER);
+      console.error(error);
+      if (error.response) enqueueSnackbar(JSON.stringify(error.response.data), ERR_TOP_CENTER);
     }
   }
 
@@ -106,7 +107,8 @@ export default function SubmitGrade(props) {
       const response = await axios.post("/teacher/save-draff", { claxx });
       enqueueSnackbar("Lưu nháp thành công", SUCCESS_BOTTOM_RIGHT);
     } catch (error) {
-      enqueueSnackbar(JSON.stringify(error.response.data), ERR_TOP_CENTER);
+      console.error(error);
+      if (error.response) enqueueSnackbar(JSON.stringify(error.response.data), ERR_TOP_CENTER);
     }
   }
   async function hdSubmitGrade(classId) {
@@ -121,7 +123,8 @@ export default function SubmitGrade(props) {
       enqueueSnackbar("Gửi điểm thành công", SUCCESS_TOP_CENTER);
     } catch (error) {
       console.error(error);
-      enqueueSnackbar(JSON.stringify(error.response.data), ERR_TOP_CENTER);
+      console.error(error);
+      if (error.response) enqueueSnackbar(JSON.stringify(error.response.data), ERR_TOP_CENTER);
     }
   }
 

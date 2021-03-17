@@ -21,7 +21,8 @@ export default function Ballots(props) {
       const response = await axios.get("/staff/ballots?state=new");
       dp(setBallots(response.data));
     } catch (error) {
-      enqueueSnackbar(JSON.stringify(error.response.data), ERR_TOP_CENTER);
+      console.error(error);
+      if (error.response) enqueueSnackbar(JSON.stringify(error.response.data), ERR_TOP_CENTER);
     }
   }, [dp, enqueueSnackbar]);
 

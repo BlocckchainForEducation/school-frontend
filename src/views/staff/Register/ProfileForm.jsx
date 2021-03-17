@@ -63,7 +63,8 @@ export default function ProfileForm() {
       dp(setProfile({ ...state, imgSrc: profile.imgSrc, state: "voting" }));
     } catch (error) {
       console.log(typeof error.response.data);
-      return enqueueSnackbar(JSON.stringify(error.response.data), ERR_TOP_CENTER);
+      return console.error(error);
+      if (error.response) enqueueSnackbar(JSON.stringify(error.response.data), ERR_TOP_CENTER);
     }
   }
 

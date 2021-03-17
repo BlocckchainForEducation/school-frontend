@@ -25,7 +25,8 @@ export default function SearchBox(props) {
       if (!response.data) enqueueSnackbar("Không tìm thấy bằng cấp của " + studentId, INFO_TOP_CENTER);
       dp(setDocument(response.data));
     } catch (error) {
-      enqueueSnackbar(JSON.stringify(error.response.data), ERR_TOP_CENTER);
+      console.error(error);
+      if (error.response) enqueueSnackbar(JSON.stringify(error.response.data), ERR_TOP_CENTER);
     }
   }
   return (

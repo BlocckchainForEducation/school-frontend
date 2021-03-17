@@ -38,7 +38,8 @@ export default function StudentUploadHistory() {
       const response = await axios.get("/staff/student-history");
       dp(setPreloadHistory(response.data));
     } catch (error) {
-      enqueueSnackbar(JSON.stringify(error.response.data), ERR_TOP_CENTER);
+      console.error(error);
+      if (error.response) enqueueSnackbar(JSON.stringify(error.response.data), ERR_TOP_CENTER);
     }
   }
 

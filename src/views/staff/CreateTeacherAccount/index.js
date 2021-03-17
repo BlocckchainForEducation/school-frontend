@@ -41,7 +41,8 @@ export default function CreateTeacherAccount() {
       enqueueSnackbar("Tạo tài khoản các giảng viên thành công!", SUCCESS_BOTTOM_CENTER);
     } catch (error) {
       dp(uploadFileFail());
-      enqueueSnackbar(JSON.stringify(error.response.data), ERR_TOP_CENTER);
+      console.error(error);
+      if (error.response) enqueueSnackbar(JSON.stringify(error.response.data), ERR_TOP_CENTER);
     }
   }
 

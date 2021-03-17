@@ -44,7 +44,8 @@ export default function Uploadclass() {
       enqueueSnackbar("Upload file thành công!", SUCCESS_BOTTOM_CENTER);
       dp(uploadFileSuccess(response.data));
     } catch (error) {
-      enqueueSnackbar(JSON.stringify(error.response.data), ERR_TOP_CENTER);
+      console.error(error);
+      if (error.response) enqueueSnackbar(JSON.stringify(error.response.data), ERR_TOP_CENTER);
       dp(uploadFileFail());
     }
   }
