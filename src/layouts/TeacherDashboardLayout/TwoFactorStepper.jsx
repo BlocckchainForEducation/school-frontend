@@ -77,21 +77,27 @@ export default function TwoFactorStepper({ secret, qrDataURL, setOpenDialog }) {
           </Grid>
         )}
         {activeStep === 1 && (
-          <Grid container spacing={2} justify="center">
-            {[...Array(6).keys()].map((item, index) => (
-              <Grid item key={index}>
-                <TextField
-                  inputProps={{ size: 1 }}
-                  variant="outlined"
-                  color="primary"
-                  value={OTP[index]}
-                  // onChange={(e) => hdChange(e, index)}
-                  onKeyUp={(e) => hdKeyUp(e, index)}
-                  inputRef={refs[index]}
-                ></TextField>
-              </Grid>
-            ))}
-          </Grid>
+          <Box>
+            <Typography align="center" variant="h4">
+              Nhập mã OTP:
+            </Typography>
+            <Box mb={2}></Box>
+            <Grid container spacing={2} justify="center">
+              {[...Array(6).keys()].map((item, index) => (
+                <Grid item key={index}>
+                  <TextField
+                    inputProps={{ size: 1 }}
+                    variant="outlined"
+                    color="primary"
+                    value={OTP[index]}
+                    // onChange={(e) => hdChange(e, index)}
+                    onKeyUp={(e) => hdKeyUp(e, index)}
+                    inputRef={refs[index]}
+                  ></TextField>
+                </Grid>
+              ))}
+            </Grid>
+          </Box>
         )}
       </Box>
 
