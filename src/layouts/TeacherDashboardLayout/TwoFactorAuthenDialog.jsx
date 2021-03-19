@@ -9,7 +9,7 @@ import QRCode from "qrcode";
 import React, { useState } from "react";
 import { getToken, setToken } from "../../utils/mng-token";
 import { ERR_TOP_CENTER, INFO_TOP_CENTER } from "../../utils/snackbar-utils";
-import TwoFAStepper from "./TwoFAStepper";
+import TwoFactorStepper from "./TwoFactorStepper";
 
 export default function TwoFactorAuthenDialog({ setOpenDialog }) {
   const token = getToken();
@@ -71,7 +71,7 @@ export default function TwoFactorAuthenDialog({ setOpenDialog }) {
           label="Trạng thái"
           labelPlacement="start"
         ></FormControlLabel>
-        {openStepper && <TwoFAStepper secret={twoFASecret} qrDataURL={qrDataURL} setOpenDialog={setOpenDialog}></TwoFAStepper>}
+        {openStepper && <TwoFactorStepper secret={twoFASecret} qrDataURL={qrDataURL} setOpenDialog={setOpenDialog}></TwoFactorStepper>}
       </DialogContent>
     </Dialog>
   );

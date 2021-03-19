@@ -1,19 +1,30 @@
 import { Box, Button, Grid, Step, StepLabel, Stepper, TextField, Typography } from "@material-ui/core";
 import axios from "axios";
 import { useSnackbar } from "notistack";
-import React, { useState } from "react";
+import React, { createRef, useState } from "react";
 import { setToken } from "../../utils/mng-token";
 import { ERR_TOP_CENTER, SUCCESS_TOP_CENTER } from "../../utils/snackbar-utils";
 
-export default function TwoFAStepper({ secret, qrDataURL, setOpenDialog }) {
+export default function TwoFactorStepper({ secret, qrDataURL, setOpenDialog }) {
   const [activeStep, setActiveStep] = React.useState(0);
-  const [OTP, setOTP] = useState([]);
+  const [OTP, setOTP] = useState(["", "", "", "", "", ""]);
+  const [refs, setRefs] = useState([...Array(6).keys()].map(() => createRef()));
 
   const { enqueueSnackbar } = useSnackbar();
 
-  function hdChange(e, index) {
+  function hdKeyUp(e, index) {
     const clonedOTP = [...OTP];
-    clonedOTP[index] = e.target.value;
+    if (e.keyCode === 8) {
+      clonedOTP[index] = "";
+      if (index > 0) {
+        refs[index - 1].current.focus();
+      }
+    } else {
+      clonedOTP[index] = e.key;
+      if (index < 5) {
+        refs[index + 1].current.focus();
+      }
+    }
     setOTP(clonedOTP);
   }
 
@@ -60,14 +71,16 @@ export default function TwoFAStepper({ secret, qrDataURL, setOpenDialog }) {
         )}
         {activeStep === 1 && (
           <Grid container spacing={2} justify="center">
-            {[...Array(6).keys()].map((index) => (
-              <Grid item>
+            {[...Array(6).keys()].map((item, index) => (
+              <Grid item key={index}>
                 <TextField
                   inputProps={{ size: 1 }}
                   variant="outlined"
                   color="primary"
                   value={OTP[index]}
-                  onChange={(e) => hdChange(e, index)}
+                  // onChange={(e) => hdChange(e, index)}
+                  onKeyUp={(e) => hdKeyUp(e, index)}
+                  inputRef={refs[index]}
                 ></TextField>
               </Grid>
             ))}
