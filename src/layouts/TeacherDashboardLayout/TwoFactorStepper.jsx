@@ -58,14 +58,21 @@ export default function TwoFactorStepper({ secret, qrDataURL, setOpenDialog }) {
 
       <Box>
         {activeStep === 0 && (
-          <Grid container>
-            <Grid item xs={12} sm={4}>
-              <Typography variant="h5">Quét mã QR code</Typography>
-              <img src={qrDataURL} alt="QRCode" />
+          <Grid container wrap="nowrap">
+            <Grid item xs={12} sm={6} zeroMinWidth>
+              <Box textAlign="center">
+                <Typography variant="h5" style={{ overflowWrap: "break-word" }}>
+                  Quét mã QR code
+                </Typography>
+                <img src={qrDataURL} alt="QRCode" />
+              </Box>
             </Grid>
-            <Grid item xs={12} sm={8}>
-              <Typography variant="h5">Hoặc nhập mã này</Typography>
-              <Typography>{secret.base32}</Typography>
+            <Grid item xs={12} sm={6} zeroMinWidth>
+              <Box textAlign="center">
+                <Typography variant="h5">Hoặc nhập mã này</Typography>
+                <Box mb={1}></Box>
+                <Typography style={{ overflowWrap: "break-word" }}>{secret.base32}</Typography>
+              </Box>
             </Grid>
           </Grid>
         )}
