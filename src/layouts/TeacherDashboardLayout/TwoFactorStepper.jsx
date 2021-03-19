@@ -93,6 +93,7 @@ export default function TwoFactorStepper({ secret, qrDataURL, setOpenDialog }) {
                     // onChange={(e) => hdChange(e, index)}
                     onKeyUp={(e) => hdKeyUp(e, index)}
                     inputRef={refs[index]}
+                    autoFocus={index === 0}
                   ></TextField>
                 </Grid>
               ))}

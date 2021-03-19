@@ -1,7 +1,7 @@
-import { Box, Grid, TextField, Typography } from "@material-ui/core";
+import { Box, Button, Grid, TextField, Typography } from "@material-ui/core";
 import React, { createRef, useState } from "react";
 
-export default function AskOTP(props) {
+export default function AskOTP({ hdSubmit, hdCancel }) {
   const [OTP, setOTP] = useState(["", "", "", "", "", ""]);
   const [refs, setRefs] = useState([...Array(6).keys()].map(() => createRef()));
 
@@ -35,7 +35,6 @@ export default function AskOTP(props) {
               variant="outlined"
               color="primary"
               value={OTP[index]}
-              // onChange={(e) => hdChange(e, index)}
               onKeyUp={(e) => hdKeyUp(e, index)}
               inputRef={refs[index]}
               autoFocus={index === 0}
@@ -43,6 +42,12 @@ export default function AskOTP(props) {
           </Grid>
         ))}
       </Grid>
+      <Box>
+        <Button onClick={hdCancel}>Canel</Button>
+        <Button variant="contained" color="primary" onClick={() => hdSubmit(OTP.join(""))}>
+          Submit
+        </Button>
+      </Box>
     </Box>
   );
 }
