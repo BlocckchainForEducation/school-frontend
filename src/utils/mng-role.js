@@ -14,6 +14,14 @@ function setSessionRole(role) {
   sessionStorage.setItem("role", role);
 }
 
+function setRole(role) {
+  if (getRemember()) {
+    localStorage.setItem("role", role);
+  } else {
+    sessionStorage.setItem("role", role);
+  }
+}
+
 function getRole() {
   const remember = getRemember();
   return remember ? localStorage.getItem("role") : sessionStorage.getItem("role");
@@ -34,4 +42,4 @@ function getRouteByRole(role) {
   }
 }
 
-export { ROLE, getRouteByRole, setLocalRole, setSessionRole, getRole, clearRole };
+export { ROLE, getRouteByRole, setLocalRole, setSessionRole, getRole, clearRole, setRole };
