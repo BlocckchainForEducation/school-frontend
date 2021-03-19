@@ -7,12 +7,14 @@ import jwtDecode from "jwt-decode";
 import { useSnackbar } from "notistack";
 import QRCode from "qrcode";
 import React, { useState } from "react";
-import { getToken } from "../../utils/mng-token";
-import { ERR_TOP_CENTER, SUCCESS_TOP_CENTER } from "../../utils/snackbar-utils";
+import { getToken, setToken } from "../../utils/mng-token";
+import { ERR_TOP_CENTER, INFO_TOP_CENTER, SUCCESS_TOP_CENTER } from "../../utils/snackbar-utils";
 
 export default function TwoFactorAuthenDialog({ setOpenDialog }) {
   const token = getToken();
-  const decodedToken = jwtDecode(token);
+  const jwtToken = token.split(" ")[1];
+  const decodedToken = jwtDecode(jwtToken);
+  const [isEnable, setEnable] = useState(decodedToken.twoFAVerified);
 
   const { enqueueSnackbar } = useSnackbar();
   const [openStepper, setOpenStepper] = useState(false);
@@ -29,6 +31,7 @@ export default function TwoFactorAuthenDialog({ setOpenDialog }) {
           setQRDataURL(dataURL);
           setTwoFASecret(response.data);
           setOpenStepper(true);
+          setEnable(true);
         } catch (error) {
           alert("genarate qrcode failure");
         }
@@ -36,14 +39,23 @@ export default function TwoFactorAuthenDialog({ setOpenDialog }) {
         enqueueSnackbar(JSON.stringify(error.response.data), ERR_TOP_CENTER);
       }
     } else {
-      // unregister
+      try {
+        const response = await axios.post("/acc/2fa/disable", {});
+        if (response.data.ok) {
+          setToken(response.data.token);
+          enqueueSnackbar("Đã tắt xác thực 2 bước!", INFO_TOP_CENTER);
+          setOpenDialog(false);
+        }
+      } catch (error) {
+        enqueueSnackbar(JSON.stringify(error.response.data), ERR_TOP_CENTER);
+      }
     }
   }
 
   return (
     <Dialog
       open={true}
-      maxWidth="md"
+      maxWidth="sm"
       fullWidth
       onClose={() => {
         setOpenDialog(false);
@@ -54,7 +66,7 @@ export default function TwoFactorAuthenDialog({ setOpenDialog }) {
       </DialogTitle>
       <DialogContent>
         <FormControlLabel
-          control={<Switch checked={Boolean(decodedToken.TwoFAVerified)} onChange={hdToggle}></Switch>}
+          control={<Switch checked={Boolean(isEnable)} onChange={hdToggle}></Switch>}
           label="Trạng thái"
           labelPlacement="start"
         ></FormControlLabel>
@@ -83,8 +95,10 @@ function TwoFAVerifyStepper({ secret, qrDataURL, setOpenDialog }) {
       if (!response.data.ok) {
         enqueueSnackbar("Mã OTP không chính xác! Hãy thử lại!", ERR_TOP_CENTER);
       } else {
-        enqueueSnackbar("Xác nhận thành công!", SUCCESS_TOP_CENTER);
+        const newJWToken = response.data.token;
+        setToken(newJWToken);
         setOpenDialog(false);
+        enqueueSnackbar("Bật cơ chế xác thực 2 bước thành công!", SUCCESS_TOP_CENTER);
       }
     } catch (error) {
       enqueueSnackbar(JSON.stringify(error.response.data), ERR_TOP_CENTER);

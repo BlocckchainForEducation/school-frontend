@@ -10,6 +10,11 @@ function getRemember() {
   return remember;
 }
 
+function setToken(token) {
+  if (remember) localStorage.setItem("token", "Bearer " + token);
+  else sessionStorage.setItem("token", "Bearer " + token);
+}
+
 function setSessionToken(token) {
   axios.defaults.headers.common["Authorization"] = "Bearer " + token;
   sessionStorage.setItem("token", "Bearer " + token);
@@ -35,4 +40,4 @@ function clearToken() {
   }
 }
 
-export { setSessionToken, setLocalToken, getToken, clearToken, setRemember, getRemember };
+export { setSessionToken, setLocalToken, getToken, clearToken, setRemember, getRemember, setToken };
