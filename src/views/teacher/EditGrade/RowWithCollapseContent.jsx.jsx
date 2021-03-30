@@ -4,7 +4,9 @@ import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import axios from "axios";
 import { useSnackbar } from "notistack";
 import { useState } from "react";
+import AskOTP from "../../../layouts/TeacherDashboardLayout/AskOTP";
 import { requirePrivateKeyHex } from "../../../utils/keyholder";
+import { isEnable2FA } from "../../../utils/mng-2fa";
 import { ERR_TOP_CENTER, SUCCESS_TOP_CENTER } from "../../../utils/snackbar-utils";
 import EditGradeForm from "./EditGradeForm";
 import EditGradeHistory from "./EditGradeHistory";
@@ -30,7 +32,29 @@ export default function RowWithCollapseContent(props) {
   const cls = useRowStyles();
   const { enqueueSnackbar } = useSnackbar();
 
+  const [askOTPDialog, setAskOTPDialog] = useState(null);
+
   async function hdSubmit(halfSemesterPoint, finalSemesterPoint) {
+    if (isEnable2FA()) {
+      setAskOTPDialog(
+        <AskOTP
+          open={true}
+          hdCancel={() => setAskOTPDialog(null)}
+          hdFail={() => {
+            enqueueSnackbar("Mã OTP không chính xác, vui lòng thử lại", ERR_TOP_CENTER);
+          }}
+          hdSuccess={() => {
+            setAskOTPDialog(null);
+            sendEditedGrade(halfSemesterPoint, finalSemesterPoint);
+          }}
+        ></AskOTP>
+      );
+    } else {
+      sendEditedGrade(halfSemesterPoint, finalSemesterPoint);
+    }
+  }
+
+  async function sendEditedGrade(halfSemesterPoint, finalSemesterPoint) {
     const privateKeyHex = await requirePrivateKeyHex(enqueueSnackbar);
     try {
       const response = await axios.post("/teacher/edit-grade", {
@@ -73,6 +97,7 @@ export default function RowWithCollapseContent(props) {
                 <EditGradeHistory student={student}></EditGradeHistory>
                 <Box mt={4}></Box>
                 <EditGradeForm hdSubmit={hdSubmit}></EditGradeForm>
+                {askOTPDialog}
               </Box>
             </Box>
           </Collapse>
