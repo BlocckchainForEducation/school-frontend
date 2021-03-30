@@ -32,7 +32,7 @@ export default function AskOTP({ open, hdCancel, hdError, hdSuccess, hdFail }) {
         hdSuccess();
       }
     } catch (error) {
-      hdError(JSON.stringify(error.response.data));
+      hdError(error);
     }
   }
 
@@ -66,10 +66,12 @@ export default function AskOTP({ open, hdCancel, hdError, hdSuccess, hdFail }) {
             </Grid>
           ))}
         </Grid>
-        <Box>
-          <Button onClick={hdCancel}>Canel</Button>
+        <Box mt={2} textAlign="right">
+          <Button onClick={hdCancel} style={{ marginRight: "16px" }}>
+            Canel
+          </Button>
           <Button variant="contained" color="primary" onClick={sendOTP}>
-            Check
+            Send
           </Button>
         </Box>
       </DialogContent>

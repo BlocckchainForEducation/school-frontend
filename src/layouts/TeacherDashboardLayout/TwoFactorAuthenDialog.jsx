@@ -8,7 +8,8 @@ import { useSnackbar } from "notistack";
 import QRCode from "qrcode";
 import React, { useState } from "react";
 import { getToken, setToken } from "../../utils/mng-token";
-import { ERR_TOP_CENTER, INFO_TOP_CENTER } from "../../utils/snackbar-utils";
+import { ERR_TOP_CENTER, INFO_TOP_CENTER, SUCCESS_TOP_CENTER } from "../../utils/snackbar-utils";
+import AskOTP from "./AskOTP";
 import TwoFactorStepper from "./TwoFactorStepper";
 
 export default function TwoFactorAuthenDialog({ setOpenDialog }) {
@@ -18,9 +19,14 @@ export default function TwoFactorAuthenDialog({ setOpenDialog }) {
   const [isEnable, setEnable] = useState(decodedToken.twoFAVerified);
 
   const { enqueueSnackbar } = useSnackbar();
+
+  // enable 2fa
   const [openStepper, setOpenStepper] = useState(false);
   const [twoFASecret, setTwoFASecret] = useState(null);
   const [qrDataURL, setQRDataURL] = useState(null);
+
+  // ask OTP to disable
+  const [openAskOTP, setOpenAskOTP] = useState(false);
 
   async function hdToggle(e) {
     if (e.target.checked) {
@@ -40,16 +46,7 @@ export default function TwoFactorAuthenDialog({ setOpenDialog }) {
         enqueueSnackbar(JSON.stringify(error.response.data), ERR_TOP_CENTER);
       }
     } else {
-      try {
-        const response = await axios.post("/acc/2fa/disable", {});
-        if (response.data.ok) {
-          setToken(response.data.token);
-          enqueueSnackbar("Đã tắt xác thực 2 bước!", INFO_TOP_CENTER);
-          setOpenDialog(false);
-        }
-      } catch (error) {
-        enqueueSnackbar(JSON.stringify(error.response.data), ERR_TOP_CENTER);
-      }
+      setOpenAskOTP(true);
     }
   }
 
@@ -72,6 +69,31 @@ export default function TwoFactorAuthenDialog({ setOpenDialog }) {
           labelPlacement="start"
         ></FormControlLabel>
         {openStepper && <TwoFactorStepper secret={twoFASecret} qrDataURL={qrDataURL} setOpenDialog={setOpenDialog}></TwoFactorStepper>}
+        {openAskOTP && (
+          <AskOTP
+            open={openAskOTP}
+            hdCancel={() => {
+              setOpenAskOTP(false);
+              setOpenDialog(false);
+            }}
+            hdFail={() => {
+              enqueueSnackbar("Mã OTP không chính xác, vui lòng thử lại", ERR_TOP_CENTER);
+            }}
+            hdSuccess={async () => {
+              const response = await axios.post("/acc/2fa/disable", {});
+              if (response.data.ok) {
+                setToken(response.data.token);
+                enqueueSnackbar("Đã tắt xác thực 2 bước!", SUCCESS_TOP_CENTER);
+                setOpenDialog(false);
+              } else {
+                enqueueSnackbar("Something went wrong, try later!", ERR_TOP_CENTER);
+              }
+            }}
+            hdError={(error) => {
+              enqueueSnackbar(JSON.stringify(error.response.data), ERR_TOP_CENTER);
+            }}
+          ></AskOTP>
+        )}
       </DialogContent>
     </Dialog>
   );

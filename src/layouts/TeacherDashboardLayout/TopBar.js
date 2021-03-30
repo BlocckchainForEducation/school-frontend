@@ -72,6 +72,7 @@ const TopBar = ({ className, onMobileNavOpen, ...rest }) => {
             TransitionComponent={Fade}
           >
             <MenuItem>Đổi mật khẩu</MenuItem>
+
             <MenuItem
               onClick={() => {
                 setOpenDialog(true);
