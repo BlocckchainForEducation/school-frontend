@@ -8,7 +8,7 @@ import { useSnackbar } from "notistack";
 import QRCode from "qrcode";
 import React, { useState } from "react";
 import { getToken, setToken } from "../../utils/mng-token";
-import { ERR_TOP_CENTER, INFO_TOP_CENTER, SUCCESS_TOP_CENTER } from "../../utils/snackbar-utils";
+import { ERR_TOP_CENTER, SUCCESS_TOP_CENTER } from "../../utils/snackbar-utils";
 import AskOTP from "./AskOTP";
 import TwoFactorStepper from "./TwoFactorStepper";
 

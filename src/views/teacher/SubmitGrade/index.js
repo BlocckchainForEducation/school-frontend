@@ -22,8 +22,10 @@ import { Timeline, TimelineConnector, TimelineContent, TimelineDot, TimelineItem
 import axios from "axios";
 import { useSnackbar } from "notistack";
 import { useEffect, useState } from "react";
+import AskOTP from "../../../layouts/TeacherDashboardLayout/AskOTP";
 import Page from "../../../shared/Page";
 import { requirePrivateKeyHex } from "../../../utils/keyholder";
+import { isEnable2FA } from "../../../utils/mng-2fa";
 import { ERR_TOP_CENTER, SUCCESS_BOTTOM_RIGHT, SUCCESS_TOP_CENTER } from "../../../utils/snackbar-utils";
 import { getLinkFromTxid } from "../../../utils/utils";
 
@@ -51,6 +53,8 @@ export default function SubmitGrade(props) {
   const cls = useStyles();
   const [fetching, setFetching] = useState(true);
   const [classes, setClasses] = useState([]);
+
+  const [openAskOTP, setOpenAskOTP] = useState(false);
 
   const groupedClassesBySemester =
     classes.length === 0
@@ -112,6 +116,14 @@ export default function SubmitGrade(props) {
     }
   }
   async function hdSubmitGrade(classId) {
+    if (isEnable2FA()) {
+      setOpenAskOTP(true);
+    } else {
+      sendGrade(classId);
+    }
+  }
+
+  async function sendGrade(classId) {
     const privateKeyHex = await requirePrivateKeyHex(enqueueSnackbar);
     const claxx = classes.find((clx) => clx.classId === classId);
     try {
@@ -122,7 +134,6 @@ export default function SubmitGrade(props) {
       setClasses(cloneClasses);
       enqueueSnackbar("Gửi điểm thành công", SUCCESS_TOP_CENTER);
     } catch (error) {
-      console.error(error);
       console.error(error);
       if (error.response) enqueueSnackbar(JSON.stringify(error.response.data), ERR_TOP_CENTER);
     }
@@ -232,6 +243,20 @@ export default function SubmitGrade(props) {
                           >
                             Gửi điểm
                           </Button>
+                          {/* add openAskOTP && to clear old state */}
+                          {openAskOTP && (
+                            <AskOTP
+                              open={openAskOTP}
+                              hdCancel={() => setOpenAskOTP(false)}
+                              hdFail={() => {
+                                enqueueSnackbar("Mã OTP không chính xác, vui lòng thử lại", ERR_TOP_CENTER);
+                              }}
+                              hdSuccess={() => {
+                                setOpenAskOTP(false);
+                                sendGrade(claxx.classId);
+                              }}
+                            ></AskOTP>
+                          )}
                         </AccordionActions>
                       </Accordion>
                     );
