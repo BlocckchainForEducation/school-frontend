@@ -1,4 +1,4 @@
-import { Box, Button, Grid, TextField, Typography } from "@material-ui/core";
+import { Box, Button, Dialog, DialogContent, DialogTitle, Grid, TextField, Typography } from "@material-ui/core";
 import React, { createRef, useState } from "react";
 
 export default function AskOTP({ hdSubmit, hdCancel }) {
@@ -22,32 +22,42 @@ export default function AskOTP({ hdSubmit, hdCancel }) {
   }
 
   return (
-    <Box>
-      <Typography align="center" variant="h4">
-        Nhập mã OTP:
-      </Typography>
-      <Box mb={2}></Box>
-      <Grid container spacing={2} justify="center">
-        {[...Array(6).keys()].map((item, index) => (
-          <Grid item key={index}>
-            <TextField
-              inputProps={{ size: 1 }}
-              variant="outlined"
-              color="primary"
-              value={OTP[index]}
-              onKeyUp={(e) => hdKeyUp(e, index)}
-              inputRef={refs[index]}
-              autoFocus={index === 0}
-            ></TextField>
-          </Grid>
-        ))}
-      </Grid>
-      <Box>
-        <Button onClick={hdCancel}>Canel</Button>
-        <Button variant="contained" color="primary" onClick={() => hdSubmit(OTP.join(""))}>
-          Submit
-        </Button>
-      </Box>
-    </Box>
+    <Dialog
+      open={true}
+      maxWidth="sm"
+      fullWidth
+      onClose={() => {
+        hdCancel();
+      }}
+    >
+      <DialogTitle>Xác thực 2 bước</DialogTitle>
+      <DialogContent>
+        <Typography align="center" variant="h4">
+          Nhập mã OTP:
+        </Typography>
+        <Box mb={2}></Box>
+        <Grid container spacing={2} justify="center">
+          {[...Array(6).keys()].map((item, index) => (
+            <Grid item key={index}>
+              <TextField
+                inputProps={{ size: 1 }}
+                variant="outlined"
+                color="primary"
+                value={OTP[index]}
+                onKeyUp={(e) => hdKeyUp(e, index)}
+                inputRef={refs[index]}
+                autoFocus={index === 0}
+              ></TextField>
+            </Grid>
+          ))}
+        </Grid>
+        <Box>
+          <Button onClick={hdCancel}>Canel</Button>
+          <Button variant="contained" color="primary" onClick={() => hdSubmit(OTP.join(""))}>
+            Submit
+          </Button>
+        </Box>
+      </DialogContent>
+    </Dialog>
   );
 }
