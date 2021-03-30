@@ -1,7 +1,8 @@
 import { Box, Button, Dialog, DialogContent, DialogTitle, Grid, TextField, Typography } from "@material-ui/core";
+import axios from "axios";
 import React, { createRef, useState } from "react";
 
-export default function AskOTP({ hdSubmit, hdCancel }) {
+export default function AskOTP({ open, hdCancel, hdError, hdSuccess, hdFail }) {
   const [OTP, setOTP] = useState(["", "", "", "", "", ""]);
   const [refs, setRefs] = useState([...Array(6).keys()].map(() => createRef()));
 
@@ -21,9 +22,23 @@ export default function AskOTP({ hdSubmit, hdCancel }) {
     setOTP(clonedOTP);
   }
 
+  async function sendOTP() {
+    const otpString = OTP.join("");
+    try {
+      const response = await axios.post("/acc/2fa/verify", { OTP: otpString });
+      if (!response.data.ok) {
+        hdFail();
+      } else {
+        hdSuccess();
+      }
+    } catch (error) {
+      hdError(JSON.stringify(error.response.data));
+    }
+  }
+
   return (
     <Dialog
-      open={true}
+      open={open}
       maxWidth="sm"
       fullWidth
       onClose={() => {
@@ -53,8 +68,8 @@ export default function AskOTP({ hdSubmit, hdCancel }) {
         </Grid>
         <Box>
           <Button onClick={hdCancel}>Canel</Button>
-          <Button variant="contained" color="primary" onClick={() => hdSubmit(OTP.join(""))}>
-            Submit
+          <Button variant="contained" color="primary" onClick={sendOTP}>
+            Check
           </Button>
         </Box>
       </DialogContent>
