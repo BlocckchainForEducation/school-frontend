@@ -128,6 +128,7 @@ export default function SubmitGrade(props) {
       }
     }
   }
+
   async function hdSubmitGrade(classId) {
     const claxx = classes.find((clx) => clx.classId === classId);
     const hasError = claxx.students.some((student) => {
@@ -153,20 +154,18 @@ export default function SubmitGrade(props) {
         if (isEnable2FA()) {
           setOpenAskOTP(true);
         } else {
-          sendGrade(classId);
+          sendGrade(claxx);
         }
       }
     }
   }
 
-  async function sendGrade(classId) {
+  async function sendGrade(claxx) {
     const privateKeyHex = await requirePrivateKeyHex(enqueueSnackbar);
-    const claxx = classes.find((clx) => clx.classId === classId);
-
     try {
       const response = await axios.post("/teacher/submit-grade", { privateKeyHex, claxx });
       const cloneClasses = [...classes];
-      const clxx = cloneClasses.find((clx) => clx.classId === classId);
+      const clxx = cloneClasses.find((clx) => clx.classId === claxx.classId);
       Object.assign(clxx, response.data);
       setClasses(cloneClasses);
       enqueueSnackbar("Gửi điểm thành công", SUCCESS_TOP_CENTER);
@@ -290,7 +289,8 @@ export default function SubmitGrade(props) {
                               }}
                               hdSuccess={() => {
                                 setOpenAskOTP(false);
-                                sendGrade(claxx.classId);
+                                console.log(classes.find((clx) => clx.classId === claxx.classId));
+                                sendGrade(classes.find((clx) => clx.classId === claxx.classId));
                               }}
                             ></AskOTP>
                           )}
