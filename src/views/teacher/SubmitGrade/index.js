@@ -106,26 +106,63 @@ export default function SubmitGrade(props) {
   }
 
   async function hdSaveDraff(classId) {
+    // check if all grade is valid....
     const claxx = classes.find((clx) => clx.classId === classId);
-    try {
-      const response = await axios.post("/teacher/save-draff", { claxx });
-      enqueueSnackbar("Lưu nháp thành công", SUCCESS_BOTTOM_RIGHT);
-    } catch (error) {
-      console.error(error);
-      if (error.response) enqueueSnackbar(JSON.stringify(error.response.data), ERR_TOP_CENTER);
+    const hasError = claxx.students.some((student) => {
+      const halfPoint = student.versions?.[0].halfSemesterPoint;
+      const halfError = halfPoint && Boolean(!Number(halfPoint) || Number(halfPoint) > 10 || Number(halfPoint) < 0);
+      const finalPoint = student.versions?.[0].finalSemesterPoint;
+      const finalError = finalPoint && Boolean(!Number(finalPoint) || Number(finalPoint) > 10 || Number(finalPoint) < 0);
+      return halfError || finalError;
+    });
+    if (hasError) {
+      enqueueSnackbar("Điểm nhập không hợp lệ! Vui lòng kiểm tra lại!", ERR_TOP_CENTER);
+      return;
+    } else {
+      try {
+        const response = await axios.post("/teacher/save-draff", { claxx });
+        enqueueSnackbar("Lưu nháp thành công", SUCCESS_BOTTOM_RIGHT);
+      } catch (error) {
+        console.error(error);
+        if (error.response) enqueueSnackbar(JSON.stringify(error.response.data), ERR_TOP_CENTER);
+      }
     }
   }
   async function hdSubmitGrade(classId) {
-    if (isEnable2FA()) {
-      setOpenAskOTP(true);
+    const claxx = classes.find((clx) => clx.classId === classId);
+    const hasError = claxx.students.some((student) => {
+      const halfPoint = student.versions?.[0].halfSemesterPoint;
+      const halfError = halfPoint && Boolean(!Number(halfPoint) || Number(halfPoint) > 10 || Number(halfPoint) < 0);
+      const finalPoint = student.versions?.[0].finalSemesterPoint;
+      const finalError = finalPoint && Boolean(!Number(finalPoint) || Number(finalPoint) > 10 || Number(finalPoint) < 0);
+      return halfError || finalError;
+    });
+    if (hasError) {
+      enqueueSnackbar("Điểm nhập không hợp lệ! Vui lòng kiểm tra lại!", ERR_TOP_CENTER);
+      return;
     } else {
-      sendGrade(classId);
+      const incomplete = claxx.students.some((student) => {
+        const halfPoint = student.versions?.[0].halfSemesterPoint;
+        const finalPoint = student.versions?.[0].finalSemesterPoint;
+        return !halfPoint || !finalPoint;
+      });
+      if (incomplete) {
+        enqueueSnackbar("Cần nhập đủ tất cả các điểm trước khi ghi lên hệ thống", ERR_TOP_CENTER);
+        return;
+      } else {
+        if (isEnable2FA()) {
+          setOpenAskOTP(true);
+        } else {
+          sendGrade(classId);
+        }
+      }
     }
   }
 
   async function sendGrade(classId) {
     const privateKeyHex = await requirePrivateKeyHex(enqueueSnackbar);
     const claxx = classes.find((clx) => clx.classId === classId);
+
     try {
       const response = await axios.post("/teacher/submit-grade", { privateKeyHex, claxx });
       const cloneClasses = [...classes];
@@ -183,12 +220,12 @@ export default function SubmitGrade(props) {
                               </TableHead>
                               <TableBody>
                                 {claxx.students.map((student, index) => {
-                                  const halfPoint = claxx.students[index]?.versions?.[0].halfSemesterPoint;
-                                  // const halfError = !Boolean(halfPoint <= 10 && halfPoint >= 0);
-                                  const halfError = Boolean(halfPoint > 10 || halfPoint < 0);
-                                  const finalPoint = claxx.students[index]?.versions?.[0].finalSemesterPoint;
-                                  // const finalError = !Boolean(finalPoint <= 10 && finalPoint >= 0);
-                                  const finalError = Boolean(finalPoint > 10 || finalPoint < 0);
+                                  const halfPoint = student.versions?.[0].halfSemesterPoint;
+                                  const halfError =
+                                    halfPoint && Boolean(!Number(halfPoint) || Number(halfPoint) > 10 || Number(halfPoint) < 0);
+                                  const finalPoint = student.versions?.[0].finalSemesterPoint;
+                                  const finalError =
+                                    finalPoint && Boolean(!Number(finalPoint) || Number(finalPoint) > 10 || Number(finalPoint) < 0);
                                   return (
                                     <TableRow key={index}>
                                       <TableCell>{index + 1}</TableCell>
