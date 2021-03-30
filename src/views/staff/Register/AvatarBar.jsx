@@ -85,7 +85,16 @@ export default function AvatarBar() {
       {shouldShowEditor ? (
         <div>
           <div style={{ width: 300, height: 128, margin: "auto", position: "relative" }}>
-            <AvatarEditor width={300} height={128} label="Ảnh đại diện" imageHeight={128} onCrop={hdCrop} onClose={hdClose}></AvatarEditor>
+            <AvatarEditor
+              width={300}
+              height={128}
+              label="Ảnh đại diện"
+              imageHeight={256}
+              // exportAsSquare
+              // exportSize
+              onCrop={hdCrop}
+              onClose={hdClose}
+            ></AvatarEditor>
           </div>
         </div>
       ) : (
