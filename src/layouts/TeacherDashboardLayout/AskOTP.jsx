@@ -2,7 +2,7 @@ import { Box, Button, Dialog, DialogContent, DialogTitle, Grid, TextField, Typog
 import axios from "axios";
 import React, { createRef, useState } from "react";
 
-export default function AskOTP({ open, hdCancel, hdError, hdSuccess, hdFail }) {
+export default function AskOTP({ open, hdCancel, hdError, hdSuccess, hdFail, classes }) {
   const [OTP, setOTP] = useState(["", "", "", "", "", ""]);
   const [refs, setRefs] = useState([...Array(6).keys()].map(() => createRef()));
 

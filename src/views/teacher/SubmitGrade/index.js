@@ -54,7 +54,7 @@ export default function SubmitGrade(props) {
   const [fetching, setFetching] = useState(true);
   const [classes, setClasses] = useState([]);
 
-  const [openAskOTP, setOpenAskOTP] = useState(false);
+  const [askOTPDialog, setAskOTPDialog] = useState(null);
 
   const groupedClassesBySemester =
     classes.length === 0
@@ -152,15 +152,29 @@ export default function SubmitGrade(props) {
         return;
       } else {
         if (isEnable2FA()) {
-          setOpenAskOTP(true);
+          const dialog = (
+            <AskOTP
+              open={true}
+              hdCancel={() => setAskOTPDialog(null)}
+              hdFail={() => {
+                enqueueSnackbar("Mã OTP không chính xác, vui lòng thử lại", ERR_TOP_CENTER);
+              }}
+              hdSuccess={() => {
+                setAskOTPDialog(null);
+                sendGrade(classId);
+              }}
+            ></AskOTP>
+          );
+          setAskOTPDialog(dialog);
         } else {
-          sendGrade(claxx);
+          sendGrade(classId);
         }
       }
     }
   }
 
-  async function sendGrade(claxx) {
+  async function sendGrade(classId) {
+    const claxx = classes.find((clx) => clx.classId === classId);
     const privateKeyHex = await requirePrivateKeyHex(enqueueSnackbar);
     try {
       const response = await axios.post("/teacher/submit-grade", { privateKeyHex, claxx });
@@ -178,133 +192,122 @@ export default function SubmitGrade(props) {
   const content = !groupedClassesBySemester ? (
     "Không tìm thấy lớp học nào!"
   ) : (
-    <Timeline className={cls.root}>
-      {Object.entries(groupedClassesBySemester).map((entry, index) => {
-        return (
-          <TimelineItem>
-            <TimelineSeparator>
-              <TimelineDot color="primary" />
-              {/* {index !== Object.entries(groupedClassesBySemester).length - 1 && <TimelineConnector />} */}
-              <TimelineConnector />
-            </TimelineSeparator>
-            <TimelineContent>
-              <Box>
-                {/* semester */}
-                <Typography gutterBottom variant="h5">{`Kì ${entry[0]}`}</Typography>
+    <>
+      {" "}
+      <Timeline className={cls.root}>
+        {Object.entries(groupedClassesBySemester).map((entry, index) => {
+          return (
+            <TimelineItem>
+              <TimelineSeparator>
+                <TimelineDot color="primary" />
+                {/* {index !== Object.entries(groupedClassesBySemester).length - 1 && <TimelineConnector />} */}
+                <TimelineConnector />
+              </TimelineSeparator>
+              <TimelineContent>
+                <Box>
+                  {/* semester */}
+                  <Typography gutterBottom variant="h5">{`Kì ${entry[0]}`}</Typography>
 
-                {/* class list */}
-                <Box px={1}>
-                  {entry[1].map((claxx) => {
-                    const disable = claxx.isSubmited;
-                    return (
-                      <Accordion>
-                        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                          {`Lớp: ${claxx.classId} - ${claxx.subject.subjectId} - ${claxx.subject.subjectName}`}
-                          {/* {disable && <CheckIcon size="small" color="primary"></CheckIcon>} */}
-                        </AccordionSummary>
-                        <AccordionDetails>
-                          <TableContainer>
-                            <Table size="small">
-                              <TableHead>
-                                <TableRow>
-                                  <TableCell>#</TableCell>
-                                  <TableCell>MSSV</TableCell>
-                                  <TableCell>Họ và tên</TableCell>
-                                  <TableCell>Ngày sinh</TableCell>
-                                  <TableCell>Email</TableCell>
-                                  <TableCell style={{ width: "100px" }}>Điểm GK</TableCell>
-                                  <TableCell style={{ width: "100px" }}>Điểm CK</TableCell>
-                                  {disable && <TableCell>Txid</TableCell>}
-                                </TableRow>
-                              </TableHead>
-                              <TableBody>
-                                {claxx.students.map((student, index) => {
-                                  const halfPoint = student.versions?.[0].halfSemesterPoint;
-                                  const halfError =
-                                    halfPoint && Boolean(!Number(halfPoint) || Number(halfPoint) > 10 || Number(halfPoint) < 0);
-                                  const finalPoint = student.versions?.[0].finalSemesterPoint;
-                                  const finalError =
-                                    finalPoint && Boolean(!Number(finalPoint) || Number(finalPoint) > 10 || Number(finalPoint) < 0);
-                                  return (
-                                    <TableRow key={index}>
-                                      <TableCell>{index + 1}</TableCell>
-                                      <TableCell>{student.studentId}</TableCell>
-                                      <TableCell>{student.name}</TableCell>
-                                      <TableCell>{student.birthday}</TableCell>
-                                      <TableCell>{student.email}</TableCell>
-                                      <TableCell>
-                                        <TextField
-                                          // type="number"
-                                          value={halfPoint}
-                                          onChange={(e) => hdChangeHalfSemester(claxx.classId, index, e)}
-                                          error={halfError}
-                                          helperText={halfError && "Từ 0 - 10"}
-                                          disabled={disable}
-                                        ></TextField>
-                                      </TableCell>
-                                      <TableCell>
-                                        <TextField
-                                          // type="number"
-                                          value={finalPoint}
-                                          onChange={(e) => hdChangeFinalSemester(claxx.classId, index, e)}
-                                          error={finalError}
-                                          helperText={finalError && "Từ 0 - 10"}
-                                          disabled={disable}
-                                        ></TextField>
-                                      </TableCell>
-                                      {disable && <TableCell>{getLinkFromTxid(student.versions[0].txid, 15)} </TableCell>}
-                                    </TableRow>
-                                  );
-                                })}
-                              </TableBody>
-                            </Table>
-                          </TableContainer>
-                        </AccordionDetails>
-                        <AccordionActions>
-                          <Button
-                            startIcon={<SaveIcon></SaveIcon>}
-                            variant="contained"
-                            // style={{ backgroundColor: "#4caf50", color: "white" }}
-                            onClick={(e) => hdSaveDraff(claxx.classId)}
-                            disabled={disable}
-                          >
-                            Lưu nháp
-                          </Button>
-                          <Button
-                            startIcon={<SendIcon></SendIcon>}
-                            variant="contained"
-                            color="primary"
-                            onClick={(e) => hdSubmitGrade(claxx.classId)}
-                            disabled={disable}
-                          >
-                            Gửi điểm
-                          </Button>
-                          {/* add openAskOTP && to clear old state */}
-                          {openAskOTP && (
-                            <AskOTP
-                              open={openAskOTP}
-                              hdCancel={() => setOpenAskOTP(false)}
-                              hdFail={() => {
-                                enqueueSnackbar("Mã OTP không chính xác, vui lòng thử lại", ERR_TOP_CENTER);
-                              }}
-                              hdSuccess={() => {
-                                setOpenAskOTP(false);
-                                console.log(classes.find((clx) => clx.classId === claxx.classId));
-                                sendGrade(classes.find((clx) => clx.classId === claxx.classId));
-                              }}
-                            ></AskOTP>
-                          )}
-                        </AccordionActions>
-                      </Accordion>
-                    );
-                  })}
+                  {/* class list */}
+                  <Box px={1}>
+                    {entry[1].map((claxx) => {
+                      const disable = claxx.isSubmited;
+                      return (
+                        <Accordion>
+                          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                            {`Lớp: ${claxx.classId} - ${claxx.subject.subjectId} - ${claxx.subject.subjectName}`}
+                            {/* {disable && <CheckIcon size="small" color="primary"></CheckIcon>} */}
+                          </AccordionSummary>
+                          <AccordionDetails>
+                            <TableContainer>
+                              <Table size="small">
+                                <TableHead>
+                                  <TableRow>
+                                    <TableCell>#</TableCell>
+                                    <TableCell>MSSV</TableCell>
+                                    <TableCell>Họ và tên</TableCell>
+                                    <TableCell>Ngày sinh</TableCell>
+                                    <TableCell>Email</TableCell>
+                                    <TableCell style={{ width: "100px" }}>Điểm GK</TableCell>
+                                    <TableCell style={{ width: "100px" }}>Điểm CK</TableCell>
+                                    {disable && <TableCell>Txid</TableCell>}
+                                  </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                  {claxx.students.map((student, index) => {
+                                    const halfPoint = student.versions?.[0].halfSemesterPoint;
+                                    const halfError =
+                                      halfPoint && Boolean(!Number(halfPoint) || Number(halfPoint) > 10 || Number(halfPoint) < 0);
+                                    const finalPoint = student.versions?.[0].finalSemesterPoint;
+                                    const finalError =
+                                      finalPoint && Boolean(!Number(finalPoint) || Number(finalPoint) > 10 || Number(finalPoint) < 0);
+                                    return (
+                                      <TableRow key={index}>
+                                        <TableCell>{index + 1}</TableCell>
+                                        <TableCell>{student.studentId}</TableCell>
+                                        <TableCell>{student.name}</TableCell>
+                                        <TableCell>{student.birthday}</TableCell>
+                                        <TableCell>{student.email}</TableCell>
+                                        <TableCell>
+                                          <TextField
+                                            // type="number"
+                                            value={halfPoint}
+                                            onChange={(e) => hdChangeHalfSemester(claxx.classId, index, e)}
+                                            error={halfError}
+                                            helperText={halfError && "Từ 0 - 10"}
+                                            disabled={disable}
+                                          ></TextField>
+                                        </TableCell>
+                                        <TableCell>
+                                          <TextField
+                                            // type="number"
+                                            value={finalPoint}
+                                            onChange={(e) => hdChangeFinalSemester(claxx.classId, index, e)}
+                                            error={finalError}
+                                            helperText={finalError && "Từ 0 - 10"}
+                                            disabled={disable}
+                                          ></TextField>
+                                        </TableCell>
+                                        {disable && <TableCell>{getLinkFromTxid(student.versions[0].txid, 15)} </TableCell>}
+                                      </TableRow>
+                                    );
+                                  })}
+                                </TableBody>
+                              </Table>
+                            </TableContainer>
+                          </AccordionDetails>
+                          <AccordionActions>
+                            <Button
+                              startIcon={<SaveIcon></SaveIcon>}
+                              variant="contained"
+                              // style={{ backgroundColor: "#4caf50", color: "white" }}
+                              onClick={(e) => hdSaveDraff(claxx.classId)}
+                              disabled={disable}
+                            >
+                              Lưu nháp
+                            </Button>
+                            <Button
+                              startIcon={<SendIcon></SendIcon>}
+                              variant="contained"
+                              color="primary"
+                              onClick={(e) => hdSubmitGrade(claxx.classId)}
+                              disabled={disable}
+                            >
+                              Gửi điểm
+                            </Button>
+                          </AccordionActions>
+                        </Accordion>
+                      );
+                    })}
+                  </Box>
                 </Box>
-              </Box>
-            </TimelineContent>
-          </TimelineItem>
-        );
-      })}
-    </Timeline>
+              </TimelineContent>
+            </TimelineItem>
+          );
+        })}
+      </Timeline>
+      {askOTPDialog}
+    </>
   );
 
   return <Page title="Nhập điểm lớp học">{fetching ? null : content}</Page>;
