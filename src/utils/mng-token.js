@@ -32,11 +32,10 @@ function getToken() {
 
 function clearToken() {
   if (remember) {
-    localStorage.removeItem("token");
     axios.defaults.headers.common["Authorization"] = null;
+    localStorage.removeItem("token");
   } else {
     sessionStorage.removeItem("token");
-    axios.defaults.headers.common["Authorization"] = null;
   }
 }
 
