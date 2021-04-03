@@ -55,7 +55,7 @@ const routes = [
     path: "/",
     element: <MainLayout />,
     children: [
-      { path: "dang-ki", element: <SignUpView /> },
+      // { path: "dang-ki", element: <SignUpView /> },
       { path: "dang-nhap", element: <SignInView /> },
       { path: "404", element: <NotFoundView /> },
       { path: "/", element: <Redirector /> },

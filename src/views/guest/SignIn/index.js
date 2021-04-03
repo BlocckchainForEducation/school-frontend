@@ -94,7 +94,7 @@ export default function SignIn() {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h3">
-          Đăng nhập tài khoản
+          Đăng nhập
         </Typography>
         <form className={classes.form} noValidate>
           <TextField
@@ -142,21 +142,24 @@ export default function SignIn() {
           <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit} onClick={hdSubmit}>
             Đăng nhập
           </Button>
-          <Grid container>
+          <Grid container justify="flex-end">
+            <Grid item xs></Grid>
             <Grid item xs>
-              <Link componet={RouterLink} to="#" variant="body2">
-                Quên mật khẩu?
-              </Link>
+              <Typography align="right">
+                <Link componet={RouterLink} to="#" variant="body2">
+                  Quên mật khẩu?
+                </Link>
+              </Typography>
             </Grid>
-            <Grid item>
+            {/* <Grid item>
               <Link component={RouterLink} to="/dang-ki">
                 {"Chưa có tài khoản? Đăng kí"}
               </Link>
-            </Grid>
+            </Grid> */}
           </Grid>
         </form>
       </div>
-      <Box mt={8}>
+      <Box mt={6}>
         <Copyright />
       </Box>
     </Container>
