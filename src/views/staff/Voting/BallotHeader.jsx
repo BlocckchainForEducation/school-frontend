@@ -10,11 +10,11 @@ export default function BallotHeader({ ballot }) {
   const dp = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
 
-  async function hdVote(decision, publicKeyOfRequest) {
+  async function hdVote(decision, requesterPublicKey) {
     const privateKeyHex = await requirePrivateKeyHex(enqueueSnackbar);
     try {
-      const response = await axios.post("/staff/vote", { decision, publicKeyOfRequest, privateKeyHex });
-      dp(collapseBallot({ publicKey: publicKeyOfRequest }));
+      const response = await axios.post("/staff/vote", { decision, requesterPublicKey, privateKeyHex });
+      dp(collapseBallot({ publicKey: requesterPublicKey }));
       enqueueSnackbar("Đã bỏ phiếu xong!", SUCCESS_BOTTOM_CENTER);
     } catch (error) {
       console.error(error);
