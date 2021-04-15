@@ -6,6 +6,7 @@
 4. Add EduProgram? -> Pre-check when upload certificate [working]
 5. Add voting history?
 6. Add change password for anyone
+
 ---
 
 # IMPROVE
@@ -27,3 +28,7 @@
 - Class: Table: but allow collapse students info...
 - Certificate: Consider use other table template -> allow search ...
 -
+
+# FIX
+
+1. khi BK dk tham gia, chua duoc accept, ma lai upload GV, SV... chờ rest-api rất lâu k thấy phản hồi lại? lần đầu bị, nhưng sau lại không bị nữa? là sao nhỉ?
