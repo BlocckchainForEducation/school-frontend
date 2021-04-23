@@ -54,6 +54,7 @@ export default function ProfileForm() {
 
     try {
       const privateKeyHex = await requirePrivateKeyHex(enqueueSnackbar);
+      // FIXME: do not post app/json, use form/multi-part instead
       await axios.post("/staff/register", {
         profile: { ...state, fetching: undefined, imgSrc: profile.imgSrc },
         privateKeyHex,
