@@ -2,6 +2,7 @@ import { makeStyles } from "@material-ui/core";
 import axios from "axios";
 import { useSnackbar } from "notistack";
 import React from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Page from "src/shared/Page";
 import DragnDropZone from "../../../shared/DragnDropZone";
@@ -28,6 +29,13 @@ export default function UploadCertificate() {
   const uploading = useSelector((state) => state.certificateSlice.uploading);
   const dp = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
+
+  // FIXME: remove this mockup
+  // useEffect(() => {
+  //   enqueueSnackbar("TxFail: Sinh viên 20195755 - Bùi Hải Anh	chưa đủ điều kiện cấp bằng!", { ...ERR_TOP_CENTER, persist: true });
+  //   enqueueSnackbar("TxFail: Sinh viên 20195756	- Bùi Quang Anh chưa đủ điều kiện cấp bằng!", { ...ERR_TOP_CENTER, persist: true });
+  //   enqueueSnackbar("TxFail: Sinh viên 20196277 - Đào Hoàng Anh	chưa đủ điều kiện cấp bằng!", { ...ERR_TOP_CENTER, persist: true });
+  // }, []);
 
   async function hdUploadFile(files) {
     const privateKeyHex = await requirePrivateKeyHex(enqueueSnackbar);

@@ -1,1 +1,1 @@
-Web Frontend Ministry Component
+Web Frontend School Component

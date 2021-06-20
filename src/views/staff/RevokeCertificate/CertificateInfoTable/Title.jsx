@@ -61,7 +61,7 @@ export default function Title({ cert }) {
       const privateKeyHex = await requirePrivateKeyHex(enqueueSnackbar);
       try {
         const response = await axios.post("/staff/revoke-certificate", { privateKeyHex, cert });
-        enqueueSnackbar("Thu hồi bằng cấp thành công!", INFO_TOP_CENTER);
+        enqueueSnackbar("Thu hồi bằng cấp thành công!", SUCCESS_TOP_CENTER);
         dp(setDocument(response.data));
       } catch (error) {
         console.error(error);
